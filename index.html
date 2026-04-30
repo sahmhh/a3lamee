@@ -4,355 +4,287 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>صحيفة اليوم</title>
-<meta name="description" content="صحيفة اليوم - أخبار عربية احترافية تغطي آخر الأخبار، الرياضة، الاقتصاد، والتقنية." />
-<meta property="og:title" content="صحيفة اليوم" />
-<meta property="og:description" content="أخبار عربية احترافية تغطي آخر الأخبار، الرياضة، الاقتصاد، والتقنية." />
-<meta property="og:type" content="website" />
-<meta property="og:locale" content="ar_SA" />
-<meta property="og:url" content="mongodb+srv://sahmtemraza_db_user:a7DhZcNLDh5wnhrU@cluster0.48hdtgq.mongodb.net/?appName=Cluster0" />
-<meta property="og:image" content="https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="صحيفة اليوم" />
-<meta name="twitter:description" content="أخبار عربية احترافية تغطي آخر الأخبار، الرياضة، الاقتصاد، والتقنية." />
-<meta name="twitter:image" content="https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80" />
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- ضع رابط الباك-إند في API_BASE داخل السكربت -->
+<meta name="description" content="صحيفة اليوم - أخبار عربية احترافية تغطي آخر الأخبار، الرياضة، الاقتصاد، التعليم، الفيديوهات، والبث المباشر." />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0f172a;
-  --bg2:#020617;
-  --panel:#111827;
-  --panel2:#1e293b;
-  --line:rgba(255,255,255,.08);
-  --text:#ffffff;
-  --muted:#cbd5e1;
-  --accent:#38bdf8;
-  --accent2:#0ea5e9;
-  --danger:#ef4444;
-  --ok:#22c55e;
-  --shadow:0 18px 34px rgba(0,0,0,.2);
+  --bg:#07111f; --panel:#0d1726; --panel2:#13203a; --line:rgba(255,255,255,.08);
+  --text:#fff; --muted:#cbd5e1; --accent:#38bdf8; --accent2:#0ea5e9;
+  --danger:#ef4444; --ok:#22c55e; --shadow:0 18px 36px rgba(0,0,0,.24);
 }
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  font-family:'Cairo',sans-serif;
-  background:
-    radial-gradient(circle at top right, rgba(56,189,248,.12), transparent 24%),
-    radial-gradient(circle at bottom left, rgba(14,165,233,.10), transparent 22%),
-    var(--bg);
-  color:var(--text);
-  line-height:1.8;
-}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:'Cairo',sans-serif;background:radial-gradient(circle at top right, rgba(56,189,248,.12), transparent 22%), radial-gradient(circle at bottom left, rgba(14,165,233,.10), transparent 18%), var(--bg);color:var(--text);line-height:1.8}
 a,button,input,textarea,select{font-family:inherit}
 img{max-width:100%;display:block}
 button{cursor:pointer}
 .hidden{display:none !important}
-.badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(56,189,248,.14);border:1px solid rgba(56,189,248,.3);color:#e8fbff;font-weight:800;font-size:.9rem}
-.site-header{position:sticky;top:0;z-index:1000;background:rgba(2,6,23,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 22px 10px}
-.brand{display:flex;align-items:center;gap:14px}
-.brand-logo{width:72px;height:72px;object-fit:contain;border-radius:16px;background:#fff;box-shadow:0 12px 30px rgba(0,0,0,.25);padding:6px}
-.brand-text h1{font-size:1.65rem;line-height:1.1;font-weight:900}
-.brand-text p{color:var(--muted);font-size:.92rem}
-.top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end;direction:ltr}
-.pill-btn{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--text);padding:10px 14px;border-radius:999px;cursor:pointer;transition:.25s ease;text-decoration:none;font-weight:800;font-size:.95rem;display:inline-flex;align-items:center;gap:10px}
-.pill-btn:hover{transform:translateY(-1px);background:rgba(56,189,248,.12);border-color:rgba(56,189,248,.4)}
-.user-chip{padding:6px 10px 6px 6px;border-radius:999px}
-.user-chip img{width:30px;height:30px;border-radius:50%;background:#fff;object-fit:cover;flex:0 0 auto}
+.wrap{width:min(1440px, calc(100% - 20px));margin:0 auto}
+.header{position:sticky;top:0;z-index:1000;background:rgba(2,6,23,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 16px 10px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-logo{width:64px;height:64px;border-radius:16px;background:#fff;object-fit:contain;padding:6px;box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.brand h1{margin:0;font-size:1.55rem;font-weight:900}
+.brand p{margin:0;color:var(--muted);font-size:.92rem}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+.pill{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;padding:10px 14px;border-radius:999px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.pill:hover{background:rgba(56,189,248,.12)}
+.user-chip{padding:6px 10px 6px 6px}
+.user-chip img{width:30px;height:30px;border-radius:50%;background:#fff;object-fit:cover}
 .user-chip span{white-space:nowrap}
-.ticker{background:linear-gradient(90deg,var(--accent),#7dd3fc,var(--accent2));color:#00111a;overflow:hidden;white-space:nowrap;border-top:1px solid rgba(255,255,255,.08)}
-.ticker span{display:inline-block;padding:12px 0;padding-left:100%;animation:scroll 22s linear infinite;font-weight:900}
+.ticker{background:linear-gradient(90deg,var(--accent),#7dd3fc,var(--accent2));color:#00111a;font-weight:900;overflow:hidden;white-space:nowrap;border-top:1px solid rgba(255,255,255,.08)}
+.ticker span{display:inline-block;padding:12px 0;padding-left:100%;animation:scroll 22s linear infinite}
 @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-100%)}}
-.navbar{display:flex;gap:8px;padding:0 22px 16px;overflow:auto}
-.nav-link{border:none;background:transparent;color:var(--muted);padding:10px 16px;border-radius:12px;cursor:pointer;white-space:nowrap;transition:.25s ease;font-weight:800}
-.nav-link:hover,.nav-link.active{color:#fff;background:rgba(56,189,248,.14)}
-.layout{width:min(1400px,calc(100% - 24px));margin:20px auto;display:flex;gap:20px;align-items:flex-start}
-.sidebar{width:300px;background:linear-gradient(180deg,rgba(17,24,39,.96),rgba(2,6,23,.96));border:1px solid var(--line);border-radius:24px;padding:18px;position:sticky;top:166px;box-shadow:0 20px 50px rgba(0,0,0,.18)}
-.side-card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
-.side-card h3{font-size:1.05rem;margin-bottom:10px}
-.side-card p,.side-card li{color:var(--muted);font-size:.96rem}
-.side-links a{display:block;color:var(--muted);text-decoration:none;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.08);cursor:pointer}
-.side-links a:last-child{border-bottom:none}.side-links a:hover{color:#fff}
-.contact-chip{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding:12px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);border-radius:14px}
-.contact-chip a{color:#fff;text-decoration:none;font-weight:800}
+.nav{display:flex;gap:8px;padding:0 16px 14px;overflow:auto}
+.nav button{border:none;background:transparent;color:var(--muted);padding:10px 15px;border-radius:12px;font-weight:800;white-space:nowrap}
+.nav button.active,.nav button:hover{background:rgba(56,189,248,.14);color:#fff}
+.layout{display:flex;gap:16px;align-items:flex-start;padding:18px 0}
+.sidebar{width:300px;position:sticky;top:158px;background:linear-gradient(180deg,rgba(13,23,38,.98),rgba(2,6,23,.98));border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:var(--shadow)}
+.card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
+.card h3{margin:0 0 8px;font-size:1.02rem}
+.card p,.card li,.note{color:var(--muted)}
+.links a{display:block;color:var(--muted);text-decoration:none;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+.links a:last-child{border-bottom:none}
+.links a:hover{color:#fff}
+.contact-chip{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);border-radius:14px;padding:10px}
 .main{flex:1;min-width:0}
 .page{display:none}.page.active{display:block}
-.hero{position:relative;border-radius:28px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(135deg,rgba(2,6,23,.92),rgba(15,23,42,.78)),url('https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1600&q=80') center/cover;min-height:320px;display:grid;grid-template-columns:1fr;align-items:center;gap:20px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.22)}
-.hero-copy h2{font-size:clamp(2rem,4vw,3.4rem);line-height:1.1;margin:10px 0 12px;font-weight:900}
-.hero-copy p{color:#e2e8f0;max-width:60ch;font-size:1.05rem}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-.hero-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:14px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#00111a;text-decoration:none;font-weight:900;border:none;cursor:pointer}
-.hero-btn.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.16)}
-.hero-visual{display:none;align-items:center;justify-content:center}
-.hero-visual img{width:min(100%,280px);height:auto;object-fit:contain;filter:drop-shadow(0 22px 30px rgba(0,0,0,.35))}
-.section-title{margin:24px 4px 14px;font-size:1.5rem;font-weight:900}
-.section-subtitle{color:var(--muted);margin:0 4px 18px}
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.section-head .mini-action{padding:10px 14px;border:none;border-radius:12px;background:rgba(56,189,248,.14);color:#fff;font-weight:800}
-.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
-.article-card{background:linear-gradient(180deg,rgba(30,41,59,.96),rgba(17,24,39,.96));border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);transition:.25s ease;position:relative}
-.article-card:hover{transform:translateY(-6px);border-color:rgba(56,189,248,.28)}
-.article-card img{width:100%;height:180px;object-fit:cover}
-.article-content{padding:16px}
-.article-content h3{font-size:1.14rem;margin-bottom:8px}
-.article-content p{color:var(--muted);font-size:.95rem}
-.read-more{margin-top:12px;border:none;cursor:pointer;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#00111a;padding:10px 14px;border-radius:12px;font-weight:900;width:100%}
-.edit-mini{position:absolute;top:10px;left:10px;border:none;background:rgba(2,6,23,.85);color:#fff;padding:8px 10px;border-radius:999px;font-size:.85rem;font-weight:800;border:1px solid rgba(255,255,255,.18)}
-.contact-panel{background:linear-gradient(180deg,rgba(30,41,59,.96),rgba(17,24,39,.96));border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}
-.contact-box{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:16px}
-.form{display:grid;gap:12px}
-.input,.textarea,.select{width:100%;border:none;outline:none;border-radius:14px;padding:13px 14px;background:#e2e8f0;color:#111827;font-family:inherit;font-size:1rem}
-.textarea{min-height:140px;resize:vertical}
-.submit{border:none;cursor:pointer;border-radius:14px;padding:12px 16px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#00111a;font-weight:900}
-.submit.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.16)}
-.note{color:var(--muted);font-size:.95rem}
-.form-error{color:#f87171;font-size:.9rem;min-height:1.2em;margin-top:6px;line-height:1.45}
-.captcha-box{margin-top:12px;padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
-.captcha-box .badge{margin-bottom:8px}
-.captcha-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.captcha-refresh{border:none;border-radius:12px;padding:12px 14px;background:rgba(56,189,248,.14);color:#fff;font-weight:900;white-space:nowrap}
-.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
-.video-card{background:linear-gradient(180deg,rgba(30,41,59,.96),rgba(17,24,39,.96));border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);transition:.25s ease;cursor:pointer}
-.video-card:hover{transform:translateY(-6px);border-color:rgba(56,189,248,.28)}
-.video-thumb{width:100%;height:180px;position:relative;background:linear-gradient(135deg,rgba(2,6,23,.9),rgba(30,41,59,.9));display:flex;align-items:center;justify-content:center;overflow:hidden}
-.video-thumb img{width:100%;height:100%;object-fit:cover}
-.video-fallback{display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:2.2rem;font-weight:900;color:#fff;background:linear-gradient(135deg,rgba(56,189,248,.22),rgba(14,165,233,.10))}
-.video-meta{padding:16px}
-.video-meta h3{font-size:1.12rem;margin-bottom:8px}
-.video-meta p{color:var(--muted);font-size:.95rem}
-.video-source{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(56,189,248,.14);border:1px solid rgba(56,189,248,.2);color:#fff;font-size:.82rem;font-weight:800;margin-bottom:10px}
-.video-watch{margin-top:12px;border:none;cursor:pointer;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#00111a;padding:10px 14px;border-radius:12px;font-weight:900;width:100%}
-.video-player-wrap{display:grid;gap:12px}
-.video-modal-player{width:100%;aspect-ratio:16/9;border:none;border-radius:16px;background:#000}
-.video-open-link{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.06);color:#fff;text-decoration:none;font-weight:800}
-.video-empty{padding:18px;border-radius:16px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.12);color:var(--muted)}
-.video-source-fields{display:grid;gap:12px}
-.footer{width:min(1400px,calc(100% - 24px));margin:20px auto 30px;text-align:center;color:var(--muted);padding:18px;border-top:1px solid var(--line)}
-.modal{position:fixed;inset:0;background:rgba(2,6,23,.84);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px;z-index:3000}
+.hero{border:1px solid var(--line);border-radius:28px;overflow:hidden;background:linear-gradient(135deg,rgba(2,6,23,.90),rgba(15,23,42,.75)), url('https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1600&q=80') center/cover;min-height:320px;display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:center;padding:24px;box-shadow:var(--shadow)}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(56,189,248,.14);border:1px solid rgba(56,189,248,.26);font-weight:900}
+.hero h2{font-size:clamp(1.9rem,4vw,3.4rem);line-height:1.1;margin:10px 0 12px;font-weight:900}
+.hero p{margin:0;color:#e2e8f0;max-width:60ch}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{border:none;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#00111a;padding:12px 16px;border-radius:14px;font-weight:900;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.16)}
+.hero-visual{display:flex;align-items:center;justify-content:center}
+.hero-visual img{width:min(100%,280px);filter:drop-shadow(0 24px 30px rgba(0,0,0,.35))}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:20px}
+.section-title{margin:0;font-size:1.45rem;font-weight:900}
+.section-subtitle{margin:6px 0 0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:16px}
+.post{position:relative;background:linear-gradient(180deg,rgba(18,28,46,.98),rgba(10,16,27,.98));border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);transition:.2s}
+.post:hover{transform:translateY(-4px)}
+.post img{width:100%;height:180px;object-fit:cover}
+.post-body{padding:14px}
+.post h3{margin:0 0 8px;font-size:1.08rem}
+.post p{margin:0;color:var(--muted);font-size:.94rem}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;color:#fff;font-size:.88rem}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.iconbtn{border:none;background:rgba(255,255,255,.06);color:#fff;padding:9px 12px;border-radius:12px;font-weight:900;display:inline-flex;align-items:center;gap:6px}
+.iconbtn:hover{background:rgba(56,189,248,.14)}
+.iconbtn.like.on{background:rgba(239,68,68,.18)}
+.small{font-size:.85rem;color:var(--muted)}
+.edit-mini{position:absolute;top:10px;left:10px;border:none;background:rgba(2,6,23,.86);color:#fff;padding:8px 10px;border-radius:999px;font-weight:800}
+.del-mini{position:absolute;top:10px;right:10px;border:none;background:rgba(239,68,68,.88);color:#fff;padding:8px 10px;border-radius:999px;font-weight:800}
+.panel{background:linear-gradient(180deg,rgba(18,28,46,.98),rgba(10,16,27,.98));border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow)}
+.cols{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+.form{display:grid;gap:10px}
+.input,.textarea,.select{width:100%;border:none;outline:none;border-radius:14px;padding:13px 14px;background:#e2e8f0;color:#0f172a;font-size:1rem}
+.textarea{min-height:120px;resize:vertical}
+.toggle{display:flex;align-items:center;gap:8px;color:#fff}
+.footer{width:min(1440px, calc(100% - 20px));margin:18px auto 24px;color:var(--muted);text-align:center;padding:16px;border-top:1px solid var(--line)}
+.modal{position:fixed;inset:0;z-index:2500;background:rgba(2,6,23,.84);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px}
 .modal.active{display:flex}
-.modal-box{width:min(860px,100%);max-height:min(92vh,980px);overflow:auto;background:linear-gradient(180deg,rgba(17,24,39,.98),rgba(2,6,23,.98));border:1px solid rgba(255,255,255,.1);border-radius:26px;overflow-x:hidden;box-shadow:0 30px 70px rgba(0,0,0,.5)}
+.modal-box{width:min(920px,100%);max-height:92vh;overflow:auto;background:linear-gradient(180deg,rgba(18,28,46,.99),rgba(2,6,23,.99));border:1px solid rgba(255,255,255,.1);border-radius:26px;box-shadow:0 30px 70px rgba(0,0,0,.5)}
 .modal-media{width:100%;height:300px;object-fit:cover}
-.modal-body{padding:22px}
-.modal-body h2{font-size:1.8rem;margin-bottom:10px}
-.modal-body p{color:var(--muted);margin-bottom:10px}
-.modal-close{margin-top:12px;background:#ef4444;color:#fff;border:none;cursor:pointer;border-radius:12px;padding:10px 14px;font-weight:900}
-.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-grid.one{grid-template-columns:1fr}
-.auth-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:0}
-.auth-side{padding:26px;background:linear-gradient(135deg,rgba(56,189,248,.14),rgba(14,165,233,.06));border-inline-start:1px solid var(--line)}
-.auth-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.auth-tab{border:none;border-radius:999px;padding:10px 14px;background:rgba(255,255,255,.06);color:#fff;font-weight:900}
-.auth-tab.active{background:rgba(56,189,248,.18)}
-.password-meter{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
-.password-meter > span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--danger),#f59e0b,var(--ok));transition:.2s ease}
-.toast{position:fixed;top:94px;left:20px;z-index:5000;background:rgba(15,23,42,.96);border:1px solid rgba(34,197,94,.34);color:#fff;padding:12px 16px;border-radius:14px;box-shadow:0 16px 40px rgba(0,0,0,.3);transform:translateY(-10px);opacity:0;pointer-events:none;transition:.25s ease;font-weight:900}
-.toast.show{transform:translateY(0);opacity:1}
-.profile-menu{position:fixed;top:118px;left:22px;z-index:4200;width:280px;background:rgba(2,6,23,.98);border:1px solid rgba(255,255,255,.12);border-radius:22px;box-shadow:0 24px 60px rgba(0,0,0,.4);padding:12px;display:none}
-.profile-menu.active{display:block}
-.profile-menu .head{display:flex;align-items:center;gap:12px;padding:8px 8px 14px;border-bottom:1px solid var(--line);margin-bottom:8px}
-.profile-menu .head img{width:46px;height:46px;border-radius:50%;background:#fff}
-.profile-menu .head strong{display:block;font-size:1rem}
-.profile-menu .head span{color:var(--muted);font-size:.9rem}
-.profile-item{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;border:none;background:transparent;color:#fff;padding:12px;border-radius:12px;text-align:right;font-weight:800}
-.profile-item:hover{background:rgba(56,189,248,.12)}
-.dashboard-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.dashboard-tab{border:none;background:rgba(255,255,255,.06);color:#fff;padding:10px 14px;border-radius:999px;font-weight:900}
-.dashboard-tab.active{background:rgba(56,189,248,.18)}
-.dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.panel-list{display:grid;gap:12px}
-.panel-row{display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:center;padding:12px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
-.panel-row img{width:72px;height:72px;border-radius:14px;object-fit:cover}
-.panel-row h4{font-size:1rem;margin-bottom:4px}
-.panel-row p{color:var(--muted);font-size:.88rem}
-.row-actions{display:flex;gap:8px;flex-wrap:wrap}
-.small-btn{border:none;border-radius:10px;padding:9px 12px;font-weight:900}
-.small-btn.edit{background:rgba(56,189,248,.16);color:#fff}
-.small-btn.del{background:rgba(239,68,68,.16);color:#fff}
-.small-btn.ok{background:rgba(34,197,94,.16);color:#fff}
-.users-table{display:grid;gap:10px}
-.user-row{display:grid;grid-template-columns:1fr 1fr 140px auto;gap:10px;align-items:center;padding:12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
-.user-row .uinfo strong{display:block}
-.user-row .uinfo span{color:var(--muted);font-size:.88rem}
-.user-row .role{padding:10px 12px;border-radius:12px;background:#e2e8f0;color:#111827;border:none}
-.editor-banner{margin:14px 0 0;padding:12px 14px;border-radius:14px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.22);color:#fff;font-weight:800}
-.empty-state{padding:18px;border-radius:16px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.12);color:var(--muted)}
-.helper{font-size:.9rem;color:var(--muted);margin-top:-6px;padding-inline:2px}
+.modal-body{padding:18px}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap}
+.close{margin-top:10px;background:#ef4444;color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:900}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tab{border:none;background:rgba(255,255,255,.06);color:#fff;padding:10px 14px;border-radius:999px;font-weight:900}
+.tab.active{background:rgba(56,189,248,.18)}
+.err{color:var(--danger);font-size:.88rem;min-height:1.1em;margin-top:4px}
+.ok{color:var(--ok)}
+.user-menu{position:fixed;top:116px;left:18px;z-index:2600;width:290px;background:#020617;border:1px solid rgba(255,255,255,.12);border-radius:22px;box-shadow:0 24px 60px rgba(0,0,0,.42);padding:12px;display:none}
+.user-menu.active{display:block}
+.user-menu .head{display:flex;align-items:center;gap:12px;padding:8px 8px 12px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.user-menu .head img{width:46px;height:46px;border-radius:50%;background:#fff}
+.user-menu .item{width:100%;background:transparent;border:none;color:#fff;padding:11px 12px;border-radius:12px;text-align:right;font-weight:800;display:flex;justify-content:space-between}
+.user-menu .item:hover{background:rgba(56,189,248,.12)}
+.users-list{display:grid;gap:10px}
+.user-row{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:12px}
+.user-row .info strong{display:block}
+.user-row .info span{color:var(--muted);font-size:.88rem}
+.role-badge{padding:8px 10px;border-radius:999px;background:rgba(56,189,248,.14);font-weight:900}
+.role-actions{display:flex;gap:8px;align-items:center}
+.role-actions button{border:none;border-radius:10px;padding:9px 11px;font-weight:900}
+.plus{background:rgba(34,197,94,.16);color:#fff}
+.minus{background:rgba(239,68,68,.16);color:#fff}
+.audit{display:grid;gap:8px;max-height:58vh;overflow:auto}
+.audit .row{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#fff}
+.comment-list{display:grid;gap:10px;margin-top:14px}
+.comment{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:12px}
+.comment .top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.comment .name{font-weight:900}
+.comment .text{margin-top:8px;color:#e5e7eb}
+.comment .sub{margin-top:8px;color:var(--muted);font-size:.88rem;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.reply{margin-inline-start:20px;border-inline-start:2px solid rgba(255,255,255,.1);padding-inline-start:10px}
+.hr{height:1px;background:var(--line);margin:14px 0}
+.sharelink{word-break:break-all;background:rgba(255,255,255,.04);padding:10px;border-radius:12px}
+.editable{outline:2px dashed transparent}
+.editable.edit-mode{outline-color:var(--accent);background:rgba(56,189,248,.08)}
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.media-card{position:relative;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.media-card video,.media-card iframe{width:100%;height:220px;display:block;border:0;background:#000}
+.media-card .body{padding:14px}
+.pilltag{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(56,189,248,.14);font-size:.83rem;font-weight:900}
+.time{color:var(--muted);font-size:.88rem}
 @media (max-width:1100px){.layout{flex-direction:column}.sidebar{width:100%;position:relative;top:auto}}
-@media (max-width:900px){.auth-grid,.contact-box,.dashboard-grid,.form-grid,.user-row{grid-template-columns:1fr}.auth-side{border-inline-start:none;border-top:1px solid var(--line)}.topbar{flex-direction:column;align-items:flex-start}.hero{grid-template-columns:1fr}.news-grid{grid-template-columns:1fr 1fr}}
-@media (max-width:620px){.news-grid{grid-template-columns:1fr}.hero{padding:20px;min-height:auto}.brand-logo{width:58px;height:58px}.brand-text h1{font-size:1.35rem}.profile-menu{width:calc(100% - 24px);left:12px;top:112px}}
+@media (max-width:900px){.hero,.cols{grid-template-columns:1fr}.grid,.media-grid{grid-template-columns:1fr 1fr}.user-row{grid-template-columns:1fr;}.topbar{flex-direction:column;align-items:flex-start}}
+@media (max-width:620px){.grid,.media-grid{grid-template-columns:1fr}.brand-logo{width:58px;height:58px}.brand h1{font-size:1.32rem}.user-menu{width:calc(100% - 20px);left:10px;top:110px}}
 </style>
 </head>
 <body>
-<header class="site-header">
-  <div class="topbar">
-    <div class="brand">
-      <img id="siteLogo" class="brand-logo" alt="لوقو صحيفة اليوم">
-      <div class="brand-text">
-        <h1>صحيفة اليوم</h1>
-        <p>أخبار دقيقة .. لحظة بلحظة</p>
+<div class="header">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <img id="siteLogo" class="brand-logo" alt="لوقو صحيفة اليوم">
+        <div>
+          <h1 id="siteName" class="editable" data-key="siteName">صحيفة اليوم</h1>
+          <p id="siteTagline" class="editable" data-key="siteTagline">أخبار دقيقة .. لحظة بلحظة</p>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="profileBtn" class="pill user-chip hidden" type="button">
+          <img id="userAvatar" alt="حسابي"><span id="userQuickName">@user</span>
+        </button>
+        <a id="loginBtn" class="pill" href="#" onclick="openAuth('login');return false;">تسجيل الدخول</a>
+        <a class="pill" href="mailto:syf.a.et@hotmail.com">تواصل معنا</a>
       </div>
     </div>
-
-    <div class="top-actions">
-      <button id="profileBtn" class="pill-btn user-chip hidden" type="button" aria-label="القائمة الشخصية">
-        <img id="userAvatarTop" alt="الصورة الشخصية">
-        <span id="userQuickName">@user</span>
-      </button>
-      <a id="loginBtn" class="pill-btn" href="#" onclick="openAuth('login');return false;">تسجيل الدخول</a>
-      <a class="pill-btn" href="mailto:syf.a.et@hotmail.com">تواصل معنا</a>
+    <div id="tickerBar" class="ticker editable" data-key="ticker"><span id="tickerText"> ✔ اخبار لحضة بلحضة .. مع موقع صحيفة اليوم ✔</span></div>
+    <div class="nav">
+      <button class="navbtn active" onclick="showPage('home', this)">الرئيسية</button>
+      <button class="navbtn" onclick="showPage('sports', this)">رياضة</button>
+      <button class="navbtn" onclick="showPage('economy', this)">اقتصاد</button>
+      <button class="navbtn" onclick="showPage('education', this)">التعليم</button>
+      <button class="navbtn" onclick="showPage('videos', this)">الفيديوهات</button>
+      <button class="navbtn" onclick="showPage('live', this)">البث المباشر</button>
+      <button class="navbtn" onclick="showPage('contact', this)">تواصل معنا</button>
     </div>
   </div>
- <div class="ticker"><span> ✔ اخبار لحضة بلحضة .. مع موقع صحيفة اليوم ✔ </span></div>
-  <div class="navbar">
-    <button class="nav-link active" onclick="showPage('home', this)">الرئيسية</button>
-    <button class="nav-link" onclick="showPage('sports', this)">رياضة</button>
-    <button class="nav-link" onclick="showPage('economy', this)">اقتصاد</button>
-    <button class="nav-link" onclick="showPage('videos', this)">فيديوهات</button>
-    <button class="nav-link" onclick="showPage('contact', this)">تواصل معنا</button>
-  </div>
-</header>
-
-<div class="toast" id="toast">تم الحفظ</div>
-
-<div class="profile-menu" id="profileMenu">
-  <div class="head">
-    <img id="profileMenuAvatar" alt="الصورة الشخصية">
-    <div>
-      <strong id="profileMenuName">@user</strong>
-      <span id="profileMenuRole">مستخدم</span>
-    </div>
-  </div>
-  <button class="profile-item hidden" id="profileOwnerPanelBtn" onclick="openDashboard('owner')">لوحة التحكم <span>›</span></button>
-  <button class="profile-item hidden" id="profileEditorPanelBtn" onclick="openDashboard('editor')">لوحة الإعلاميين <span>›</span></button>
-  <button class="profile-item" onclick="openChangePassword()">تغيير كلمة المرور <span>›</span></button>
-  <button class="profile-item" onclick="logout()">تسجيل الخروج <span>›</span></button>
 </div>
 
-<div class="layout">
+<div class="wrap layout">
   <aside class="sidebar">
-    <div class="side-card">
+    <div class="card">
       <h3>📌 معلومات</h3>
-      <div class="side-links">
+      <div class="links">
         <a onclick="openInfo('about')">عن الموقع</a>
         <a onclick="openInfo('privacy')">سياسة الخصوصية</a>
         <a onclick="openInfo('terms')">الشروط والأحكام</a>
       </div>
     </div>
-    <div class="side-card">
+    <div class="card">
+      <h3>👤 الحساب</h3>
+      <p id="sideAccountText">غير مسجل دخول حاليًا.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <button class="btn" style="padding:10px 14px" onclick="openAuth('register')">إنشاء حساب</button>
+        <button class="btn secondary" style="padding:10px 14px" onclick="openAuth('login')">دخول</button>
+      </div>
+    </div>
+    <div class="card">
       <h3>📊 الأقسام</h3>
-      <div class="side-links">
+      <div class="links">
         <a onclick="showPage('home')">الرئيسية</a>
         <a onclick="showPage('sports')">رياضة</a>
         <a onclick="showPage('economy')">اقتصاد</a>
-        <a onclick="showPage('videos')">فيديوهات</a>
-        <a onclick="showPage('contact')">تواصل معنا</a>
+        <a onclick="showPage('education')">التعليم</a>
+        <a onclick="showPage('videos')">الفيديوهات</a>
+        <a onclick="showPage('live')">البث المباشر</a>
       </div>
     </div>
-    <div class="side-card">
+    <div class="card">
       <h3>📩 تواصل</h3>
-      <p>تستطيع إرسال رسالة مباشرة إلى البريد التالي:</p>
       <div class="contact-chip"><a href="mailto:syf.a.et@hotmail.com">syf.a.et@hotmail.com</a></div>
-    </div>
-    <div class="side-card">
-      <h3>👤 الحساب</h3>
-      <p id="sideAccountText">غير مسجل دخول حاليًا. يمكنك إنشاء حساب أو تسجيل الدخول لفتح الصلاحيات.</p>
-      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
-        <button class="hero-btn" style="padding:10px 14px" onclick="openAuth('register')">إنشاء حساب</button>
-        <button class="hero-btn secondary" style="padding:10px 14px" onclick="openAuth('login')">دخول</button>
-      </div>
     </div>
   </aside>
 
   <main class="main">
     <section id="home" class="page active">
       <div class="hero">
-        <div class="hero-copy">
+        <div>
           <span class="badge">🟢 آخر التحديثات</span>
-          <h2>موقع أخبار عربي بتصميم احترافي وفخم</h2>
-          <p>تابع الأخبار العاجلة، الرياضة، الاقتصاد، والتقنية من مكان واحد، مع واجهة منظمة وشريط أخبار متحرك وقوائم تعمل بالكامل.</p>
+          <h2 id="heroTitle" class="editable" data-key="heroTitle">موقع أخبار عربي بتصميم احترافي وفخم</h2>
+          <p id="heroDesc" class="editable" data-key="heroDesc">تابع الأخبار العاجلة، الرياضة، الاقتصاد، التعليم، الفيديوهات، والبث المباشر من مكان واحد، مع واجهة منظمة، تعليقات، ولايكات، وصلاحيات واضحة.</p>
           <div class="hero-actions">
-            <button class="hero-btn" onclick="openInfo('privacy')">سياسة الخصوصية</button>
-            <button class="hero-btn secondary" onclick="showPage('sports')">شاهد قسم الرياضة</button>
+            <button class="btn" onclick="openInfo('privacy')">سياسة الخصوصية</button>
+            <button class="btn secondary" onclick="showPage('videos')">شاهد قسم الفيديوهات</button>
           </div>
         </div>
-        <div class="hero-visual"><img id="heroLogo" alt="شعار صحيفة اليوم"></div>
+        <div class="hero-visual"><img id="heroLogo2" alt="شعار الموقع"></div>
       </div>
 
       <div class="section-head">
         <div>
-          <h2 class="section-title">🔥 أهم الأخبار</h2>
-          <p class="section-subtitle">اختر أي خبر لفتح التفاصيل الكاملة داخل نافذة أنيقة.</p>
+          <h2 class="section-title">🔥 أحدث المنشورات</h2>
+          <p class="section-subtitle">المنشورات الحديثة تظهر أولًا، ويمكنك فتح كل منشور لعرض التعليقات والتفاعل.</p>
         </div>
-        <button id="addHomeBtn" class="mini-action hidden" onclick="openEditor('create','home')">+ إضافة بانل</button>
+        <button id="addHomeBtn" class="btn hidden" onclick="openPostEditor('create','home')">+ منشور</button>
       </div>
-      <div id="homeGrid" class="news-grid"></div>
+      <div id="homeGrid" class="grid"></div>
     </section>
 
     <section id="sports" class="page">
       <div class="section-head">
-        <div>
-          <h2 class="section-title">⚽ قسم الرياضة</h2>
-          <p class="section-subtitle">أخبار رياضية مع صور واضحة، بما فيها بطولة مضافة بصورة مناسبة.</p>
-        </div>
-        <button id="addSportsBtn" class="mini-action hidden" onclick="openEditor('create','sports')">+ إضافة بانل</button>
+        <div><h2 class="section-title">⚽ قسم الرياضة</h2><p class="section-subtitle">منشورات رياضية مع لايكات وتعليقات ومشاركة.</p></div>
+        <button id="addSportsBtn" class="btn hidden" onclick="openPostEditor('create','sports')">+ منشور</button>
       </div>
-      <div id="sportsGrid" class="news-grid"></div>
+      <div id="sportsGrid" class="grid"></div>
     </section>
 
     <section id="economy" class="page">
       <div class="section-head">
-        <div>
-          <h2 class="section-title">💰 قسم الاقتصاد</h2>
-          <p class="section-subtitle">أخبار اقتصادية محدثة مع صور متنوعة وتفاصيل مختصرة وواضحة.</p>
-        </div>
-        <button id="addEconomyBtn" class="mini-action hidden" onclick="openEditor('create','economy')">+ إضافة بانل</button>
+        <div><h2 class="section-title">💰 قسم الاقتصاد</h2><p class="section-subtitle">منشورات اقتصادية وصور متنوعة وتحديثات مستمرة.</p></div>
+        <button id="addEconomyBtn" class="btn hidden" onclick="openPostEditor('create','economy')">+ منشور</button>
       </div>
-      <div id="economyGrid" class="news-grid"></div>
+      <div id="economyGrid" class="grid"></div>
     </section>
 
+    <section id="education" class="page">
+      <div class="section-head">
+        <div><h2 class="section-title">🎓 قسم التعليم</h2><p class="section-subtitle">منشورات تعليمية ولايكات فقط، ويمكن استيراد من تيليجرام عبر إعدادات الباك-إند.</p></div>
+        <button id="addEduBtn" class="btn hidden" onclick="openPostEditor('create','education')">+ منشور</button>
+        <button class="btn secondary" onclick="importEducationFromTelegram()">استيراد من تيليجرام</button>
+      </div>
+      <div id="educationGrid" class="grid"></div>
+    </section>
 
     <section id="videos" class="page">
       <div class="section-head">
-        <div>
-          <h2 class="section-title">🎬 قسم الفيديوهات</h2>
-          <p class="section-subtitle">فيديوهات مضافة من المطور أو الإعلاميين، من رابط أو من رفع ملف مباشر.</p>
-        </div>
-        <div class="modal-actions" style="margin-top:0">
-          <button id="addVideosBtn" class="mini-action hidden" onclick="openVideoEditor('create')">+ إضافة فيديو</button>
-          <button id="addLiveBtn" class="mini-action hidden" onclick="openVideoEditor('create', null, 'live')">+ بث مباشر</button>
-        </div>
+        <div><h2 class="section-title">🎥 قسم الفيديوهات</h2><p class="section-subtitle">فيديوهات وروابط يوتيوب، ولا توجد تعليقات هنا.</p></div>
+        <button id="addVideoBtn" class="btn hidden" onclick="openVideoEditor('create')">+ فيديو</button>
       </div>
-      <div id="videosGrid" class="video-grid"></div>
+      <div id="videosGrid" class="media-grid"></div>
     </section>
 
     <section id="live" class="page">
       <div class="section-head">
-        <div>
-          <h2 class="section-title">📡 البث المباشر</h2>
-          <p class="section-subtitle">أضف بثًا مباشرًا من يوتيوب، وسيُزال تلقائيًا إذا انتهى أو لم يعد متاحًا.</p>
-        </div>
-        <button id="addLiveStreamBtn" class="mini-action hidden" onclick="openVideoEditor('create', null, 'live')">+ بث مباشر جديد</button>
+        <div><h2 class="section-title">🔴 البث المباشر</h2><p class="section-subtitle">أضف رابط يوتيوب مباشر وحدد مدة أو وقت انتهاء، وسيُحذف تلقائيًا بعد انتهائه.</p></div>
+        <button id="addLiveBtn" class="btn hidden" onclick="openLiveEditor('create')">+ بث مباشر</button>
       </div>
-      <div id="liveGrid" class="video-grid"></div>
+      <div id="liveGrid" class="media-grid"></div>
     </section>
 
     <section id="contact" class="page">
-      <h2 class="section-title">📩 تواصل معنا</h2>
-      <p class="section-subtitle">يمكنك إرسال الرسالة عبر البريد أو من خلال النموذج التالي.</p>
-      <div class="contact-panel">
-        <div class="contact-box">
+      <div class="section-head">
+        <div><h2 class="section-title">📩 تواصل معنا</h2><p class="section-subtitle">يمكنك الإرسال عبر البريد أو من خلال النموذج التالي.</p></div>
+      </div>
+      <div class="panel">
+        <div class="cols">
           <div>
-            <h3 style="margin-bottom:10px;">بيانات التواصل</h3>
+            <h3>بيانات التواصل</h3>
             <p class="note">البريد الرسمي للموقع:</p>
-            <p style="font-size:1.05rem;font-weight:900;color:#fff;margin:6px 0 14px;">syf.a.et@hotmail.com</p>
-            <p class="note">هذا البريد مخصص لاستقبال الملاحظات، الاقتراحات، وإرسال الأخبار.</p>
-            <div style="margin-top:18px;"><a class="hero-btn" href="mailto:syf.a.et@hotmail.com">إرسال عبر البريد</a></div>
+            <p style="font-weight:900;color:#fff">syf.a.et@hotmail.com</p>
+            <p class="note">هذا البريد مخصص للملاحظات والاقتراحات وإرسال الأخبار.</p>
+            <div style="margin-top:14px"><a class="btn" href="mailto:syf.a.et@hotmail.com">إرسال عبر البريد</a></div>
           </div>
           <form class="form" action="mailto:syf.a.et@hotmail.com" method="post" enctype="text/plain">
             <input class="input" type="text" name="name" placeholder="اسمك" required>
             <input class="input" type="email" name="email" placeholder="بريدك الإلكتروني" required>
             <textarea class="textarea" name="message" placeholder="اكتب رسالتك هنا..." required></textarea>
-            <button class="submit" type="submit">إرسال الرسالة</button>
+            <button class="btn" type="submit">إرسال الرسالة</button>
           </form>
         </div>
       </div>
@@ -360,374 +292,358 @@ button{cursor:pointer}
   </main>
 </div>
 
-<footer class="footer"><p>© 2026 صحيفة اليوم — جميع الحقوق محفوظة</p></footer>
+<footer class="footer wrap">© 2026 صحيفة اليوم — جميع الحقوق محفوظة</footer>
 
-<div class="modal" id="newsModal" role="dialog" aria-modal="true">
+<div class="modal" id="authModal">
   <div class="modal-box">
-    <img class="modal-media" id="newsImg" alt="صورة الخبر">
     <div class="modal-body">
-      <div class="section-head" style="margin:0 0 8px;align-items:flex-start;">
-        <h2 id="newsTitle"></h2>
-        <div class="modal-actions hidden" id="newsAdminActions">
-          <button class="small-btn edit" onclick="editCurrentArticle()">تعديل الخبر</button>
+      <div class="tabs">
+        <button id="loginTab" class="tab active" onclick="openAuth('login')">دخول</button>
+        <button id="registerTab" class="tab" onclick="openAuth('register')">حساب جديد</button>
+      </div>
+
+      <div id="loginBox">
+        <h2>تسجيل الدخول</h2>
+        <div class="form">
+          <input id="loginUser" class="input" type="text" placeholder="اسم المستخدم">
+          <input id="loginPass" class="input" type="password" placeholder="كلمة المرور">
+          <div class="err" id="loginErr"></div>
+          <button class="btn" onclick="login()">دخول</button>
+          <button class="btn secondary" onclick="closeModal('authModal')">إلغاء</button>
         </div>
       </div>
-      <p id="newsSummary"></p>
-      <p id="newsDetail"></p>
-      <button class="modal-close" onclick="closeNews()">إغلاق</button>
-    </div>
-  </div>
-</div>
 
-<div class="modal" id="infoModal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <img class="modal-media" id="infoImg" alt="صورة معلومات">
-    <div class="modal-body">
-      <h2 id="infoTitle"></h2>
-      <p id="infoText"></p>
-      <button class="modal-close" onclick="closeInfo()">إغلاق</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal" id="authModal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <div class="auth-grid">
-      <div class="modal-body">
-        <div class="auth-tabs">
-          <button id="loginTab" class="auth-tab active" onclick="openAuth('login')">تسجيل الدخول</button>
-          <button id="registerTab" class="auth-tab" onclick="openAuth('register')">إنشاء حساب</button>
+      <div id="registerBox" class="hidden">
+        <h2>إنشاء حساب</h2>
+        <div class="cols">
+          <div class="form">
+            <input id="regDisplay" class="input" type="text" placeholder="الاسم الظاهر">
+            <div class="err" id="regDisplayErr"></div>
+            <input id="regEmail" class="input" type="email" placeholder="البريد الإلكتروني">
+            <div class="err" id="regEmailErr"></div>
+            <input id="regUser" class="input" type="text" placeholder="اسم المستخدم">
+            <div class="err" id="regUserErr"></div>
+            <input id="regPhone" class="input" type="text" placeholder="رقم الجوال (اختياري)">
+            <div class="err" id="regPhoneErr"></div>
+          </div>
+          <div class="form">
+            <input id="regPass" class="input" type="password" placeholder="كلمة المرور">
+            <div class="err" id="regPassErr"></div>
+            <input id="regPass2" class="input" type="password" placeholder="تأكيد كلمة المرور">
+            <div class="err" id="regPass2Err"></div>
+            <div class="panel">
+              <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+                <div id="captchaQ" style="font-weight:900">-</div>
+                <button class="pill" type="button" onclick="newCaptcha()">تغيير الاختبار</button>
+              </div>
+              <input id="captchaA" class="input" type="text" placeholder="أجب هنا" style="margin-top:10px">
+              <div class="err" id="captchaErr"></div>
+            </div>
+          </div>
         </div>
-
-        <div id="loginFormWrap">
-          <h2>مرحبًا بعودتك</h2>
-          <p>سجّل دخولك لفتح الصورة الشخصية ولوحة التحكم إذا كانت لديك صلاحيات.</p>
-          <div class="form-grid one">
-            <input id="loginUser" class="input" type="text" placeholder="اسم المستخدم @username" autocomplete="username">
-            <input id="loginPass" class="input" type="password" placeholder="كلمة المرور" autocomplete="current-password">
-          </div>
-          <button class="submit" style="margin-top:12px;width:100%" onclick="login()">دخول</button>
-          <button class="submit secondary" style="margin-top:10px;width:100%" onclick="closeAuth()">إلغاء</button>
+        <div style="margin:12px 0 0">
+          <div class="small">قوة كلمة المرور</div>
+          <div class="password-meter"><span id="pwMeter"></span></div>
         </div>
-
-        <div id="registerFormWrap" class="hidden">
-          <h2>إنشاء حساب جديد</h2>
-          <p>أدخل بريدك واسم المستخدم وكلمة المرور. كلمة المرور يجب أن تكون 8 أحرف على الأقل وتحتوي حروفًا وأرقامًا.</p>
-          <div class="form-grid">
-            <div>
-              <input id="regDisplay" class="input" type="text" placeholder="الاسم الظاهر / اسمك الحقيقي" autocomplete="name">
-              <div class="helper">يمكنك كتابة اسمك الحقيقي أو الاسم الذي تريد عرضه.</div>
-              <div class="form-error" id="regDisplayError"></div>
-            </div>
-            <div>
-              <input id="regEmail" class="input" type="email" placeholder="البريد الإلكتروني" autocomplete="email">
-              <div class="helper">يجب أن يحتوي البريد على @.</div>
-              <div class="form-error" id="regEmailError"></div>
-            </div>
-            <div>
-              <input id="regUser" class="input" type="text" placeholder="اسم المستخدم بدون @" autocomplete="username">
-              <div class="helper">يجب أن لا يقل اسم المستخدم عن 4 حروف.</div>
-              <div class="form-error" id="regUserError"></div>
-            </div>
-            <div>
-              <input id="regPass" class="input" type="password" placeholder="كلمة المرور" autocomplete="new-password">
-              <div class="helper">يجب أن لا تقل عن 8 أحرف، وألا تكون أرقامًا فقط أو حروفًا فقط.</div>
-              <div class="form-error" id="regPassError"></div>
-            </div>
-          </div>
-          <div style="margin:12px 0 4px;">
-            <div class="password-meter"><span id="passMeter"></span></div>
-            <p class="note" id="passHint" style="margin-top:8px;">القوة ستظهر هنا.</p>
-          </div>
-          <input id="regPass2" class="input" type="password" placeholder="تأكيد كلمة المرور" autocomplete="new-password" style="margin-top:12px;">
-          <div class="form-error" id="regPass2Error"></div>
-          <div class="captcha-box">
-            <span class="badge">اختبار بشري</span>
-            <p id="captchaPrompt" style="margin-bottom:10px;color:#fff;font-weight:800;"></p>
-            <div class="captcha-row">
-              <input id="captchaAnswer" class="input" type="text" placeholder="اكتب الإجابة">
-              <button type="button" class="captcha-refresh" onclick="generateCaptcha()">تبديل التحدي</button>
-            </div>
-            <div class="form-error" id="captchaError"></div>
-          </div>
-          <button class="submit" style="margin-top:12px;width:100%" onclick="register()">إنشاء الحساب</button>
-          <button class="submit secondary" style="margin-top:10px;width:100%" onclick="closeAuth()">إلغاء</button>
-        </div>
-      </div>
-      <div class="auth-side">
-        <span class="badge">مرحبًا</span>
-        <h2 style="margin:12px 0 10px;">سجّل دخولك أو أنشئ حسابًا</h2>
-        <p class="note">اختبار بشري + صلاحيات محفوظة.</p>
+        <button class="btn" style="margin-top:12px" onclick="register()">إنشاء الحساب</button>
+        <button class="btn secondary" style="margin-top:8px" onclick="closeModal('authModal')">إلغاء</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal" id="dashboardModal" role="dialog" aria-modal="true">
+<div class="modal" id="dashboardModal">
   <div class="modal-box">
     <div class="modal-body">
-      <div class="section-head" style="margin:0 0 14px;">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap">
         <div>
-          <h2 id="dashboardTitle">لوحة التحكم</h2>
-          <p class="note" id="dashboardNote">إدارة البانلات والمستخدمين والصلاحيات.</p>
+          <h2 id="dashTitle">لوحة التحكم</h2>
+          <p class="note" id="dashSubtitle">إدارة المنشورات والصلاحيات والسجل.</p>
         </div>
-        <button class="modal-close" onclick="closeDashboard()">إغلاق</button>
-      </div>
-      <div class="dashboard-tabs">
-        <button class="dashboard-tab active" id="dashTabPanels" onclick="switchDashboardTab('panels')">البانلات</button>
-        <button class="dashboard-tab hidden" id="dashTabVideos" onclick="switchDashboardTab('videos')">الفيديوهات</button>
-        <button class="dashboard-tab hidden" id="dashTabUsers" onclick="switchDashboardTab('users')">المستخدمون</button>
-        <button class="dashboard-tab" id="dashTabAccount" onclick="switchDashboardTab('account')">الحساب</button>
+        <button class="close" onclick="closeModal('dashboardModal')">إغلاق</button>
       </div>
 
-      <div id="dashPanels">
-        <div class="section-head" style="margin:0 0 12px;">
-          <h3>إدارة البانلات</h3>
-          <button class="mini-action" onclick="openEditor('create','home')">+ بانل جديد</button>
-        </div>
-        <div class="form-grid one" style="margin-bottom:12px;">
-          <input id="panelSearch" class="input" type="text" placeholder="ابحث بعنوان البانل..." oninput="renderDashboard()">
-        </div>
-        <div class="dashboard-grid">
-          <div>
-            <div class="panel-list" id="manageArticlesList"></div>
-          </div>
-          <div>
-            <div class="empty-state">
-              اكتب كلمة من عنوان البانل في خانة البحث لإظهار النتائج المطابقة. يمكنك تعديل أي بانل من القائمة أو إنشاء بانل جديد.
-            </div>
-          </div>
-        </div>
+      <div class="tabs" style="margin-top:12px">
+        <button class="tab active" id="tabPosts" onclick="switchDash('posts')">المنشورات</button>
+        <button class="tab hidden" id="tabUsers" onclick="switchDash('users')">المستخدمون</button>
+        <button class="tab hidden" id="tabLog" onclick="switchDash('log')">السجل الفعلي</button>
+        <button class="tab" id="tabProfile" onclick="switchDash('profile')">الحساب</button>
+        <button class="tab" id="tabSettings" onclick="switchDash('settings')">إعدادات</button>
       </div>
 
-      <div id="dashVideos" class="hidden">
-        <div class="section-head" style="margin:0 0 12px;">
-          <h3>إدارة الفيديوهات</h3>
-          <button class="mini-action" onclick="openVideoEditor('create')">+ فيديو جديد</button>
+      <div id="dashPosts">
+        <div class="section-head">
+          <h3>إدارة المنشورات</h3>
+          <button class="btn" onclick="openPostEditor('create','home')">+ منشور</button>
         </div>
-        <div class="form-grid one" style="margin-bottom:12px;">
-          <input id="videoSearch" class="input" type="text" placeholder="ابحث بعنوان الفيديو..." oninput="renderDashboard()">
-        </div>
-        <div class="panel-list" id="manageVideosList"></div>
-
-        <div class="section-head" style="margin:18px 0 12px;">
-          <h3>البث المباشر</h3>
-          <button class="mini-action" onclick="openVideoEditor('create', null, 'live')">+ بث مباشر</button>
-        </div>
-        <div class="form-grid one" style="margin-bottom:12px;">
-          <input id="liveSearch" class="input" type="text" placeholder="ابحث بعنوان البث المباشر..." oninput="renderDashboard()">
-        </div>
-        <div class="panel-list" id="manageLiveList"></div>
+        <input id="postSearch" class="input" type="text" placeholder="ابحث بعنوان المنشور..." oninput="renderDashboard()">
+        <div class="grid" id="managePostsList" style="margin-top:12px"></div>
       </div>
 
       <div id="dashUsers" class="hidden">
-        <div class="section-head" style="margin:0 0 12px;">
-          <h3>المستخدمون والصلاحيات</h3>
-          <p class="note">المطور فقط هو الذي يستطيع تعيين الإعلاميين أو إلغاء صلاحياتهم.</p>
+        <div class="section-head">
+          <h3>المستخدمون والرتب</h3>
+          <p class="note">المطور الأساسي sahm فقط يستطيع التعيين أو الإزالة. المحررون والإعلاميون يرون القائمة فقط.</p>
         </div>
-        <div class="contact-panel" style="padding:18px;margin-bottom:14px;">
-          <h3 style="margin-bottom:10px;">تعيين إعلامي</h3>
-          <p class="note">اكتب اسم المستخدم الخاص بالحساب ثم اضغط تعيين.</p>
-          <div class="form-grid one" style="margin-top:10px;">
-            <input id="assignEditorInput" class="input" type="text" placeholder="اسم المستخدم المراد تعيينه كمحرر">
-          </div>
-          <div class="modal-actions">
-            <button class="submit" onclick="assignEditorByUsername()">تعيين كإعلامي</button>
-            <button class="submit secondary" onclick="renderDashboard()">تحديث القائمة</button>
-          </div>
-        </div>
-        <div class="users-table" id="usersList"></div>
+        <div class="users-list" id="usersList"></div>
       </div>
 
-      <div id="dashAccount" class="hidden">
-        <div class="contact-panel" style="padding:18px">
-          <h3 style="margin-bottom:10px;">معلومات الحساب</h3>
-          <p class="note">الاسم الظاهر</p>
-          <p style="font-weight:900;color:#fff;margin-bottom:8px" id="accountDisplay">-</p>
-          <p class="note">اسم المستخدم</p>
-          <p style="font-weight:900;color:#fff;margin-bottom:8px" id="accountUser">-</p>
-          <p class="note">البريد الإلكتروني</p>
-          <p style="font-weight:900;color:#fff;margin-bottom:8px" id="accountEmail">-</p>
-          <p class="note">الصلاحية</p>
-          <p style="font-weight:900;color:#fff;margin-bottom:8px" id="accountRole">-</p>
-          <div class="modal-actions">
-            <button class="hero-btn" onclick="openChangePassword()">تغيير كلمة المرور</button>
-            <button class="hero-btn secondary" onclick="logout()">تسجيل الخروج</button>
+      <div id="dashLog" class="hidden">
+        <h3>السجل الفعلي</h3>
+        <div class="audit" id="auditList"></div>
+      </div>
+
+      <div id="dashProfile" class="hidden">
+        <div class="panel">
+          <h3>الملف الشخصي</h3>
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+            <img id="profilePicLarge" src="" alt="صورة الحساب" style="width:82px;height:82px;border-radius:50%;object-fit:cover;background:#fff">
+            <div>
+              <div><strong id="profileDisplay"></strong></div>
+              <div class="note" id="profileUser"></div>
+              <div class="note" id="profileRole"></div>
+            </div>
           </div>
+          <div class="hr"></div>
+          <div class="form">
+            <input id="profileImage" class="input" type="file" accept="image/*">
+            <button class="btn" onclick="saveProfileImage()">حفظ صورة الحساب</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="dashSettings" class="hidden">
+        <div class="panel">
+          <h3>إعدادات عامة</h3>
+          <div class="form">
+            <label class="toggle"><input id="allowTelegramImport" type="checkbox"> تفعيل استيراد التعليم من تيليجرام عبر API خارجي</label>
+            <input id="telegramApi" class="input" type="url" placeholder="رابط API لاستيراد منشورات التعليم من تيليجرام">
+            <button class="btn" onclick="saveSettings()">حفظ الإعدادات</button>
+          </div>
+          <p class="note">الاستيراد التلقائي من تيليجرام يحتاج API وسيط بسبب قيود المتصفح وCORS.</p>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal" id="editorModal" role="dialog" aria-modal="true">
+<div class="modal" id="postEditorModal">
   <div class="modal-box">
     <div class="modal-body">
-      <div class="section-head" style="margin:0 0 14px;">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap">
         <div>
-          <h2 id="editorTitle">إضافة بانل</h2>
-          <p class="note">عدّل النص والصور ثم اضغط حفظ. التعديلات تُحفظ داخل المتصفح.</p>
+          <h2 id="postEditorTitle">إضافة منشور</h2>
+          <p class="note">المحرر/الإعلامي يمكنه التحكم بالمنشور حسب الرتبة.</p>
         </div>
-        <button class="modal-close" onclick="closeEditor()">إغلاق</button>
+        <button class="close" onclick="closeModal('postEditorModal')">إغلاق</button>
       </div>
-      <div class="form-grid">
-        <input id="panelTitle" class="input" type="text" placeholder="عنوان البانل">
-        <select id="panelSection" class="select">
+      <div class="form">
+        <input id="postTitle" class="input" type="text" placeholder="عنوان المنشور">
+        <select id="postSection" class="select">
           <option value="home">الرئيسية</option>
           <option value="sports">رياضة</option>
           <option value="economy">اقتصاد</option>
+          <option value="education">التعليم</option>
         </select>
-        <input id="panelImageFile" class="input" type="file" accept="image/*">
-        <input id="panelImageUrl" class="input" type="url" placeholder="أو رابط الصورة">
-      </div>
-      <div class="form-grid one" style="margin-top:12px">
-        <input id="panelSummary" class="input" type="text" placeholder="الملخص المختصر">
-        <textarea id="panelDetail" class="textarea" placeholder="نص الخبر الكامل"></textarea>
-      </div>
-      <div class="modal-actions">
-        <button class="submit" onclick="saveEditor()">حفظ</button>
-        <button class="submit secondary" onclick="closeEditor()">إلغاء</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="modal" id="videoModal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <div class="modal-body">
-      <div class="section-head" style="margin:0 0 14px;">
-        <div>
-          <h2 id="videoTitle"></h2>
-          <p class="note" id="videoDescription"></p>
+        <input id="postImageFile" class="input" type="file" accept="image/*">
+        <input id="postImageUrl" class="input" type="url" placeholder="أو رابط صورة">
+        <textarea id="postSummary" class="textarea" placeholder="ملخص المنشور"></textarea>
+        <textarea id="postContent" class="textarea" placeholder="النص الكامل"></textarea>
+        <label class="toggle"><input id="postAllowComments" type="checkbox" checked> السماح بالتعليقات</label>
+        <div id="postEditorNote" class="note"></div>
+        <div class="modal-actions">
+          <button class="btn" onclick="savePost()">حفظ</button>
+          <button class="btn secondary" onclick="closeModal('postEditorModal')">إلغاء</button>
         </div>
-        <button class="modal-close" onclick="closeVideo()">إغلاق</button>
-      </div>
-      <div id="videoPlayerWrap" class="video-player-wrap"></div>
-      <div class="modal-actions">
-        <a id="videoExternalLink" class="video-open-link hidden" target="_blank" rel="noopener">فتح الرابط الأصلي</a>
-        <button class="modal-close" onclick="closeVideo()">إغلاق</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal" id="videoEditorModal" role="dialog" aria-modal="true">
+<div class="modal" id="videoEditorModal">
   <div class="modal-box">
     <div class="modal-body">
-      <div class="section-head" style="margin:0 0 14px;">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap">
         <div>
           <h2 id="videoEditorTitle">إضافة فيديو</h2>
-          <p class="note" id="videoEditorHelp">يمكنك إضافة رابط يوتيوب أو رفع ملف فيديو من جهازك ثم حفظه.</p>
+          <p class="note">يوتيوب أو رفع ملف فيديو من الجهاز. لا توجد تعليقات هنا.</p>
         </div>
-        <button class="modal-close" onclick="closeVideoEditor()">إغلاق</button>
+        <button class="close" onclick="closeModal('videoEditorModal')">إغلاق</button>
       </div>
-      <div class="video-source-fields">
-        <input id="videoTitleInput" class="input" type="text" placeholder="عنوان الفيديو">
-        <textarea id="videoDescriptionInput" class="textarea" placeholder="وصف الفيديو"></textarea>
-        <select id="videoSourceType" class="select" onchange="toggleVideoSourceFields()">
-          <option value="link">رابط (يوتيوب أو رابط مباشر)</option>
-          <option value="live">بث مباشر يوتيوب</option>
-          <option value="file">رفع من الجهاز</option>
-        </select>
-        <div id="videoUrlWrap">
-          <input id="videoSourceUrl" class="input" type="url" placeholder="رابط الفيديو أو يوتيوب">
+      <div class="form">
+        <input id="videoTitle" class="input" type="text" placeholder="عنوان الفيديو">
+        <input id="videoUrl" class="input" type="url" placeholder="رابط يوتيوب / فيديو">
+        <input id="videoFile" class="input" type="file" accept="video/*">
+        <textarea id="videoDesc" class="textarea" placeholder="وصف الفيديو"></textarea>
+        <div class="modal-actions">
+          <button class="btn" onclick="saveVideo()">حفظ</button>
+          <button class="btn secondary" onclick="closeModal('videoEditorModal')">إلغاء</button>
         </div>
-        <div id="videoFileWrap" class="hidden">
-          <input id="videoFileInput" class="input" type="file" accept="video/*">
-        </div>
-      </div>
-      <div class="modal-actions">
-        <button class="submit" onclick="saveVideoEditor()">حفظ</button>
-        <button class="submit secondary" onclick="closeVideoEditor()">إلغاء</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal" id="passwordModal" role="dialog" aria-modal="true">
+<div class="modal" id="liveEditorModal">
   <div class="modal-box">
     <div class="modal-body">
-      <div class="section-head" style="margin:0 0 14px;">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap">
         <div>
-          <h2>تغيير كلمة المرور</h2>
-          <p class="note">أدخل كلمة المرور الحالية ثم الجديدة.</p>
+          <h2 id="liveEditorTitle">إضافة بث مباشر</h2>
+          <p class="note">عند انتهاء وقت البث سيُحذف تلقائيًا.</p>
         </div>
-        <button class="modal-close" onclick="closePasswordModal()">إغلاق</button>
+        <button class="close" onclick="closeModal('liveEditorModal')">إغلاق</button>
       </div>
-      <div class="form-grid one">
-        <input id="oldPass" class="input" type="password" placeholder="كلمة المرور الحالية">
-        <input id="newPass" class="input" type="password" placeholder="كلمة المرور الجديدة">
-        <input id="newPass2" class="input" type="password" placeholder="تأكيد كلمة المرور الجديدة">
-      </div>
-      <div class="modal-actions">
-        <button class="submit" onclick="changePassword()">حفظ</button>
-        <button class="submit secondary" onclick="closePasswordModal()">إلغاء</button>
+      <div class="form">
+        <input id="liveTitle" class="input" type="text" placeholder="عنوان البث">
+        <input id="liveUrl" class="input" type="url" placeholder="رابط يوتيوب مباشر">
+        <input id="liveUntil" class="input" type="datetime-local" placeholder="وقت الانتهاء">
+        <textarea id="liveDesc" class="textarea" placeholder="وصف البث"></textarea>
+        <div class="err" id="liveErr"></div>
+        <div class="modal-actions">
+          <button class="btn" onclick="saveLive()">حفظ</button>
+          <button class="btn secondary" onclick="closeModal('liveEditorModal')">إلغاء</button>
+        </div>
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal" id="itemModal">
+  <div class="modal-box">
+    <img id="itemMedia" class="modal-media" alt="صورة المنشور">
+    <div class="modal-body">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap">
+        <div>
+          <h2 id="itemTitle"></h2>
+          <div id="itemMeta" class="time"></div>
+        </div>
+        <div class="modal-actions">
+          <button id="itemEditBtn" class="btn hidden" onclick="editCurrentItem()">تعديل</button>
+          <button id="itemDeleteBtn" class="btn secondary hidden" onclick="deleteCurrentItem()">حذف</button>
+        </div>
+      </div>
+      <p id="itemSummary" class="note"></p>
+      <p id="itemContent"></p>
+      <div class="action-row">
+        <button class="iconbtn like" id="itemLikeBtn" onclick="toggleLikeCurrent()">❤️ <span id="itemLikeCount">0</span></button>
+        <button class="iconbtn" id="itemCommentBtn" onclick="focusComment()">💬 <span id="itemCommentCount">0</span></button>
+        <button class="iconbtn" id="itemShareBtn" onclick="shareCurrent()">↗ مشاركة</button>
+      </div>
+      <div id="itemShareBox" class="sharelink hidden"></div>
+      <div id="commentSection" class="hidden">
+        <div class="hr"></div>
+        <h3>التعليقات</h3>
+        <div class="form" style="margin-top:10px">
+          <textarea id="commentInput" class="textarea" placeholder="اكتب تعليقك..."></textarea>
+          <div class="modal-actions">
+            <button class="btn" onclick="addComment()">إرسال</button>
+            <button class="btn secondary" onclick="toggleCommentsView()">إخفاء/إظهار</button>
+          </div>
+        </div>
+        <div class="comment-list" id="commentList"></div>
+      </div>
+      <button class="close" onclick="closeModal('itemModal')">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="commentModal">
+  <div class="modal-box">
+    <div class="modal-body">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap">
+        <div>
+          <h2>رد على تعليق</h2>
+          <p class="note">تستطيع الرد ولايك على التعليق، والحذف حسب الصلاحية.</p>
+        </div>
+        <button class="close" onclick="closeModal('commentModal')">إغلاق</button>
+      </div>
+      <div class="panel">
+        <div id="replyTargetPreview"></div>
+      </div>
+      <div class="form" style="margin-top:10px">
+        <textarea id="replyInput" class="textarea" placeholder="اكتب الرد..."></textarea>
+        <div class="modal-actions">
+          <button class="btn" onclick="saveReply()">حفظ الرد</button>
+          <button class="btn secondary" onclick="closeModal('commentModal')">إلغاء</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="confirmModal">
+  <div class="modal-box">
+    <div class="modal-body">
+      <h2 id="confirmTitle">تأكيد</h2>
+      <p id="confirmText" class="note"></p>
+      <div class="modal-actions">
+        <button class="btn" id="confirmYes">نعم</button>
+        <button class="btn secondary" onclick="closeModal('confirmModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="user-menu" id="userMenu">
+  <div class="head">
+    <img id="menuAvatar" alt="صورة الحساب">
+    <div>
+      <strong id="menuName"></strong>
+      <div class="note" id="menuRole"></div>
+    </div>
+  </div>
+  <button class="item" id="menuDashboard"><span>لوحة التحكم</span><span>›</span></button>
+  <button class="item" id="menuOwner" class="hidden"><span>لوحة التحكم</span><span>›</span></button>
+  <button class="item" id="menuLogout"><span>تسجيل الخروج</span><span>›</span></button>
 </div>
 
 <script>
-const STORAGE_KEY = 'syf_news_site_state_v1';
-const SESSION_KEY = 'syf_news_site_session_v1';
+const STORAGE_KEY = 'syf_news_site_state_v2';
+const SESSION_KEY = 'syf_news_site_session_v2';
 const OWNER_USERNAME = 'sahm';
 const OWNER_PASSWORD = 'ssaahhmm500';
-const MONGO_API_BASE = 'mongodb+srv://sahmtemraza_db_user:a7DhZcNLDh5wnhrU@cluster0.48hdtgq.mongodb.net/?appName=Cluster0'; // ضع رابط API الخاص بمونجو هنا
-const INFO_CONTENT = {
-  about: {
-    title: 'عن الموقع',
-    text: 'صحيفة اليوم منصة إخبارية عربية بتصميم حديث وواجهة منظمة، تقدم الأخبار العاجلة والتغطيات المختصرة والتحليلات بطريقة سهلة وسريعة. تم إعدادها لتكون واضحة على الهاتف والكمبيوتر مع قوائم تعمل بالكامل.',
-    img: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80'
-  },
-  privacy: {
-    title: 'سياسة الخصوصية',
-    text: 'نحترم خصوصيتك ونتعامل مع البيانات التي ترسلها عبر الموقع فقط بغرض التواصل والرد على الرسائل. لا يتم مشاركة البيانات مع أطراف خارجية، ويستخدم الموقع فقط لتحسين تجربة القراءة والتواصل.',
-    img: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80'
-  },
-  terms: {
-    title: 'الشروط والأحكام',
-    text: 'باستخدامك للموقع فإنك توافق على استخدامه بشكل مسؤول وقانوني، وعدم إساءة استخدام المحتوى أو محاولة تخريب الصفحات أو إرسال رسائل غير مناسبة. جميع الحقوق محفوظة لصحيفة اليوم.',
-    img: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=80'
-  }
+const API_BASE = ""; // ضع هنا رابط الباك-إند مثل: https://your-app.onrender.com/api
+const MAX_MEDIA_POST_INTERVAL_MS = 5 * 60 * 1000;
+const AUTO_PURGE_MS = 60 * 1000;
+
+const DEFAULT_TEXTS = {
+  siteName: 'صحيفة اليوم',
+  siteTagline: 'أخبار دقيقة .. لحظة بلحظة',
+  heroTitle: 'موقع أخبار عربي بتصميم احترافي وفخم',
+  heroDesc: 'تابع الأخبار العاجلة، الرياضة، الاقتصاد، التعليم، الفيديوهات، والبث المباشر من مكان واحد، مع واجهة منظمة، تعليقات، ولايكات، وصلاحيات واضحة.',
+  ticker: '🔥 عاجل: تطورات عالمية | ⚽ بطولة كبرى الليلة | 💰 حركة قوية في الأسواق | 📱 إطلاق تقني جديد | 🌍 تحديثات مستمرة طوال اليوم'
 };
 
-const seedArticles = [
-  {id:'a1',section:'home',title:'حدث عالمي مهم',summary:'تطورات دولية متسارعة تسيطر على المشهد الإعلامي خلال الساعات الأخيرة.',detail:'شهدت الساحة الدولية اليوم سلسلة من التطورات لافتة في أكثر من ملف، مع متابعة دقيقة من الجهات المختصة ووسائل الإعلام. وتترقب العواصم الكبرى ما ستسفر عنه النقاشات والقرارات القادمة خلال الأيام المقبلة.',image:'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80'},
-  {id:'a2',section:'home',title:'تقنية جديدة تغيّر المشهد',summary:'إطلاق منتج ذكي جديد يرفع سقف التوقعات ويجذب اهتمام المستخدمين.',detail:'كشفت شركة تقنية عن ابتكار جديد يركز على السرعة وسهولة الاستخدام وربط الأدوات الذكية ببعضها. ويتوقع مختصون أن يساهم هذا الإطلاق في تغيير طريقة التعامل مع المهام اليومية بشكل واضح.',image:'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80'},
-  {id:'a3',section:'home',title:'تطورات سياسية جديدة',summary:'لقاءات رسمية ومشاورات مهمة ترسم ملامح المرحلة المقبلة.',detail:'عُقدت اجتماعات مكثفة بين عدد من الأطراف لمناقشة ملفات أساسية تؤثر على المشهد العام. وشددت التصريحات على أهمية التهدئة والاستمرار في العمل المؤسسي خلال الفترة القادمة.',image:'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80'},
-  {id:'a4',section:'home',title:'قصة مجتمع ملهمة',summary:'مبادرة محلية جديدة لاقت تفاعلًا كبيرًا بين القراء والمتابعين.',detail:'أطلقت مجموعة من الشباب مبادرة اجتماعية تهدف إلى دعم الأسر المحتاجة وتنظيم أنشطة تطوعية متنوعة. وقد أثنى المتابعون على أثرها الإيجابي في تنمية روح المشاركة المجتمعية.',image:'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80'},
-  {id:'a5',section:'home',title:'توقعات اقتصادية مستقرة',summary:'الخبراء يراقبون الاتجاهات الجديدة في الأسواق مع بداية الأسبوع.',detail:'أشارت تقارير اقتصادية حديثة إلى حالة من الاستقرار النسبي في عدد من المؤشرات المهمة، مع ترقب لقرارات قد تؤثر على حركة الاستثمار والأسعار خلال الفترة المقبلة.',image:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80'},
-  {id:'a6',section:'home',title:'متابعة مستمرة للأحداث',summary:'تغطية متجددة لأبرز المستجدات على مدار الساعة وبشكل منسق.',detail:'تواصل الصحيفة تقديم تغطية محدثة للأخبار المهمة في مختلف المجالات، مع التركيز على سرعة الوصول إلى الخبر وصياغته بشكل واضح ومختصر.',image:'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80'},
-
-  {id:'s1',section:'sports',title:'فوز فريق كبير',summary:'انتصار مهم حُسم في الدقائق الأخيرة وسط حضور جماهيري لافت.',detail:'نجح الفريق في اقتناص فوز ثمين بعد مباراة صعبة شهدت أداءً قويًا من الطرفين. وعبّر المدرب عن رضاه بالمستوى الفني والروح العالية التي ظهر بها اللاعبون حتى صافرة النهاية.',image:'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1200&q=80'},
-  {id:'s2',section:'sports',title:'بطولة مرتقبة الليلة',summary:'صورة مضافة للبطولة مع استعدادات مكثفة قبل انطلاق المنافسة.',detail:'تستعد الفرق المشاركة لخوض بطولة قوية ينتظرها الجمهور بشغف، مع تجهيزات تنظيمية وفنية عالية المستوى. وتشير التوقعات إلى منافسة شرسة بين أبرز الأسماء المتواجدة هذا الموسم.',image:'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80'},
-  {id:'s3',section:'sports',title:'تحضيرات مكثفة للنهائي',summary:'التحضيرات مستمرة، والجماهير تنتظر مواجهة قوية ومثيرة.',detail:'واصلت الفرق تدريباتها استعدادًا للمواجهة النهائية، حيث ركز الجهاز الفني على تحسين الانسجام بين اللاعبين ورفع اللياقة البدنية، في وقت تتجه فيه الأنظار إلى الحدث المرتقب.',image:'https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&w=1200&q=80'},
-  {id:'s4',section:'sports',title:'تدريب صباحي قوي',summary:'استعداد بدني وفني قبل المباريات القادمة في جدول الفريق.',detail:'شهد التمرين الصباحي تركيزًا على الجوانب التكتيكية والتسديدات الثابتة، مع متابعة خاصة من الطاقم الطبي لضمان الجاهزية الكاملة قبل المواجهات المقبلة.',image:'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=1200&q=80'},
-
-  {id:'e1',section:'economy',title:'الأسواق تسجل استقرارًا',summary:'تحركات هادئة في الأسواق وسط متابعة المستثمرين للبيانات الجديدة.',detail:'سجلت الأسواق المالية حالة من الاستقرار النسبي نتيجة توازن العرض والطلب وتوقعات المستثمرين بقرارات اقتصادية قريبة. ويعتبر هذا الاستقرار مؤشراً إيجابياً في الوقت الحالي.',image:'https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=1200&q=80'},
-  {id:'e2',section:'economy',title:'مشاريع استثمارية جديدة',summary:'إطلاق مشاريع متنوعة لدعم النمو وتوسيع الفرص في السوق.',detail:'أعلنت جهات اقتصادية عن مجموعة مشاريع تهدف إلى تنشيط قطاعات مختلفة وتعزيز تدفق الاستثمارات. ويُتوقع أن تسهم هذه المشاريع في خلق فرص عمل جديدة وتحريك عجلة التنمية.',image:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80'},
-  {id:'e3',section:'economy',title:'مؤشرات نمو متفائلة',summary:'توقعات إيجابية لعدد من القطاعات الاقتصادية خلال الربع القادم.',detail:'تشير البيانات المبدئية إلى تحسن في الأداء الاقتصادي ببعض المجالات الحيوية، مع دعم إضافي من خطط التطوير والاستثمار. ويرى محللون أن المرحلة المقبلة قد تحمل نتائج أفضل إذا استمر هذا الاتجاه.',image:'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=80'},
-  {id:'e4',section:'economy',title:'حركة أعمال نشطة',summary:'ارتفاع النشاط في قطاع الأعمال مع توجهات جديدة للسوق المحلي.',detail:'شهدت بعض المؤسسات الاقتصادية نشاطًا ملحوظًا خلال الفترة الأخيرة، مدفوعًا بالمبادرات الجديدة والتوسع في الخدمات. كما انعكس ذلك على ثقة رواد الأعمال والمهتمين بالشأن الاقتصادي.',image:'https://images.unsplash.com/photo-1554469384-e58fac16e23a?auto=format&fit=crop&w=1200&q=80'}
+const CAPTCHA = [
+  {q:'كم حاصل 2 + 5 ؟', a:'7'},
+  {q:'اكتب الحرف التالي بعد A', a:'B'},
+  {q:'كم عدد أيام الأسبوع؟', a:'7'},
+  {q:'ما لون السماء في النهار؟', a:'ازرق'},
+  {q:'كم حاصل 3 × 3 ؟', a:'9'},
+  {q:'اكتب كلمة انسان', a:'انسان'},
+  {q:'كم حاصل 10 - 4 ؟', a:'6'}
 ];
+
+const ROLE_ORDER = ['owner','editor','media','educator','user'];
+const ROLE_LABEL = {owner:'مطور', editor:'محرر', media:'إعلامي', educator:'إعلامي تعليمي', user:'مستخدم'};
+const ROLE_ICON = {owner:'👑', editor:'🛠️', media:'📰', educator:'🎓', user:'👤'};
 
 let state = loadState();
 let currentUser = null;
-let currentNewsId = null;
-let currentVideoId = null;
-let dashboardTab = 'panels';
-let dashboardMode = 'editor';
-let authMode = 'login';
-let editorMode = 'create';
-let editorArticleId = null;
-let videoEditorMode = 'create';
-let videoEditorId = null;
-let videoEditorKind = 'video';
-let liveMonitorPlayers = new Map();
-let youtubeApiReady = false;
-let youtubeApiLoading = false;
-let liveMonitorTimer = null;
-let captchaChallenge = null;
+let currentPage = 'home';
+let currentItem = null;
+let currentCommentReplyTo = null;
+let currentPostEditorMode = 'create';
+let currentPostEditorId = null;
+let currentVideoEditorMode = 'create';
+let currentVideoEditorId = null;
+let currentLiveEditorMode = 'create';
+let currentLiveEditorId = null;
+let currentDashboardTab = 'posts';
+let currentCaptcha = null;
+let confirmAction = null;
+
 
 function loadState(){
   try{
@@ -736,1006 +652,1246 @@ function loadState(){
       const parsed = JSON.parse(raw);
       return {
         users: Array.isArray(parsed.users) ? parsed.users : [],
-        articles: Array.isArray(parsed.articles) ? parsed.articles : [],
+        posts: Array.isArray(parsed.posts) ? parsed.posts : [],
         videos: Array.isArray(parsed.videos) ? parsed.videos : [],
-        liveStreams: Array.isArray(parsed.liveStreams) ? parsed.liveStreams : []
+        live: Array.isArray(parsed.live) ? parsed.live : [],
+        comments: Array.isArray(parsed.comments) ? parsed.comments : [],
+        texts: parsed.texts && typeof parsed.texts === 'object' ? parsed.texts : {...DEFAULT_TEXTS},
+        logs: Array.isArray(parsed.logs) ? parsed.logs : [],
+        settings: parsed.settings && typeof parsed.settings === 'object' ? parsed.settings : {allowTelegramImport:false, telegramApi:'', logo:''}
       };
     }
   }catch(e){}
-  return { users: [], articles: [], videos: [], liveStreams: [] };
+  return {
+    users: [],
+    posts: [],
+    videos: [],
+    live: [],
+    comments: [],
+    texts: {...DEFAULT_TEXTS},
+    logs: [],
+    settings: {allowTelegramImport:false, telegramApi:'', logo:''}
+  };
 }
-function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function saveState(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
 async function syncToMongo(){
-  if(!MONGO_API_BASE) return;
+  const base = (window.API_BASE || API_BASE || '').trim();
+  if(!base) return;
   try{
-    await fetch(MONGO_API_BASE + '/state', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    await fetch(base.replace(/\/$/,'') + '/state', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        ...(currentUser?.token ? {'Authorization': 'Bearer ' + currentUser.token} : {})
+      },
       body: JSON.stringify(state)
     });
-  }catch(e){
-    console.warn('Mongo sync failed', e);
-  }
+  }catch(e){}
 }
-function seedIfNeeded(){
-  if(!state.articles.length) state.articles = seedArticles.slice();
-  if(!Array.isArray(state.videos)) state.videos = [];
-  if(!Array.isArray(state.liveStreams)) state.liveStreams = [];
-  if(!state.users.length) state.users = [];
-  saveState();
-  syncToMongo();
-  syncToMongo();
-}
-
-async function ensureDeveloperAccount(){
-  const passHash = await hashPassword(OWNER_PASSWORD);
-  let owner = state.users.find(u => normalizeUsername(u.username) === normalizeUsername(OWNER_USERNAME));
-  if(!owner){
-    owner = { id: makeId('user'), displayName: 'المطور', email: '', username: OWNER_USERNAME, passHash, role: 'owner' };
-    state.users.push(owner);
-  }else{
-    owner.role = 'owner';
-    owner.passHash = passHash;
-    if(!owner.displayName) owner.displayName = 'المطور';
-  }
-  saveState();
-  syncToMongo();
-  syncToMongo();
-}
-function saveSession(user){ localStorage.setItem(SESSION_KEY, JSON.stringify({ username: user.username })); }
-function clearSession(){ localStorage.removeItem(SESSION_KEY); }
-function getSession(){ try{ return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); }catch(e){ return null; } }
-function normalizeUsername(v){ return (v || '').trim().toLowerCase().replace(/^@/, ''); }
-function formatUsername(v){ const clean = normalizeUsername(v); return clean ? '@' + clean : '@'; }
-function isOwnerUsername(username){ return normalizeUsername(username) === normalizeUsername(OWNER_USERNAME); }
-function makeId(prefix='id'){ return prefix + '_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); }
-function escapeText(text){ return String(text || ''); }
-function showToast(text='تم الحفظ'){
-  const toast = document.getElementById('toast');
-  toast.textContent = text;
-  toast.classList.add('show');
-  clearTimeout(showToast._t);
-  showToast._t = setTimeout(()=>toast.classList.remove('show'), 2200);
-}
-function setActiveNav(clickedButton){
-  document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
-  if(clickedButton) clickedButton.classList.add('active');
-}
-function showPage(id, clickedButton){
-  document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-  const target = document.getElementById(id);
-  if(target) target.classList.add('active');
-  if(clickedButton) setActiveNav(clickedButton);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-function roleLabel(role){ if(role === 'owner') return 'مطور الموقع'; if(role === 'editor') return 'محرر'; return 'مستخدم'; }
-function canEdit(){ return currentUser && (currentUser.role === 'owner' || currentUser.role === 'editor'); }
-function canManageUsers(){ return currentUser && currentUser.role === 'owner'; }
-function articleById(id){ return state.articles.find(a => a.id === id); }
-function videoById(id){ return state.videos.find(v => v.id === id); }
-function articlesFor(section){ return state.articles.filter(a => a.section === section); }
-function sectionLabel(section){
-  if(section === 'home') return 'الرئيسية';
-  if(section === 'sports') return 'رياضة';
-  if(section === 'economy') return 'اقتصاد';
-  return section;
-}
-function getAvatarData(name){
-  const initial = (name || '@').replace(/^@/, '').trim().charAt(0).toUpperCase() || 'U';
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>
-    <rect width='120' height='120' rx='60' fill='#f8fafc'/>
-    <circle cx='60' cy='46' r='22' fill='#cbd5e1'/>
-    <path d='M24 104c4-24 20-36 36-36s32 12 36 36' fill='#cbd5e1'/>
-    <text x='60' y='74' text-anchor='middle' font-family='Cairo, Arial, sans-serif' font-size='24' font-weight='900' fill='#0f172a'>${initial}</text>
-  </svg>`;
-  return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
-}
-function updateAuthUI(){
-  const loginBtn = document.getElementById('loginBtn');
-  const profileBtn = document.getElementById('profileBtn');
-  const userAvatarTop = document.getElementById('userAvatarTop');
-  const profileMenuAvatar = document.getElementById('profileMenuAvatar');
-  const profileMenuName = document.getElementById('profileMenuName');
-  const profileMenuRole = document.getElementById('profileMenuRole');
-  const quickName = document.getElementById('userQuickName');
-  const sideAccountText = document.getElementById('sideAccountText');
-  const addBtns = ['addHomeBtn','addSportsBtn','addEconomyBtn','addVideosBtn','addLiveBtn','addLiveStreamBtn'];
-  const dashTabUsers = document.getElementById('dashTabUsers');
-  const dashTabVideos = document.getElementById('dashTabVideos');
-
-  const logged = !!currentUser;
-  loginBtn.classList.toggle('hidden', logged);
-  profileBtn.classList.toggle('hidden', !logged);
-
-  addBtns.forEach(id => { const el = document.getElementById(id); if(el) el.classList.toggle('hidden', !canEdit()); });
-  if(dashTabUsers) dashTabUsers.classList.toggle('hidden', !canManageUsers());
-  if(dashTabVideos) dashTabVideos.classList.toggle('hidden', !canEdit());
-
-  if(logged){
-    const avatar = getAvatarData(currentUser.displayName || currentUser.username);
-    userAvatarTop.src = avatar;
-    profileMenuAvatar.src = avatar;
-    quickName.textContent = formatUsername(currentUser.username);
-    profileMenuName.textContent = `${formatUsername(currentUser.username)} — ${currentUser.displayName}`;
-    profileMenuRole.textContent = roleLabel(currentUser.role);
-    sideAccountText.textContent = canEdit()
-      ? `مرحبًا ${currentUser.displayName}، أنت مسجل الدخول الآن ويمكنك فتح القائمة الشخصية ولوحة التحكم المناسبة لصلاحيتك.`
-      : '';
-  }else{
-    sideAccountText.textContent = 'غير مسجل دخول حاليًا. يمكنك إنشاء حساب أو تسجيل الدخول لفتح الصلاحيات.';
-  }
-}
-function ensureCurrentUserFromSession(){
-  const session = getSession();
-  if(!session || !session.username) return;
-  const user = state.users.find(u => normalizeUsername(u.username) === normalizeUsername(session.username));
-  if(user){
-    currentUser = user;
-    if(isOwnerUsername(user.username) && user.role !== 'owner') user.role = 'owner';
-    saveState();
-    syncToMongo();
-  }
-}
-function renderArticles(){
-  ['home','sports','economy'].forEach(sec => {
-    const grid = document.getElementById(sec + 'Grid');
-    const list = articlesFor(sec);
-    if(!grid) return;
-    if(!list.length){
-      grid.innerHTML = '<div class="empty-state">لا توجد بانلات في هذا القسم بعد.</div>';
-      return;
+async function hydrateFromBackend(){
+  const base = (window.API_BASE || API_BASE || '').trim();
+  if(!base) return;
+  try{
+    const res = await fetch(base.replace(/\/$/,'') + '/state', {cache:'no-store'});
+    if(!res.ok) return;
+    const data = await res.json();
+    if(data && typeof data === 'object'){
+      state = {
+        users: Array.isArray(data.users) ? data.users : state.users,
+        posts: Array.isArray(data.posts) ? data.posts : state.posts,
+        videos: Array.isArray(data.videos) ? data.videos : state.videos,
+        live: Array.isArray(data.live) ? data.live : state.live,
+        comments: Array.isArray(data.comments) ? data.comments : state.comments,
+        texts: data.texts && typeof data.texts === 'object' ? {...DEFAULT_TEXTS, ...data.texts} : state.texts,
+        logs: Array.isArray(data.logs) ? data.logs : state.logs,
+        settings: data.settings && typeof data.settings === 'object' ? {...state.settings, ...data.settings} : state.settings
+      };
+      saveState();
     }
-    grid.innerHTML = list.map(article => `
-      <article class="article-card" data-id="${article.id}">
-        <img src="${escapeText(article.image)}" alt="${escapeText(article.title)}">
-        ${canEdit() ? `<button class="edit-mini" onclick="openEditor('edit','${article.section}','${article.id}')">تعديل</button>` : ''}
-        <div class="article-content">
-          <h3>${escapeText(article.title)}</h3>
-          <p>${escapeText(article.summary)}</p>
-          <button class="read-more" onclick="openNews('${article.id}')">اقرأ المزيد</button>
-        </div>
-      </article>
-    `).join('');
+  }catch(e){}
+}
+function makeId(prefix='id'){ return prefix + '_' + Math.random().toString(36).slice(2,10) + Date.now().toString(36); }
+function normalizeUsername(v){ return String(v || '').trim().toLowerCase().replace(/^@/,''); }
+function formatUsername(v){ const x = normalizeUsername(v); return x ? '@' + x : '@'; }
+function isOwner(u){ return normalizeUsername(u) === normalizeUsername(OWNER_USERNAME); }
+function roleIndex(role){ return ROLE_ORDER.indexOf(role); }
+function canViewDashboard(){ return currentUser && currentUser.role !== 'user'; }
+function canManageUsers(){ return currentUser && currentUser.role === 'owner' && isOwner(currentUser.username); }
+function canCreateIn(section){
+  if(!currentUser) return false;
+  if(currentUser.role === 'owner' || currentUser.role === 'editor') return true;
+  if(currentUser.role === 'media') return section !== 'education';
+  if(currentUser.role === 'educator') return section === 'education';
+  return false;
+}
+function canEditPost(post){
+  if(!currentUser || !post) return false;
+  if(currentUser.role === 'owner') return true;
+  if(currentUser.role === 'editor') return true;
+  if(currentUser.role === 'media') return post.author === currentUser.username;
+  if(currentUser.role === 'educator') return post.author === currentUser.username && post.section === 'education';
+  return false;
+}
+function canModerateComments(){ return currentUser && ['owner','editor','media','educator'].includes(currentUser.role); }
+function canSeePhones(){ return currentUser && ['owner','editor','media'].includes(currentUser.role); }
+function timeAgo(ts){
+  const diff = Date.now() - ts;
+  const min = Math.floor(diff/60000);
+  if(min < 1) return 'الآن';
+  if(min < 60) return `منذ ${min} دقيقة`;
+  const hr = Math.floor(min/60);
+  if(hr < 24) return `منذ ${hr} ساعة`;
+  const day = Math.floor(hr/24);
+  if(day < 3) return `منذ ${day} يوم`;
+  return new Intl.DateTimeFormat('ar-SA-u-ca-islamic',{dateStyle:'medium'}).format(new Date(ts));
+}
+function dayTimeDisplay(ts){ return timeAgo(ts); }
+function setText(key, value){ state.texts[key] = value; saveState(); syncToMongo(); renderTexts(); }
+function renderTexts(){
+  document.getElementById('siteName').textContent = state.texts.siteName || DEFAULT_TEXTS.siteName;
+  document.getElementById('siteTagline').textContent = state.texts.siteTagline || DEFAULT_TEXTS.siteTagline;
+  document.getElementById('heroTitle').textContent = state.texts.heroTitle || DEFAULT_TEXTS.heroTitle;
+  document.getElementById('heroDesc').textContent = state.texts.heroDesc || DEFAULT_TEXTS.heroDesc;
+  document.getElementById('tickerText').textContent = state.texts.ticker || DEFAULT_TEXTS.ticker;
+}
+function updateHeaderLogo(){
+  const src = state.settings.logo || 'https://media.discordapp.net/attachments/1024807506515607565/1499090777886691440/1j3G6Qs5HP2BqcdauVpfx2aUeA6aLmYF2AAAAAAA.png?ex=69f38895&is=69f23715&hm=3acaeb23eb1e31e81e382ca220330e110c0b9cf6fe5a0de4125f14b3f67e672d&=&format=webp&quality=lossless';
+  document.getElementById('siteLogo').src = src;
+  document.getElementById('heroLogo2').src = src;
+}
+function getAvatar(name){ return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+<rect width="120" height="120" rx="60" fill="#f8fafc"/><circle cx="60" cy="46" r="22" fill="#cbd5e1"/><path d="M24 104c4-24 20-36 36-36s32 12 36 36" fill="#cbd5e1"/>
+<text x="60" y="74" text-anchor="middle" font-family="Cairo,Arial" font-size="24" font-weight="900" fill="#0f172a">${(name||'U').replace(/^@/,'').slice(0,1).toUpperCase()}</text>
+</svg>`); }
+function saveSession(u){ localStorage.setItem(SESSION_KEY, JSON.stringify({username:u.username})); }
+function clearSession(){ localStorage.removeItem(SESSION_KEY); }
+function getSession(){ try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null');}catch(e){return null;} }
+function openModal(id){ document.getElementById(id).classList.add('active'); }
+function closeModal(id){ document.getElementById(id).classList.remove('active'); }
+
+function makeSampleData(){
+  if(state.users.length) return;
+  state.users.push({
+    id:makeId('user'),
+    displayName:'المطور',
+    email:'',
+    username:OWNER_USERNAME,
+    passHash:'',
+    role:'owner',
+    phone:'',
+    avatar:''
   });
 }
-function youtubeId(url){
-  if(!url) return '';
-  const m = String(url).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{6,})/i);
-  return m ? m[1] : '';
+function simpleHash(str){
+  let h = 2166136261;
+  for (let i=0;i<str.length;i++){
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return ('0000000' + (h >>> 0).toString(16)).slice(-8);
 }
-function videoThumb(video){
-  const id = youtubeId(video.sourceUrl || '');
-  if(id) return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-  return 'https://images.unsplash.com/photo-1516321310764-8d5f6a2b6f8d?auto=format&fit=crop&w=1200&q=80';
+function initOwnerPassword(){
+  const owner = state.users.find(u=>normalizeUsername(u.username) === OWNER_USERNAME);
+  if(owner && !owner.passHash){
+    owner.passHash = simpleHash(OWNER_PASSWORD);
+  }
 }
-function videoTypeLabel(video){
-  if(video.sourceType === 'file') return 'ملف من الجهاز';
-  if(youtubeId(video.sourceUrl || '')) return 'يوتيوب';
-  return 'رابط مباشر';
+function validatePhone(phone){ if(!phone) return true; return /^[0-9]{9,}$/.test(phone.trim()); }
+function validatePassword(pass){ return typeof pass === 'string' && pass.length >= 8 && /[A-Za-z\u0600-\u06FF]/.test(pass) && /\d/.test(pass); }
+function youtubeToEmbed(url){
+  try{
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./,'');
+    if(host === 'youtu.be'){
+      const id = u.pathname.split('/').filter(Boolean)[0];
+      return id ? `https://www.youtube.com/embed/${id}` : url;
+    }
+    if(host.endsWith('youtube.com')){
+      if(u.pathname === '/watch'){
+        const id = u.searchParams.get('v');
+        return id ? `https://www.youtube.com/embed/${id}` : url;
+      }
+      if(u.pathname.startsWith('/shorts/')){
+        const id = u.pathname.split('/').filter(Boolean)[1];
+        return id ? `https://www.youtube.com/embed/${id}` : url;
+      }
+      if(u.pathname.startsWith('/live/')){
+        const id = u.pathname.split('/').filter(Boolean)[1];
+        return id ? `https://www.youtube.com/embed/${id}` : url;
+      }
+      return url;
+    }
+  }catch(e){}
+  return url;
+}
+function isYouTube(url){
+  try{
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./,'');
+    return host === 'youtu.be' || host.endsWith('youtube.com');
+  }catch(e){
+    return /youtu\.be|youtube\.com/i.test(url || '');
+  }
+}
+function parseLiveEnd(str){
+  if(!str) return null;
+  const dt = new Date(str);
+  return isNaN(dt.getTime()) ? null : dt.getTime();
+}
+function canCommentPost(post){ return post && post.allowComments !== false && post.section !== 'education' && post.type !== 'video' && post.type !== 'live'; }
+function itemLikesCount(item){ return item.likes || 0; }
+function itemCommentsCount(postId){ return state.comments.filter(c=>c.postId===postId).length; }
+function currentUserCanDeleteComment(c){
+  if(!currentUser) return false;
+  if(canModerateComments()) return true;
+  return c.author === currentUser.username;
+}
+function currentUserCanEditSiteText(){ return currentUser && currentUser.role === 'owner'; }
+function currentUserCanEditAnyPost(){ return currentUser && ['owner','editor'].includes(currentUser.role); }
+function authorLabel(username){
+  const u = state.users.find(x=>normalizeUsername(x.username)===normalizeUsername(username));
+  return u ? (u.displayName || u.username) : formatUsername(username);
+}
+function getUserRoleLabel(username){
+  const u = state.users.find(x=>normalizeUsername(x.username)===normalizeUsername(username));
+  return u ? u.role : 'user';
+}
+function sectionTitle(section){
+  return ({home:'الرئيسية',sports:'رياضة',economy:'اقتصاد',education:'التعليم',videos:'الفيديوهات',live:'البث المباشر'})[section] || section;
+}
+function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function fileToDataURL(file){
+  return new Promise((resolve,reject)=>{
+    const r = new FileReader();
+    r.onload = ()=> resolve(String(r.result));
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+function openInfo(key){
+  const item = {
+    about:{title:'عن الموقع',body:'صحيفة اليوم منصة عربية بتصميم حديث وإدارة صلاحيات وتحكم بالمنشورات والفيديوهات والبث المباشر.',img:'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80'},
+    privacy:{title:'سياسة الخصوصية',body:'يتم حفظ البيانات داخل المتصفح أو عبر API الباك-إند الذي تضيفه أنت للمونجو.',img:'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80'},
+    terms:{title:'الشروط والأحكام',body:'استخدام مسؤول وعدم إساءة استخدام النظام أو المحتوى.',img:'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=80'}
+  }[key];
+  document.getElementById('itemTitle').textContent = item.title;
+  document.getElementById('itemSummary').textContent = item.body;
+  document.getElementById('itemContent').textContent = '';
+  document.getElementById('itemMedia').src = item.img;
+  document.getElementById('itemMeta').textContent = '';
+  document.getElementById('itemEditBtn').classList.add('hidden');
+  document.getElementById('itemDeleteBtn').classList.add('hidden');
+  document.getElementById('itemLikeBtn').classList.add('hidden');
+  document.getElementById('itemCommentBtn').classList.add('hidden');
+  document.getElementById('commentSection').classList.add('hidden');
+  openModal('itemModal');
+}
+function sectionCanCreateForCurrent(section){
+  if(!currentUser) return false;
+  if(currentUser.role === 'owner' || currentUser.role === 'editor') return true;
+  if(currentUser.role === 'media') return section !== 'education';
+  if(currentUser.role === 'educator') return section === 'education';
+  return false;
+}
+function renderGrid(section){
+  const grid = document.getElementById(section + 'Grid');
+  const list = state.posts.filter(p=>p.section === section).sort((a,b)=>b.createdAt-a.createdAt);
+  grid.innerHTML = list.length ? list.map(renderPostCard).join('') : `<div class="card">لا توجد منشورات في هذا القسم بعد.</div>`;
 }
 function renderVideos(){
   const grid = document.getElementById('videosGrid');
-  if(!grid) return;
-  if(!state.videos.length){
-    grid.innerHTML = '<div class="video-empty">لا توجد فيديوهات حاليًا. أضف أول فيديو من لوحة التحكم.</div>';
-    return;
-  }
-  grid.innerHTML = state.videos.map(video => `
-    <article class="video-card" onclick="openVideo('${video.id}')">
-      <div class="video-thumb">
-        ${video.sourceType === 'file' && !video.thumb ? `<div class="video-fallback">▶</div>` : `<img src="${escapeText(video.thumb || videoThumb(video))}" alt="${escapeText(video.title)}">`}
-      </div>
-      <div class="video-meta">
-        <span class="video-source">${videoTypeLabel(video)}</span>
-        <h3>${escapeText(video.title)}</h3>
-        <p>${escapeText(video.description)}</p>
-        <button class="video-watch" type="button">شاهد الفيديو</button>
-      </div>
-    </article>
-  `).join('');
+  const list = state.videos.slice().sort((a,b)=>b.createdAt-a.createdAt);
+  grid.innerHTML = list.length ? list.map(v=>renderMediaCard(v,'video')).join('') : `<div class="card">لا توجد فيديوهات بعد. أضف أول فيديو من لوحة التحكم.</div>`;
 }
-
-function renderLiveStreams(){
+function renderLive(){
   const grid = document.getElementById('liveGrid');
-  if(!grid) return;
-  if(!state.liveStreams.length){
-    grid.innerHTML = '<div class="video-empty">لا توجد بثوث مباشرة حاليًا. أضف أول بث من لوحة التحكم.</div>';
-    return;
-  }
-  grid.innerHTML = state.liveStreams.map(stream => {
-    const yt = youtubeId(stream.sourceUrl || '');
-    const thumb = stream.thumb || (yt ? `https://img.youtube.com/vi/${yt}/hqdefault.jpg` : videoThumb({ sourceUrl: stream.sourceUrl || '' }));
-    return `
-      <article class="video-card" onclick="openLive('${stream.id}')">
-        <div class="video-thumb">
-          ${stream.sourceType === 'file' && !stream.thumb ? `<div class="video-fallback">🔴</div>` : `<img src="${escapeText(thumb)}" alt="${escapeText(stream.title)}">`}
-        </div>
-        <div class="video-meta">
-          <span class="video-source" style="background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.28);">بث مباشر</span>
-          <h3>${escapeText(stream.title)}</h3>
-          <p>${escapeText(stream.description)}</p>
-          <button class="video-watch" type="button">شاهد البث</button>
-        </div>
-      </article>
-    `;
-  }).join('');
+  const list = state.live.slice().sort((a,b)=>b.createdAt-a.createdAt);
+  grid.innerHTML = list.length ? list.map(v=>renderMediaCard(v,'live')).join('') : `<div class="card">لا توجد بثوث مباشرة بعد.</div>`;
 }
+function renderPostCard(post){
+  const likeOn = currentUser && post.likedBy && post.likedBy.includes(currentUser.username);
+  return `
+  <article class="post">
+    <img src="${escapeHtml(post.image || '')}" alt="${escapeHtml(post.title)}">
+    ${(canEditPost(post) ? `<button class="edit-mini" onclick="openPostEditor('edit','${post.id}')">تعديل</button>` : '')}
+    ${(canEditPost(post) ? `<button class="del-mini" onclick="confirmDeletePost('${post.id}')">حذف</button>` : '')}
+    <div class="post-body">
+      <div class="pilltag">${post.section === 'education' ? '🎓 التعليم' : sectionTitle(post.section)}</div>
+      <h3>${escapeHtml(post.title)}</h3>
+      <p>${escapeHtml(post.summary || '')}</p>
+      <div class="meta">
+        <span>${authorLabel(post.author)}</span>
+        <span>${dayTimeDisplay(post.createdAt)}</span>
+      </div>
+      <div class="action-row">
+        <button class="iconbtn like ${likeOn ? 'on' : ''}" onclick="toggleLike('${post.id}','post')">❤️ <span>${itemLikesCount(post)}</span></button>
+        <button class="iconbtn" onclick="openItem('${post.id}','post')">💬 <span>${itemCommentsCount(post.id)}</span></button>
+        <button class="iconbtn" onclick="shareItem('post','${post.id}')">↗ مشاركة</button>
+      </div>
+    </div>
+  </article>`;
+}
+function renderMediaCard(item, kind){
+  const isLive = kind === 'live';
+  const media = item.sourceType === 'upload'
+    ? `<video controls src="${escapeHtml(item.url)}"></video>`
+    : `<iframe src="${escapeHtml(item.embedUrl || item.url)}" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  const likeOn = currentUser && item.likedBy && item.likedBy.includes(currentUser.username);
+  return `
+  <div class="media-card">
+    <div style="position:absolute;top:10px;right:10px;z-index:2" class="pilltag">${isLive ? '🔴 بث مباشر' : '🎥 فيديو'}</div>
+    ${(canEditMedia(item) ? `<button class="edit-mini" onclick="open${kind==='live'?'Live':'Video'}Editor('edit','${item.id}')">تعديل</button>` : '')}
+    ${(canEditMedia(item) ? `<button class="del-mini" onclick="confirmDeleteMedia('${kind}','${item.id}')">حذف</button>` : '')}
+    ${media}
+    <div class="body">
+      <h3 style="margin:0 0 6px">${escapeHtml(item.title)}</h3>
+      <div class="small">${escapeHtml(item.desc || '')}</div>
+      <div class="time">${dayTimeDisplay(item.createdAt)}${isLive && item.endAt ? ' — ينتهي ' + dayTimeDisplay(item.endAt) : ''}</div>
+      <div class="action-row">
+        <button class="iconbtn like ${likeOn ? 'on' : ''}" onclick="toggleLike('${item.id}','${kind}')">❤️ <span>${item.likes || 0}</span></button>
+        <button class="iconbtn" onclick="shareItem('${kind}','${item.id}')">↗ مشاركة</button>
+      </div>
+    </div>
+  </div>`;
+}
+function canEditMedia(item){ return currentUser && (currentUser.role === 'owner' || currentUser.role === 'editor' || item.author === currentUser.username); }
 function renderDashboard(){
-  const manageList = document.getElementById('manageArticlesList');
-  const manageVideosList = document.getElementById('manageVideosList');
-  const manageLiveList = document.getElementById('manageLiveList');
-  const usersList = document.getElementById('usersList');
-  const accountDisplay = document.getElementById('accountDisplay');
-  const accountUser = document.getElementById('accountUser');
-  const accountEmail = document.getElementById('accountEmail');
-  const accountRole = document.getElementById('accountRole');
-  const dashboardTitle = document.getElementById('dashboardTitle');
-  const dashboardNote = document.getElementById('dashboardNote');
-  const articleQuery = (document.getElementById('panelSearch')?.value || '').trim().toLowerCase();
-  const videoQuery = (document.getElementById('videoSearch')?.value || '').trim().toLowerCase();
-  const liveQuery = (document.getElementById('liveSearch')?.value || '').trim().toLowerCase();
+  const q = (document.getElementById('postSearch').value || '').trim().toLowerCase();
+  const list = state.posts.filter(p => !q || (p.title || '').toLowerCase().includes(q));
+  document.getElementById('managePostsList').innerHTML = list.map(renderDashboardPostRow).join('') || '<div class="card">لا توجد نتائج.</div>';
 
-  if(currentUser){
-    accountDisplay.textContent = currentUser.displayName || '-';
-    accountUser.textContent = formatUsername(currentUser.username);
-    accountEmail.textContent = currentUser.email || '-';
-    accountRole.textContent = roleLabel(currentUser.role);
-  }
-
-  const titleMap = {
-    panels: 'لوحة التحكم',
-    videos: 'لوحة الفيديوهات',
-    users: 'لوحة المستخدمين',
-    account: 'الحساب'
-  };
-  dashboardTitle.textContent = titleMap[dashboardTab] || 'لوحة التحكم';
-  dashboardNote.textContent =
-    dashboardTab === 'panels' ? 'إدارة البانلات والمحتوى النصي والصور.' :
-    dashboardTab === 'videos' ? 'إدارة الفيديوهات وإضافة الروابط أو الملفات.' :
-    dashboardTab === 'users' ? 'إدارة المستخدمين والصلاحيات للمطور فقط.' :
-    'معلومات الحساب وتغيير كلمة المرور.';
-
-  const visibleArticles = articleQuery
-    ? state.articles.filter(article => article.title.toLowerCase().includes(articleQuery))
-    : state.articles;
-  const visibleVideos = videoQuery
-    ? state.videos.filter(v => v.title.toLowerCase().includes(videoQuery))
-    : state.videos;
-  const visibleLives = liveQuery
-    ? state.liveStreams.filter(v => v.title.toLowerCase().includes(liveQuery))
-    : state.liveStreams;
-
-  if(manageList){
-    manageList.innerHTML = visibleArticles.length ? visibleArticles.map(article => `
-      <div class="panel-row">
-        <img src="${escapeText(article.image)}" alt="${escapeText(article.title)}">
-        <div>
-          <h4>${escapeText(article.title)}</h4>
-          <p>${escapeText(article.summary)}</p>
-          <p style="margin-top:6px;color:#fff;font-size:.82rem;">القسم: ${sectionLabel(article.section)}</p>
-        </div>
-        <div class="row-actions">
-          <button class="small-btn edit" onclick="openEditor('edit','${article.section}','${article.id}')">تعديل</button>
-          <button class="small-btn del" onclick="deleteArticle('${article.id}')">حذف</button>
-        </div>
+  const sortedUsers = [...state.users].sort((a,b)=>{
+    const ra = roleIndex(a.role), rb = roleIndex(b.role);
+    if(ra !== rb) return ra - rb;
+    return (a.displayName || a.username).localeCompare((b.displayName || b.username), 'ar');
+  });
+  document.getElementById('usersList').innerHTML = sortedUsers.map(u => renderUserRow(u)).join('') || '<div class="card">لا يوجد مستخدمون بعد.</div>';
+  document.getElementById('auditList').innerHTML = state.logs.map(l => `<div class="row">${escapeHtml(l.text)}<div class="time">${timeAgo(l.at)}</div></div>`).join('') || '<div class="card">لا يوجد سجل بعد.</div>';
+  document.getElementById('profileDisplay').textContent = currentUser ? (currentUser.displayName || '-') : '-';
+  document.getElementById('profileUser').textContent = currentUser ? formatUsername(currentUser.username) : '-';
+  document.getElementById('profileRole').textContent = currentUser ? `الرتبة: ${ROLE_LABEL[currentUser.role]}` : '-';
+  document.getElementById('profilePicLarge').src = currentUser ? (currentUser.avatar || getAvatar(currentUser.displayName || currentUser.username)) : '';
+}
+function renderDashboardPostRow(post){
+  return `
+  <div class="card">
+    <div style="display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center">
+      <img src="${escapeHtml(post.image || '')}" alt="${escapeHtml(post.title)}" style="width:72px;height:72px;border-radius:14px;object-fit:cover">
+      <div>
+        <strong>${escapeHtml(post.title)}</strong>
+        <div class="note">${sectionTitle(post.section)} • ${authorLabel(post.author)} • ${dayTimeDisplay(post.createdAt)}</div>
+        <div class="small">${escapeHtml(post.summary || '')}</div>
       </div>
-    `).join('') : '<div class="empty-state">لا توجد نتائج مطابقة للبحث.</div>';
-  }
-
-  if(manageVideosList){
-    manageVideosList.innerHTML = visibleVideos.length ? visibleVideos.map(video => `
-      <div class="panel-row">
-        <img src="${escapeText(video.thumb || videoThumb(video))}" alt="${escapeText(video.title)}">
-        <div>
-          <h4>${escapeText(video.title)}</h4>
-          <p>${escapeText(video.description)}</p>
-          <p style="margin-top:6px;color:#fff;font-size:.82rem;">${escapeText(videoTypeLabel(video))}</p>
-        </div>
-        <div class="row-actions">
-          <button class="small-btn edit" onclick="openVideoEditor('edit','${video.id}')">تعديل</button>
-          <button class="small-btn del" onclick="deleteVideo('${video.id}')">حذف</button>
-        </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="openPostEditor('edit','${post.id}')">تعديل</button>
+        <button class="btn secondary" onclick="confirmDeletePost('${post.id}')">حذف</button>
       </div>
-    `).join('') : '<div class="video-empty">لا توجد نتائج مطابقة للبحث أو لا توجد فيديوهات بعد.</div>';
-  }
-
-  if(manageLiveList){
-    manageLiveList.innerHTML = visibleLives.length ? visibleLives.map(stream => `
-      <div class="panel-row">
-        <img src="${escapeText(stream.thumb || videoThumb({ sourceUrl: stream.sourceUrl || '' }))}" alt="${escapeText(stream.title)}">
-        <div>
-          <h4>${escapeText(stream.title)}</h4>
-          <p>${escapeText(stream.description)}</p>
-          <p style="margin-top:6px;color:#fff;font-size:.82rem;">بث مباشر</p>
-        </div>
-        <div class="row-actions">
-          <button class="small-btn edit" onclick="openVideoEditor('edit','${stream.id}','live')">تعديل</button>
-          <button class="small-btn del" onclick="deleteLiveStream('${stream.id}')">حذف</button>
-        </div>
-      </div>
-    `).join('') : '<div class="video-empty">لا توجد بثوث مباشرة مطابقة للبحث أو لا توجد بثوث بعد.</div>';
-  }
-
-  if(canManageUsers() && usersList){
-    usersList.innerHTML = state.users.map(u => `
-      <div class="user-row">
-        <div class="uinfo">
-          <strong>${escapeText(u.displayName || u.username)}</strong>
-          <span>${formatUsername(u.username)} — ${escapeText(u.email || '')}</span>
-        </div>
-        <div>${roleLabel(u.role)}</div>
-        <select class="role" onchange="changeUserRole('${u.username}', this.value)">
-          <option value="user" ${u.role==='user'?'selected':''}>مستخدم</option>
-          <option value="editor" ${u.role==='editor'?'selected':''}>محرر</option>
-          <option value="owner" ${u.role==='owner'?'selected':''}>مطور</option>
-        </select>
-        <button class="small-btn ok" onclick="saveUserRoles()">حفظ</button>
-      </div>
-    `).join('') || '<div class="empty-state">لا يوجد مستخدمون بعد.</div>';
-  }
+    </div>
+  </div>`;
+}
+function renderUserRow(u){
+  const canManage = canManageUsers() && !isOwner(u.username);
+  const plusStep = nextRole(u.role, 1);
+  const minusStep = nextRole(u.role, -1);
+  const phoneBtn = canSeePhones() && u.phone ? `<button class="pill" onclick="togglePhone('${u.id}')">📱 رقم</button><div id="phone-${u.id}" class="hidden note">${escapeHtml(u.phone)}</div>` : '';
+  return `
+  <div class="user-row">
+    <div class="info">
+      <strong>${escapeHtml(u.displayName || u.username)} ${isOwner(u.username) ? '👑' : ''}</strong>
+      <span>${formatUsername(u.username)}${u.email ? ' • ' + escapeHtml(u.email) : ''}</span>
+      ${phoneBtn}
+    </div>
+    <div class="role-badge">${ROLE_ICON[u.role] || '👤'} ${ROLE_LABEL[u.role]}</div>
+    <div class="role-actions">
+      <button class="plus" ${canManage && plusStep ? `onclick="confirmRoleChange('${u.id}','${plusStep}','up')"` : 'disabled'}>+</button>
+      <button class="minus" ${canManage && minusStep ? `onclick="confirmRoleChange('${u.id}','${minusStep}','down')"` : 'disabled'}>−</button>
+    </div>
+    <div>${canManage ? `<button class="pill" onclick="openUserCard('${u.id}')">ملف</button>` : ''}</div>
+  </div>`;
 }
 function renderAll(){
-  renderArticles();
+  renderTexts();
+  updateHeaderLogo();
+  renderUserMenu();
+  renderGrid('home');
+  renderGrid('sports');
+  renderGrid('economy');
+  renderGrid('education');
   renderVideos();
-  renderLiveStreams();
-  updateAuthUI();
+  renderLive();
   renderDashboard();
-  scheduleLiveMonitoring();
+  updateVisibleButtons();
 }
-function openNews(id){
-  const article = articleById(id);
-  if(!article) return;
-  currentNewsId = id;
-  document.getElementById('newsTitle').textContent = article.title;
-  document.getElementById('newsSummary').textContent = article.summary;
-  document.getElementById('newsDetail').textContent = article.detail;
-  document.getElementById('newsImg').src = article.image;
-  document.getElementById('newsAdminActions').classList.toggle('hidden', !canEdit());
-  document.getElementById('newsModal').classList.add('active');
+function updateVisibleButtons(){
+  document.getElementById('addHomeBtn').classList.toggle('hidden', !currentUser || !sectionCanCreateForCurrent('home'));
+  document.getElementById('addSportsBtn').classList.toggle('hidden', !currentUser || !sectionCanCreateForCurrent('sports'));
+  document.getElementById('addEconomyBtn').classList.toggle('hidden', !currentUser || !sectionCanCreateForCurrent('economy'));
+  document.getElementById('addEduBtn').classList.toggle('hidden', !currentUser || !sectionCanCreateForCurrent('education'));
+  document.getElementById('addVideoBtn').classList.toggle('hidden', !currentUser || !(currentUser.role === 'owner' || currentUser.role === 'editor' || currentUser.role === 'media'));
+  document.getElementById('addLiveBtn').classList.toggle('hidden', !currentUser || !(currentUser.role === 'owner' || currentUser.role === 'editor' || currentUser.role === 'media'));
 }
-function closeNews(){ document.getElementById('newsModal').classList.remove('active'); }
-function editCurrentArticle(){
-  if(!currentNewsId) return;
-  const article = articleById(currentNewsId);
-  if(!article) return;
-  openEditor('edit', article.section, article.id);
-}
-function openVideo(id){
-  const video = videoById(id);
-  if(!video) return;
-  currentVideoId = id;
-  const title = document.getElementById('videoTitle');
-  const desc = document.getElementById('videoDescription');
-  const wrap = document.getElementById('videoPlayerWrap');
-  const ext = document.getElementById('videoExternalLink');
-  title.textContent = video.title;
-  desc.textContent = video.description;
-  wrap.innerHTML = '';
-  ext.classList.add('hidden');
-  ext.removeAttribute('href');
-
-  if(video.sourceType === 'file'){
-    wrap.innerHTML = `<video class="video-modal-player" controls autoplay src="${video.sourceData}"></video>`;
-  }else{
-    const yt = youtubeId(video.sourceUrl || '');
-    if(yt){
-      wrap.innerHTML = `<iframe class="video-modal-player" src="https://www.youtube.com/embed/${yt}" title="${escapeText(video.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-      ext.href = video.sourceUrl;
-      ext.textContent = 'فتح الفيديو في يوتيوب';
-      ext.classList.remove('hidden');
-    }else{
-      wrap.innerHTML = `<video class="video-modal-player" controls autoplay src="${video.sourceUrl}"></video>`;
-      if(video.sourceUrl){
-        ext.href = video.sourceUrl;
-        ext.textContent = 'فتح الرابط الأصلي';
-        ext.classList.remove('hidden');
-      }
-    }
-  }
-  document.getElementById('videoModal').classList.add('active');
-}
-function openLive(id){
-  const live = liveById(id);
-  if(!live) return;
-  currentVideoId = id;
-  const title = document.getElementById('videoTitle');
-  const desc = document.getElementById('videoDescription');
-  const wrap = document.getElementById('videoPlayerWrap');
-  const ext = document.getElementById('videoExternalLink');
-  title.textContent = live.title;
-  desc.textContent = `${live.description} — بث مباشر`;
-  wrap.innerHTML = '';
-  ext.classList.add('hidden');
-  ext.removeAttribute('href');
-
-  const yt = youtubeId(live.sourceUrl || '');
-  if(yt){
-    wrap.innerHTML = `<iframe class="video-modal-player" src="https://www.youtube.com/embed/${yt}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1" title="${escapeText(live.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    ext.href = live.sourceUrl;
-    ext.textContent = 'فتح البث في يوتيوب';
-    ext.classList.remove('hidden');
-  }else{
-    wrap.innerHTML = `<div class="video-empty">هذا البث غير متاح الآن.</div>`;
-  }
-  document.getElementById('videoModal').classList.add('active');
-}
-function closeVideo(){ document.getElementById('videoModal').classList.remove('active'); }
-
-function liveById(id){
-  return state.liveStreams.find(item => item.id === id);
-}
-
-function openInfo(type){
-  const item = INFO_CONTENT[type];
-  if(!item) return;
-  document.getElementById('infoTitle').textContent = item.title;
-  document.getElementById('infoText').textContent = item.text;
-  document.getElementById('infoImg').src = item.img;
-  document.getElementById('infoModal').classList.add('active');
-}
-function closeInfo(){ document.getElementById('infoModal').classList.remove('active'); }
-
-function clearAuthErrors(){
-  ['regDisplayError','regEmailError','regUserError','regPassError','regPass2Error','captchaError','loginError'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.textContent = '';
-  });
-}
-function setError(id, msg){
-  const el = document.getElementById(id);
-  if(el) el.textContent = msg || '';
-}
-function validateEmail(email){ return typeof email === 'string' && email.includes('@') && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
-function validateUsername(username){ return /^[A-Za-z0-9_]{3,}$/.test(normalizeUsername(username)); }
-function validatePassword(pass){ return typeof pass === 'string' && pass.length >= 8 && /[A-Za-z]/.test(pass) && /\d/.test(pass) && !/^[A-Za-z]+$/.test(pass) && !/^\d+$/.test(pass); }
-function validateDisplayName(name){ return String(name || '').trim().length >= 2; }
-function generateCaptcha(){
-  clearAuthErrors();
-  const types = ['math','reverse','sequence','letters'];
-  const pick = types[Math.floor(Math.random() * types.length)];
-  let q = '', a = '';
-  if(pick === 'math'){
-    const x = 2 + Math.floor(Math.random()*8);
-    const y = 1 + Math.floor(Math.random()*8);
-    const add = Math.random() > 0.5;
-    q = add ? `كم يساوي ${x} + ${y} ؟` : `كم يساوي ${Math.max(x,y)} - ${Math.min(x,y)} ؟`;
-    a = add ? String(x + y) : String(Math.max(x,y) - Math.min(x,y));
-  }else if(pick === 'reverse'){
-    const word = ['news','media','login','panel'][Math.floor(Math.random()*4)];
-    q = `اكتب الكلمة بالعكس: ${word}`;
-    a = word.split('').reverse().join('');
-  }else if(pick === 'sequence'){
-    const start = 2 + Math.floor(Math.random()*5);
-    q = `أكمل التسلسل: ${start} ، ${start+2} ، ${start+4} ، ؟`;
-    a = String(start + 6);
-  }else{
-    const word = ['صحيفة','فيديو','أخبار','موقع'][Math.floor(Math.random()*4)];
-    q = `كم عدد حروف كلمة "${word}"؟`;
-    a = String(word.length);
-  }
-  captchaChallenge = { question: q, answer: a.toLowerCase() };
-  document.getElementById('captchaPrompt').textContent = captchaChallenge.question;
-  document.getElementById('captchaAnswer').value = '';
-  document.getElementById('captchaError').textContent = '';
-}
-function checkCaptcha(){
-  const ans = String(document.getElementById('captchaAnswer').value || '').trim().toLowerCase();
-  if(!captchaChallenge || !ans || ans !== captchaChallenge.answer){
-    setError('captchaError', 'التحقق غير صحيح، جرّب التحدي مرة أخرى.');
-    return false;
-  }
-  return true;
-}
-
-function openAuth(mode){
-  authMode = mode === 'register' ? 'register' : 'login';
-  document.getElementById('authModal').classList.add('active');
-  document.getElementById('loginFormWrap').classList.toggle('hidden', authMode !== 'login');
-  document.getElementById('registerFormWrap').classList.toggle('hidden', authMode !== 'register');
-  document.getElementById('loginTab').classList.toggle('active', authMode === 'login');
-  document.getElementById('registerTab').classList.toggle('active', authMode === 'register');
-  if(authMode === 'register') generateCaptcha();
-}
-function closeAuth(){ document.getElementById('authModal').classList.remove('active'); }
-
-function openDashboard(){
+function renderUserMenu(){
   if(!currentUser) return;
-  dashboardMode = currentUser.role === 'owner' ? 'owner' : 'editor';
-  document.getElementById('dashboardModal').classList.add('active');
-  if(canManageUsers()) switchDashboardTab('users');
-  else if(canEdit()) switchDashboardTab('videos');
-  else switchDashboardTab('account');
-  renderDashboard();
+  document.getElementById('userAvatar').src = currentUser.avatar || getAvatar(currentUser.displayName || currentUser.username);
+  document.getElementById('userQuickName').textContent = formatUsername(currentUser.username);
+  document.getElementById('profileBtn').classList.toggle('hidden', false);
+  const text = (currentUser.role === 'user') ? '' : `مرحبًا ${currentUser.displayName || currentUser.username}، أنت مسجل الدخول الآن ويمكنك فتح القائمة الشخصية ولوحة التحكم.`;
+  document.getElementById('sideAccountText').textContent = text;
 }
-function closeDashboard(){ document.getElementById('dashboardModal').classList.remove('active'); }
-function switchDashboardTab(tab){
-  dashboardTab = tab;
-  document.getElementById('dashTabPanels').classList.toggle('active', tab === 'panels');
-  document.getElementById('dashTabVideos').classList.toggle('active', tab === 'videos');
-  document.getElementById('dashTabUsers').classList.toggle('active', tab === 'users');
-  document.getElementById('dashTabAccount').classList.toggle('active', tab === 'account');
-  document.getElementById('dashPanels').classList.toggle('hidden', tab !== 'panels');
-  document.getElementById('dashVideos').classList.toggle('hidden', tab !== 'videos');
-  document.getElementById('dashUsers').classList.toggle('hidden', tab !== 'users');
-  document.getElementById('dashAccount').classList.toggle('hidden', tab !== 'account');
-  renderDashboard();
+function openAuth(mode){
+  document.getElementById('loginBox').classList.toggle('hidden', mode !== 'login');
+  document.getElementById('registerBox').classList.toggle('hidden', mode !== 'register');
+  document.getElementById('loginTab').classList.toggle('active', mode === 'login');
+  document.getElementById('registerTab').classList.toggle('active', mode === 'register');
+  openModal('authModal');
+  if(mode === 'register') newCaptcha();
 }
+function closeModalAndReset(id){ closeModal(id); }
+function setErr(id,msg){ document.getElementById(id).textContent = msg || ''; }
+function clearRegisterErrors(){
+  ['regDisplayErr','regEmailErr','regUserErr','regPhoneErr','regPassErr','regPass2Err','captchaErr','loginErr'].forEach(id=>setErr(id,''));
+}
+function newCaptcha(){
+  currentCaptcha = CAPTCHA[Math.floor(Math.random()*CAPTCHA.length)];
+  document.getElementById('captchaQ').textContent = currentCaptcha.q;
+  document.getElementById('captchaA').value = '';
+}
+async function hashPass(pass){ return simpleHash(pass); }
 
-function openChangePassword(){ document.getElementById('passwordModal').classList.add('active'); }
-function closePasswordModal(){ document.getElementById('passwordModal').classList.remove('active'); }
-function logout(){
-  currentUser = null;
-  clearSession();
-  closeProfileMenu();
-  updateAuthUI();
-  renderAll();
-  showToast('تم تسجيل الخروج');
-}
-function toggleProfileMenu(){ document.getElementById('profileMenu').classList.toggle('active'); }
-function closeProfileMenu(){ document.getElementById('profileMenu').classList.remove('active'); }
-
-async function hashPassword(password){
-  const data = new TextEncoder().encode(password);
-  const hash = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
 async function register(){
-  clearAuthErrors();
+  clearRegisterErrors();
   const displayName = document.getElementById('regDisplay').value.trim();
   const email = document.getElementById('regEmail').value.trim().toLowerCase();
   const username = normalizeUsername(document.getElementById('regUser').value);
-  const password = document.getElementById('regPass').value;
-  const password2 = document.getElementById('regPass2').value;
+  const phone = document.getElementById('regPhone').value.trim();
+  const pass = document.getElementById('regPass').value;
+  const pass2 = document.getElementById('regPass2').value;
+  const captchaA = document.getElementById('captchaA').value.trim().toLowerCase();
 
   let ok = true;
-  if(!validateDisplayName(displayName)){ setError('regDisplayError','اكتب الاسم الظاهر'); ok = false; }
-  if(!validateEmail(email)){ setError('regEmailError','البريد الإلكتروني يجب أن يحتوي على @'); ok = false; }
-  if(!validateUsername(username)){ setError('regUserError','اسم المستخدم يجب أن لا يقل عن 4 حروف'); ok = false; }
-  if(!validatePassword(password)){ setError('regPassError','يجب أن تكون كلمة المرور 8 أحرف على الأقل وتحتوي حروفًا وأرقامًا'); ok = false; }
-  if(password !== password2){ setError('regPass2Error','كلمتا المرور غير متطابقتين'); ok = false; }
-  if(state.users.some(u => normalizeUsername(u.username) === username)){ setError('regUserError','هذا الاسم مستخدم من قبل'); ok = false; }
-  if(state.users.some(u => (u.email || '').toLowerCase() === email)){ setError('regEmailError','هذا البريد مستخدم من قبل'); ok = false; }
-  if(!checkCaptcha()) ok = false;
+  if(displayName.length < 2){ setErr('regDisplayErr','اكتب الاسم الظاهر'); ok = false; }
+  if(!email.includes('@')){ setErr('regEmailErr','يجب أن يحتوي البريد على @'); ok = false; }
+  if(!/^[A-Za-z0-9_]{4,}$/.test(username)){ setErr('regUserErr','اسم المستخدم يجب أن لا يقل عن 4 حروف'); ok = false; }
+  if(phone && !validatePhone(phone)){ setErr('regPhoneErr','رقم الجوال يجب أن يكون أرقامًا فقط وأكثر من 8 أرقام'); ok = false; }
+  if(!validatePassword(pass)){ setErr('regPassErr','كلمة المرور يجب أن تكون 8 أحرف على الأقل وتحتوي حروفًا وأرقامًا'); ok = false; }
+  if(pass !== pass2){ setErr('regPass2Err','كلمتا المرور غير متطابقتين'); ok = false; }
+  if(!currentCaptcha || captchaA !== currentCaptcha.a.toLowerCase()){ setErr('captchaErr','التحقق البشري غير صحيح'); ok = false; }
+  if(state.users.some(u=>normalizeUsername(u.username)===username)){ setErr('regUserErr','هذا الاسم مستخدم من قبل'); ok = false; }
+  if(state.users.some(u=>(u.email||'').toLowerCase()===email)){ setErr('regEmailErr','هذا البريد مستخدم من قبل'); ok = false; }
   if(!ok) return;
 
-  const passHash = await hashPassword(password);
-  const role = isOwnerUsername(username) ? 'owner' : 'user';
-  const user = { id: makeId('user'), displayName, email, username, passHash, role };
-  state.users.push(user);
-  saveState();
-  syncToMongo();
-  currentUser = user;
-  saveSession(user);
-  closeAuth();
-  document.getElementById('regDisplay').value = '';
-  document.getElementById('regEmail').value = '';
-  document.getElementById('regUser').value = '';
-  document.getElementById('regPass').value = '';
-  document.getElementById('regPass2').value = '';
-  updateAuthUI();
-  renderAll();
-  showToast('تم إنشاء الحساب');
-}
-async function login(){
-  clearAuthErrors();
-  const username = normalizeUsername(document.getElementById('loginUser').value);
-  const password = document.getElementById('loginPass').value;
-  const user = state.users.find(u => normalizeUsername(u.username) === username);
-  if(!user){ setError('loginError','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
-  const passHash = await hashPassword(password);
-  if(passHash !== user.passHash){ setError('loginError','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
-  if(isOwnerUsername(user.username) && user.role !== 'owner') user.role = 'owner';
-  currentUser = user;
-  saveSession(user);
-  saveState();
-  syncToMongo();
-  closeAuth();
-  updateAuthUI();
-  renderAll();
-  showToast('تم تسجيل الدخول');
-}
-
-async function changePassword(){
-  if(!currentUser) return;
-  const oldPass = document.getElementById('oldPass').value;
-  const newPass = document.getElementById('newPass').value;
-  const newPass2 = document.getElementById('newPass2').value;
-  const oldHash = await hashPassword(oldPass);
-  if(oldHash !== currentUser.passHash) return showToast('كلمة المرور الحالية غير صحيحة');
-  if(!validatePassword(newPass)) return showToast('كلمة المرور الجديدة 8 أحرف على الأقل وتحتوي حروفًا وأرقامًا');
-  if(newPass !== newPass2) return showToast('تأكيد كلمة المرور غير مطابق');
-  currentUser.passHash = await hashPassword(newPass);
-  state.users = state.users.map(u => normalizeUsername(u.username) === normalizeUsername(currentUser.username) ? currentUser : u);
-  saveState();
-  syncToMongo();
-  closePasswordModal();
-  document.getElementById('oldPass').value = '';
-  document.getElementById('newPass').value = '';
-  document.getElementById('newPass2').value = '';
-  showToast('تم تغيير كلمة المرور');
-}
-function changeUserRole(username, role){
-  if(!canManageUsers()) return;
-  const user = state.users.find(u => normalizeUsername(u.username) === normalizeUsername(username));
-  if(!user) return;
-  user.role = role;
-  if(isOwnerUsername(user.username)) user.role = 'owner';
-  saveState();
-  syncToMongo();
-  renderDashboard();
-  updateAuthUI();
-}
-function saveUserRoles(){
-  if(!canManageUsers()) return;
-  state.users = state.users.map(u => { if(isOwnerUsername(u.username)) u.role = 'owner'; return u; });
-  saveState();
-  syncToMongo();
-  renderDashboard();
-  updateAuthUI();
-  showToast('تم حفظ الصلاحيات');
-}
-function assignEditorByUsername(){
-  if(!canManageUsers()) return;
-  const input = document.getElementById('assignEditorInput');
-  const username = normalizeUsername(input.value);
-  if(!username) return showToast('اكتب اسم المستخدم أولًا');
-  const user = state.users.find(u => normalizeUsername(u.username) === username);
-  if(!user) return showToast('المستخدم غير موجود');
-  if(isOwnerUsername(user.username)) return showToast('هذا الحساب هو المطور');
-  user.role = 'editor';
-  saveState();
-  syncToMongo();
-  input.value = '';
-  renderDashboard();
-  updateAuthUI();
-  showToast('تم تعيينه كإعلامي');
-}
-
-function deleteArticle(id){
-  if(!canEdit()) return;
-  if(!confirm('هل تريد حذف هذا البانل؟')) return;
-  state.articles = state.articles.filter(a => a.id !== id);
-  saveState();
-  syncToMongo();
-  renderAll();
-  if(currentNewsId === id) closeNews();
-  showToast('تم الحذف');
-}
-function openEditor(mode, section='home', articleId=null){
-  if(!canEdit()) return showToast('هذه الصلاحية للمحررين فقط');
-  editorMode = mode;
-  editorArticleId = articleId;
-  document.getElementById('editorTitle').textContent = mode === 'edit' ? 'تعديل البانل' : 'إضافة بانل';
-  const article = articleId ? articleById(articleId) : null;
-  document.getElementById('panelTitle').value = article ? article.title : '';
-  document.getElementById('panelSection').value = article ? article.section : section;
-  document.getElementById('panelSummary').value = article ? article.summary : '';
-  document.getElementById('panelDetail').value = article ? article.detail : '';
-  document.getElementById('panelImageUrl').value = article ? article.image : '';
-  document.getElementById('panelImageFile').value = '';
-  document.getElementById('editorModal').classList.add('active');
-}
-function closeEditor(){ document.getElementById('editorModal').classList.remove('active'); }
-async function fileToDataURL(file){
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-async function saveEditor(){
-  if(!canEdit()) return;
-  const title = document.getElementById('panelTitle').value.trim();
-  const section = document.getElementById('panelSection').value;
-  const summary = document.getElementById('panelSummary').value.trim();
-  const detail = document.getElementById('panelDetail').value.trim();
-  const imageUrl = document.getElementById('panelImageUrl').value.trim();
-  const file = document.getElementById('panelImageFile').files[0];
-  if(!title || !summary || !detail) return showToast('أكمل العنوان والملخص والنص');
-  let image = imageUrl || '';
-  if(file) image = await fileToDataURL(file);
-  if(!image) return showToast('أضف صورة أو رابط صورة');
-  if(editorMode === 'edit' && editorArticleId){
-    const article = articleById(editorArticleId);
-    if(!article) return;
-    article.title = title;
-    article.section = section;
-    article.summary = summary;
-    article.detail = detail;
-    article.image = image;
-  }else{
-    state.articles.unshift({ id: makeId('art'), section, title, summary, detail, image });
-  }
-  saveState();
-  syncToMongo();
-  closeEditor();
-  renderAll();
-  showToast('تم الحفظ');
-}
-
-function toggleVideoSourceFields(){
-  const type = document.getElementById('videoSourceType').value;
-  document.getElementById('videoUrlWrap').classList.toggle('hidden', type === 'file');
-  document.getElementById('videoFileWrap').classList.toggle('hidden', type !== 'file');
-  const help = document.getElementById('videoEditorHelp');
-  const urlInput = document.getElementById('videoSourceUrl');
-  if(urlInput){
-    urlInput.placeholder = type === 'live' ? 'رابط البث المباشر من يوتيوب' : 'رابط الفيديو أو يوتيوب';
-  }
-  if(help){
-    help.textContent = type === 'live'
-      ? 'يمكنك إضافة رابط بث مباشر من يوتيوب فقط. إذا انتهى البث سيتم حذفه تلقائيًا.'
-      : 'يمكنك إضافة رابط يوتيوب أو رفع ملف فيديو من جهازك ثم حفظه.';
-  }
-}
-function openVideoEditor(mode='create', id=null, kind='video'){
-  if(!canEdit()) return showToast('هذه الصلاحية للمحررين فقط');
-  videoEditorMode = mode;
-  videoEditorId = id;
-  videoEditorKind = kind === 'live' ? 'live' : 'video';
-  const collection = videoEditorKind === 'live' ? state.liveStreams : state.videos;
-  const video = id ? collection.find(item => item.id === id) : null;
-  document.getElementById('videoEditorTitle').textContent =
-    videoEditorKind === 'live'
-      ? (mode === 'edit' ? 'تعديل البث المباشر' : 'إضافة بث مباشر')
-      : (mode === 'edit' ? 'تعديل الفيديو' : 'إضافة فيديو');
-  const help = document.getElementById('videoEditorHelp');
-  if(help){
-    help.textContent = videoEditorKind === 'live'
-      ? 'يمكنك إضافة رابط بث مباشر من يوتيوب فقط. إذا انتهى البث سيتم حذفه تلقائيًا.'
-      : 'يمكنك إضافة رابط يوتيوب أو رفع ملف فيديو من جهازك ثم حفظه.';
-  }
-  document.getElementById('videoTitleInput').value = video ? video.title : '';
-  document.getElementById('videoDescriptionInput').value = video ? video.description : '';
-  const typeSelect = document.getElementById('videoSourceType');
-  typeSelect.disabled = videoEditorKind === 'live';
-  if(videoEditorKind === 'live'){
-    typeSelect.value = 'live';
-  }else{
-    typeSelect.value = video ? (video.sourceType || 'link') : 'link';
-  }
-  document.getElementById('videoSourceUrl').value = video ? (video.sourceUrl || '') : '';
-  document.getElementById('videoFileInput').value = '';
-  toggleVideoSourceFields();
-  document.getElementById('videoEditorModal').classList.add('active');
-}
-function closeVideoEditor(){ document.getElementById('videoEditorModal').classList.remove('active'); }
-
-async function saveVideoEditor(){
-  if(!canEdit()) return;
-  const title = document.getElementById('videoTitleInput').value.trim();
-  const description = document.getElementById('videoDescriptionInput').value.trim();
-  const sourceType = document.getElementById('videoSourceType').value;
-  const sourceUrl = document.getElementById('videoSourceUrl').value.trim();
-  const file = document.getElementById('videoFileInput').files[0];
-
-  if(!title || !description) return showToast('أكمل عنوان الفيديو ووصفه');
-
-  if(videoEditorKind === 'live' || sourceType === 'live'){
-    if(!sourceUrl) return showToast('أضف رابط البث المباشر');
-    if(!youtubeId(sourceUrl)) return showToast('البث المباشر يجب أن يكون رابط يوتيوب');
-    const payload = {
-      id: videoEditorId || makeId('live'),
-      title,
-      description,
-      sourceType: 'live',
-      sourceUrl,
-      sourceData: '',
-      thumb: ''
-    };
-    if(videoEditorMode === 'edit' && videoEditorId){
-      const idx = state.liveStreams.findIndex(item => item.id === videoEditorId);
-      if(idx >= 0) state.liveStreams[idx] = { ...state.liveStreams[idx], ...payload };
-      else state.liveStreams.unshift(payload);
-    }else{
-      state.liveStreams.unshift(payload);
-    }
-    saveState();
-    syncToMongo();
-    closeVideoEditor();
-    renderAll();
-    scheduleLiveMonitoring();
-    showToast('تم حفظ البث المباشر');
+  if(isOwner(username) && pass !== OWNER_PASSWORD){
+    setErr('regPassErr', 'كلمة مرور المطور غير صحيحة');
     return;
   }
 
-  let sourceData = '';
-  if(sourceType === 'file'){
-    const existing = videoEditorId ? videoById(videoEditorId) : null;
-    if(file){
-      sourceData = await fileToDataURL(file);
-    }else if(existing && existing.sourceData){
-      sourceData = existing.sourceData;
-    }else{
-      return showToast('ارفع ملف الفيديو من الجهاز');
-    }
-  }else{
-    if(!sourceUrl) return showToast('أضف رابط الفيديو');
-  }
-  const finalSourceType = sourceType === 'file' ? 'file' : 'link';
-  const payload = {
-    id: videoEditorId || makeId('vid'),
-    title,
-    description,
-    sourceType: finalSourceType,
-    sourceUrl: finalSourceType === 'file' ? '' : sourceUrl,
-    sourceData: finalSourceType === 'file' ? sourceData : '',
-    thumb: ''
+  const passHash = await hashPass(pass);
+  const user = {
+    id: makeId('user'),
+    displayName, email, username, phone,
+    passHash,
+    role: isOwner(username) ? 'owner' : 'user',
+    avatar: '',
+    token: ''
   };
 
-  if(videoEditorMode === 'edit' && videoEditorId){
-    const idx = state.videos.findIndex(v => v.id === videoEditorId);
-    if(idx >= 0) state.videos[idx] = { ...state.videos[idx], ...payload };
-  }else{
-    state.videos.unshift(payload);
-  }
-  saveState();
-  syncToMongo();
-  closeVideoEditor();
-  renderAll();
-  showToast('تم الحفظ');
-}
-function deleteVideo(id){
-  if(!canEdit()) return;
-  if(!confirm('هل تريد حذف هذا الفيديو؟')) return;
-  state.videos = state.videos.filter(v => v.id !== id);
-  saveState();
-  syncToMongo();
-  renderAll();
-  if(currentVideoId === id) closeVideo();
-  showToast('تم الحذف');
-}
-function deleteLiveStream(id, silent=false){
-  if(!silent && !canEdit()) return;
-  if(!silent && !confirm('هل تريد حذف هذا البث المباشر؟')) return;
-  state.liveStreams = state.liveStreams.filter(item => item.id !== id);
-  saveState();
-  syncToMongo();
-  destroyLiveMonitor(id);
-  renderAll();
-  if(currentVideoId === id) closeVideo();
-  showToast('تم الحذف');
-}
-
-function ensureLiveMonitorHost(){
-  let host = document.getElementById('liveMonitorHost');
-  if(!host){
-    host = document.createElement('div');
-    host.id = 'liveMonitorHost';
-    host.style.cssText = 'position:fixed;left:-99999px;top:-99999px;width:1px;height:1px;overflow:hidden;';
-    document.body.appendChild(host);
-  }
-  return host;
-}
-function destroyLiveMonitor(id){
-  const player = liveMonitorPlayers.get(id);
-  if(player){
-    try{ player.destroy(); }catch(e){}
-    liveMonitorPlayers.delete(id);
-  }
-  const node = document.getElementById(`live-monitor-${id}`);
-  if(node) node.remove();
-}
-function rebuildLiveMonitors(){
-  if(!youtubeApiReady || !Array.isArray(state.liveStreams)) return;
-  const host = ensureLiveMonitorHost();
-
-  liveMonitorPlayers.forEach((player, id) => {
-    if(!state.liveStreams.some(item => item.id === id)){
-      destroyLiveMonitor(id);
+  // Backend first if available
+  try{
+    const res = await apiPost('/register', {
+      displayName, email, username, phone, password: pass
+    });
+    if(res && typeof res === 'object' && res.user){
+      user.id = res.user.id || user.id;
+      user.role = res.user.role || user.role;
+      user.avatar = res.user.avatar || '';
+      user.token = res.token || '';
+      if(res.user.passHash) user.passHash = res.user.passHash;
     }
-  });
-
-  state.liveStreams.forEach(item => {
-    if(liveMonitorPlayers.has(item.id)) return;
-    const yt = youtubeId(item.sourceUrl || '');
-    if(!yt) return;
-    const mount = document.createElement('div');
-    mount.id = `live-monitor-${item.id}`;
-    mount.style.cssText = 'width:1px;height:1px;';
-    host.appendChild(mount);
-    try{
-      const player = new YT.Player(mount.id, {
-        videoId: yt,
-        playerVars: {
-          autoplay: 0,
-          controls: 0,
-          mute: 1,
-          playsinline: 1,
-          rel: 0,
-          modestbranding: 1,
-          enablejsapi: 1
-        },
-        events: {
-          onStateChange: (event) => {
-            if(event.data === YT.PlayerState.ENDED){
-              deleteLiveStream(item.id, true);
-            }
-          },
-          onError: () => deleteLiveStream(item.id)
-        }
-      });
-      liveMonitorPlayers.set(item.id, player);
-    }catch(err){
-      destroyLiveMonitor(item.id);
-    }
-  });
-}
-function scheduleLiveMonitoring(){
-  if(!youtubeApiLoading){
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    tag.async = true;
-    document.head.appendChild(tag);
-    youtubeApiLoading = true;
+  }catch(e){
+    // fallback to local storage
   }
-  if(!liveMonitorTimer){
-    liveMonitorTimer = setInterval(() => {
-      if(document.visibilityState === 'visible'){
-        rebuildLiveMonitors();
+
+  if(state.users.some(u=>normalizeUsername(u.username)===username)){
+    setErr('regUserErr','هذا الاسم مستخدم من قبل');
+    return;
+  }
+
+  state.users.push(user);
+  if(isOwner(username)) logAction(`تم إنشاء/تسجيل المطور الأساسي ${username}`);
+  saveState(); await syncToMongo();
+  currentUser = user;
+  saveSession(user);
+  closeModal('authModal');
+  logAction(`قام ${username} بإنشاء حساب`);
+  renderAll();
+}
+
+async function login(){
+  setErr('loginErr','');
+  const username = normalizeUsername(document.getElementById('loginUser').value);
+  const pass = document.getElementById('loginPass').value;
+  const uLocal = state.users.find(x=>normalizeUsername(x.username)===username);
+
+  // backend first
+  try{
+    const res = await apiPost('/login', { username, password: pass });
+    if(res && typeof res === 'object' && res.user){
+      const user = res.user;
+      const merged = {
+        id: user.id || uLocal?.id || makeId('user'),
+        displayName: user.displayName || uLocal?.displayName || user.username || username,
+        email: user.email || uLocal?.email || '',
+        username: normalizeUsername(user.username || username),
+        phone: user.phone || uLocal?.phone || '',
+        passHash: user.passHash || uLocal?.passHash || '',
+        role: user.role || uLocal?.role || (isOwner(username) ? 'owner' : 'user'),
+        avatar: user.avatar || uLocal?.avatar || '',
+        token: res.token || user.token || ''
+      };
+      currentUser = merged;
+      if(!state.users.some(x=>normalizeUsername(x.username)===normalizeUsername(merged.username))){
+        state.users.push(merged);
+      }else{
+        state.users = state.users.map(x=>normalizeUsername(x.username)===normalizeUsername(merged.username) ? merged : x);
       }
-    }, 60000);
+      saveState(); await syncToMongo();
+      saveSession(merged);
+      closeModal('authModal');
+      renderAll();
+      return;
+    }
+  }catch(e){
+    // fallback to local
   }
-  rebuildLiveMonitors();
-}
 
-window.onYouTubeIframeAPIReady = function(){
-  youtubeApiReady = true;
-  rebuildLiveMonitors();
-};
-
-
-function getPassStrength(password){
-  let score = 0;
-  if(password.length >= 8) score += 35;
-  if(/[A-Za-z]/.test(password)) score += 30;
-  if(/\d/.test(password)) score += 30;
-  if(/[^A-Za-z0-9]/.test(password)) score += 5;
-  return Math.min(score, 100);
-}
-function updatePassMeter(){
-  const pass = document.getElementById('regPass').value;
-  const strength = getPassStrength(pass);
-  document.getElementById('passMeter').style.width = strength + '%';
-  let hint = 'كلمة المرور ضعيفة';
-  if(strength >= 80) hint = 'كلمة المرور قوية جدًا';
-  else if(strength >= 55) hint = 'كلمة المرور جيدة';
-  else if(strength >= 35) hint = 'كلمة المرور متوسطة';
-  document.getElementById('passHint').textContent = hint + ' — يجب أن تحتوي على حروف وأرقام وأن لا تقل عن 8 أحرف.';
-}
-
-function closeAllByOutside(e){
-  const ids = ['newsModal','infoModal','authModal','dashboardModal','editorModal','videoModal','videoEditorModal','passwordModal'];
-  ids.forEach(id => { if(e.target.id === id) document.getElementById(id).classList.remove('active'); });
-  if(!e.target.closest('#profileBtn') && !e.target.closest('#profileMenu')) closeProfileMenu();
-}
-window.addEventListener('click', closeAllByOutside);
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape'){
-    ['newsModal','infoModal','authModal','dashboardModal','editorModal','videoModal','videoEditorModal','passwordModal'].forEach(id => document.getElementById(id).classList.remove('active'));
-    closeProfileMenu();
-  }
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-  seedIfNeeded();
-  ensureCurrentUserFromSession();
-  if(currentUser && isOwnerUsername(currentUser.username) && currentUser.role !== 'owner'){
-    currentUser.role = 'owner';
-    saveState();
-    syncToMongo();
-  }
-  document.getElementById('siteLogo').src = 'https://media.discordapp.net/attachments/1024807506515607565/1499090777886691440/1j3G6Qs5HP2BqcdauVpfx2aUeA6aLmYF2AAAAAAA.png?ex=69f38895&is=69f23715&hm=3acaeb23eb1e31e81e382ca220330e110c0b9cf6fe5a0de4125f14b3f67e672d&=&format=webp&quality=lossless';
-  document.getElementById('heroLogo').src = document.getElementById('siteLogo').src;
-  updateAuthUI();
+  if(!uLocal){ setErr('loginErr','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
+  const hash = await hashPass(pass);
+  if(hash !== uLocal.passHash){ setErr('loginErr','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
+  if(isOwner(uLocal.username)) uLocal.role = 'owner';
+  currentUser = uLocal;
+  saveSession(uLocal);
+  logAction(`تم تسجيل الدخول: ${username}`);
+  closeModal('authModal');
   renderAll();
-  scheduleLiveMonitoring();
-  document.getElementById('profileBtn').addEventListener('click', (e) => { e.stopPropagation(); toggleProfileMenu(); });
-  document.getElementById('regPass').addEventListener('input', updatePassMeter);
-  document.getElementById('loginUser').addEventListener('keydown', (e)=>{ if(e.key==='Enter') login(); });
-  document.getElementById('loginPass').addEventListener('keydown', (e)=>{ if(e.key==='Enter') login(); });
+}
+function logout(){
+  currentUser = null;
+  clearSession();
+  closeUserMenu();
+  renderAll();
+}
+function openUserMenu(){
+  if(!currentUser) return;
+  document.getElementById('userMenu').classList.add('active');
+  document.getElementById('menuAvatar').src = currentUser.avatar || getAvatar(currentUser.displayName || currentUser.username);
+  document.getElementById('menuName').textContent = currentUser.displayName || currentUser.username;
+  document.getElementById('menuRole').textContent = ROLE_LABEL[currentUser.role];
+  document.getElementById('menuOwner').classList.toggle('hidden', currentUser.role !== 'owner');
+}
+function closeUserMenu(){ document.getElementById('userMenu').classList.remove('active'); }
+function bindItemButtons(){
+  document.getElementById('profileBtn').addEventListener('click', (e)=>{ e.stopPropagation(); openUserMenu(); });
+  document.getElementById('menuDashboard').onclick = ()=>{ closeUserMenu(); openDashboard(); };
+  document.getElementById('menuOwner').onclick = ()=>{ closeUserMenu(); openDashboard(); switchDash('users'); };
+  document.getElementById('menuLogout').onclick = ()=>{ closeUserMenu(); logout(); };
+}
+function switchDash(tab){
+  currentDashboardTab = tab;
+  ['posts','users','log','profile','settings'].forEach(t=>{
+    document.getElementById('dash'+cap(t)).classList.toggle('hidden', t !== tab);
+    document.getElementById('tab'+cap(t)).classList.toggle('active', t === tab);
+  });
+  document.getElementById('tabUsers').classList.toggle('hidden', !canManageUsers());
+  document.getElementById('tabLog').classList.toggle('hidden', !(currentUser && (currentUser.role === 'owner' || currentUser.role === 'editor')));
+}
+function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+function openDashboard(){
+  if(!canViewDashboard()) return;
+  openModal('dashboardModal');
+  switchDash(canManageUsers() ? 'users' : 'posts');
+  renderDashboard();
+}
+function openPostEditor(mode, id=null){
+  if(mode === 'create'){
+    const section = currentPage;
+    if(!sectionCanCreateForCurrent(section)) return alert('هذه الصلاحية غير متاحة لرتبتك');
+    currentPostEditorMode = 'create';
+    currentPostEditorId = null;
+    document.getElementById('postEditorTitle').textContent = 'إضافة منشور';
+    document.getElementById('postEditorNote').textContent = '';
+    document.getElementById('postSection').value = section;
+    document.getElementById('postTitle').value = '';
+    document.getElementById('postImageUrl').value = '';
+    document.getElementById('postSummary').value = '';
+    document.getElementById('postContent').value = '';
+    document.getElementById('postAllowComments').checked = section !== 'education';
+    openModal('postEditorModal');
+    return;
+  }
+  const post = state.posts.find(p=>p.id===id);
+  if(!post) return;
+  if(!canEditPost(post)) return alert('لا تملك صلاحية تعديل هذا المنشور');
+  currentPostEditorMode = 'edit';
+  currentPostEditorId = id;
+  document.getElementById('postEditorTitle').textContent = 'تعديل منشور';
+  document.getElementById('postEditorNote').textContent = post.author !== currentUser.username ? 'هذا منشور ليس لك، لكن رتبتك تسمح بالتعديل.' : '';
+  document.getElementById('postSection').value = post.section;
+  document.getElementById('postTitle').value = post.title;
+  document.getElementById('postImageUrl').value = post.image || '';
+  document.getElementById('postSummary').value = post.summary || '';
+  document.getElementById('postContent').value = post.content || '';
+  document.getElementById('postAllowComments').checked = post.allowComments !== false;
+  openModal('postEditorModal');
+}
+async function savePost(){
+  const section = document.getElementById('postSection').value;
+  if(!sectionCanCreateForCurrent(section) && !(currentUser && ['owner','editor'].includes(currentUser.role))) { alert('هذه الرتبة لا تسمح بالنشر هنا'); return; }
+  const title = document.getElementById('postTitle').value.trim();
+  const summary = document.getElementById('postSummary').value.trim();
+  const content = document.getElementById('postContent').value.trim();
+  const url = document.getElementById('postImageUrl').value.trim();
+  const file = document.getElementById('postImageFile').files[0];
+  const allowComments = document.getElementById('postAllowComments').checked;
+  if(!title || !summary || !content){ alert('أكمل عنوان المنشور والملخص والنص'); return; }
+  let image = url;
+  if(file) image = await fileToDataURL(file);
+  if(!image) image = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80';
+
+  if(currentUser && ['media','educator'].includes(currentUser.role)){
+    const recent = state.posts.filter(p => p.author === currentUser.username && Date.now() - p.createdAt < MAX_MEDIA_POST_INTERVAL_MS);
+    if(recent.length){ alert('يمكنك إضافة منشور واحد كل 5 دقائق'); return; }
+  }
+
+  if(currentPostEditorMode === 'edit'){
+    const post = state.posts.find(p=>p.id===currentPostEditorId);
+    if(!post) return;
+    if(!canEditPost(post)) return alert('لا تملك صلاحية تعديل هذا المنشور');
+    post.section = section;
+    post.title = title;
+    post.summary = summary;
+    post.content = content;
+    post.image = image;
+    post.allowComments = allowComments;
+    post.updatedAt = Date.now();
+    logAction(`قام ${currentUser.username} بتعديل منشور: ${title}`);
+  }else{
+    const post = {
+      id: makeId('post'),
+      type: 'post',
+      section,
+      title, summary, content, image,
+      author: currentUser.username,
+      authorRole: currentUser.role,
+      allowComments,
+      likes: 0,
+      likedBy: [],
+      createdAt: Date.now(),
+      updatedAt: null
+    };
+    state.posts.unshift(post);
+    logAction(`قام ${currentUser.username} بإنشاء منشور: ${title}`);
+  }
+  saveState(); await syncToMongo();
+  closeModal('postEditorModal');
+  renderAll();
+}
+function openVideoEditor(mode, id=null){
+  if(!currentUser) return alert('سجل دخولك أولًا');
+  currentVideoEditorMode = mode;
+  currentVideoEditorId = id;
+  const v = id ? state.videos.find(x=>x.id===id) : null;
+  if(mode === 'create'){
+    if(!(currentUser.role === 'owner' || currentUser.role === 'editor' || currentUser.role === 'media')) return alert('لا تملك صلاحية إضافة فيديو');
+    document.getElementById('videoEditorTitle').textContent = 'إضافة فيديو';
+    document.getElementById('videoTitle').value = '';
+    document.getElementById('videoUrl').value = '';
+    document.getElementById('videoFile').value = '';
+    document.getElementById('videoDesc').value = '';
+  }else{
+    if(!v) return;
+    if(!canEditMedia(v)) return alert('لا تملك صلاحية تعديل هذا الفيديو');
+    document.getElementById('videoEditorTitle').textContent = 'تعديل فيديو';
+    document.getElementById('videoTitle').value = v.title;
+    document.getElementById('videoUrl').value = v.url;
+    document.getElementById('videoFile').value = '';
+    document.getElementById('videoDesc').value = v.desc || '';
+  }
+  openModal('videoEditorModal');
+}
+async function saveVideo(){
+  const title = document.getElementById('videoTitle').value.trim();
+  const url = document.getElementById('videoUrl').value.trim();
+  const file = document.getElementById('videoFile').files[0];
+  const desc = document.getElementById('videoDesc').value.trim();
+  if(!title){ alert('اكتب عنوان الفيديو'); return; }
+  if(!url && !file){ alert('أضف رابط فيديو أو ملف'); return; }
+  let finalUrl = url;
+  let sourceType = 'youtube';
+  if(file){
+    finalUrl = await fileToDataURL(file);
+    sourceType = 'upload';
+  }else{
+    if(!isYouTube(url)){
+      sourceType = 'youtube';
+    }
+    finalUrl = youtubeToEmbed(url);
+  }
+  const obj = {
+    id: currentVideoEditorMode === 'edit' ? currentVideoEditorId : makeId('vid'),
+    title, desc,
+    url: finalUrl,
+    embedUrl: sourceType === 'upload' ? finalUrl : finalUrl,
+    sourceType,
+    likes: 0,
+    likedBy: [],
+    author: currentUser.username,
+    createdAt: Date.now(),
+    updatedAt: null
+  };
+  if(currentVideoEditorMode === 'edit'){
+    const idx = state.videos.findIndex(x=>x.id===currentVideoEditorId);
+    if(idx >= 0){
+      if(!canEditMedia(state.videos[idx])) return alert('لا تملك صلاحية تعديل هذا الفيديو');
+      obj.likes = state.videos[idx].likes || 0;
+      obj.likedBy = state.videos[idx].likedBy || [];
+      obj.author = state.videos[idx].author;
+      obj.createdAt = state.videos[idx].createdAt;
+      state.videos[idx] = obj;
+      logAction(`قام ${currentUser.username} بتعديل فيديو: ${title}`);
+    }
+  }else{
+    state.videos.unshift(obj);
+    logAction(`قام ${currentUser.username} بإضافة فيديو: ${title}`);
+  }
+  saveState(); await syncToMongo();
+  closeModal('videoEditorModal');
+  renderAll();
+}
+function openLiveEditor(mode, id=null){
+  if(!currentUser) return alert('سجل دخولك أولًا');
+  currentLiveEditorMode = mode;
+  currentLiveEditorId = id;
+  const v = id ? state.live.find(x=>x.id===id) : null;
+  if(mode === 'create'){
+    if(!(currentUser.role === 'owner' || currentUser.role === 'editor' || currentUser.role === 'media')) return alert('لا تملك صلاحية إضافة بث مباشر');
+    document.getElementById('liveEditorTitle').textContent = 'إضافة بث مباشر';
+    document.getElementById('liveTitle').value = '';
+    document.getElementById('liveUrl').value = '';
+    document.getElementById('liveUntil').value = '';
+    document.getElementById('liveDesc').value = '';
+    document.getElementById('liveErr').textContent = '';
+  }else{
+    if(!v) return;
+    if(!canEditMedia(v)) return alert('لا تملك صلاحية تعديل هذا البث');
+    document.getElementById('liveEditorTitle').textContent = 'تعديل بث مباشر';
+    document.getElementById('liveTitle').value = v.title;
+    document.getElementById('liveUrl').value = v.url;
+    document.getElementById('liveUntil').value = v.endAt ? new Date(v.endAt).toISOString().slice(0,16) : '';
+    document.getElementById('liveDesc').value = v.desc || '';
+    document.getElementById('liveErr').textContent = '';
+  }
+  openModal('liveEditorModal');
+}
+async function saveLive(){
+  const title = document.getElementById('liveTitle').value.trim();
+  const url = document.getElementById('liveUrl').value.trim();
+  const until = document.getElementById('liveUntil').value.trim();
+  const desc = document.getElementById('liveDesc').value.trim();
+  const err = document.getElementById('liveErr');
+  err.textContent = '';
+  if(!title || !url){ err.textContent = 'اكتب العنوان والرابط'; return; }
+  if(!isYouTube(url)){ err.textContent = 'يجب أن يكون الرابط من يوتيوب'; return; }
+  const endAt = parseLiveEnd(until) || (Date.now() + 180 * 60 * 1000);
+  const obj = {
+    id: currentLiveEditorMode === 'edit' ? currentLiveEditorId : makeId('live'),
+    title, desc,
+    url: youtubeToEmbed(url),
+    embedUrl: youtubeToEmbed(url),
+    sourceType: 'youtube',
+    likes: 0,
+    likedBy: [],
+    author: currentUser.username,
+    createdAt: Date.now(),
+    endAt,
+    updatedAt: null
+  };
+  if(currentLiveEditorMode === 'edit'){
+    const idx = state.live.findIndex(x=>x.id===currentLiveEditorId);
+    if(idx >= 0){
+      if(!canEditMedia(state.live[idx])) return alert('لا تملك صلاحية تعديل هذا البث');
+      obj.likes = state.live[idx].likes || 0;
+      obj.likedBy = state.live[idx].likedBy || [];
+      obj.author = state.live[idx].author;
+      obj.createdAt = state.live[idx].createdAt;
+      state.live[idx] = obj;
+      logAction(`قام ${currentUser.username} بتعديل بث مباشر: ${title}`);
+    }
+  }else{
+    state.live.unshift(obj);
+    logAction(`قام ${currentUser.username} بإضافة بث مباشر: ${title}`);
+  }
+  saveState(); await syncToMongo();
+  closeModal('liveEditorModal');
+  renderAll();
+}
+function findItem(type, id){
+  if(type === 'post') return state.posts.find(x=>x.id===id);
+  if(type === 'video') return state.videos.find(x=>x.id===id);
+  if(type === 'live') return state.live.find(x=>x.id===id);
+  return null;
+}
+function itemTypeOf(id){
+  return state.posts.some(x=>x.id===id) ? 'post' :
+         state.videos.some(x=>x.id===id) ? 'video' :
+         state.live.some(x=>x.id===id) ? 'live' : null;
+}
+function openItem(id, type=null){
+  const t = type || itemTypeOf(id);
+  const item = findItem(t, id);
+  if(!item) return;
+  currentItem = {type:t, id:id};
+  const isMedia = t !== 'post';
+  document.getElementById('itemMedia').src = item.image || item.embedUrl || item.url || '';
+  document.getElementById('itemTitle').textContent = item.title;
+  document.getElementById('itemSummary').textContent = item.summary || '';
+  document.getElementById('itemContent').textContent = item.content || item.desc || '';
+  document.getElementById('itemMeta').textContent = `${authorLabel(item.author)} • ${dayTimeDisplay(item.createdAt)}${t==='live' && item.endAt ? ' • ينتهي ' + dayTimeDisplay(item.endAt) : ''}`;
+  document.getElementById('itemLikeCount').textContent = item.likes || 0;
+  document.getElementById('itemLikeBtn').classList.toggle('on', currentUser && item.likedBy && item.likedBy.includes(currentUser.username));
+  document.getElementById('itemCommentBtn').classList.toggle('hidden', t !== 'post');
+  document.getElementById('commentSection').classList.toggle('hidden', t !== 'post');
+  document.getElementById('itemEditBtn').classList.toggle('hidden', !((t === 'post' && canEditPost(item)) || (t !== 'post' && canEditMedia(item))));
+  document.getElementById('itemDeleteBtn').classList.toggle('hidden', !((t === 'post' && canEditPost(item)) || (t !== 'post' && canEditMedia(item))));
+  document.getElementById('itemShareBox').classList.add('hidden');
+  renderComments(id);
+  openModal('itemModal');
+}
+function editCurrentItem(){
+  if(!currentItem) return;
+  if(currentItem.type === 'post') openPostEditor('edit', currentItem.id);
+  if(currentItem.type === 'video') openVideoEditor('edit', currentItem.id);
+  if(currentItem.type === 'live') openLiveEditor('edit', currentItem.id);
+}
+function deleteCurrentItem(){ if(!currentItem) return; confirmDeleteMedia(currentItem.type, currentItem.id); }
+function confirmDeletePost(id){
+  const post = state.posts.find(x=>x.id===id);
+  if(!post) return;
+  askConfirm(`هل أنت متأكد من حذف المنشور؟`, `${authorLabel(post.author)} / ${post.title}`, async ()=>{
+    state.posts = state.posts.filter(x=>x.id !== id);
+    state.comments = state.comments.filter(c=>c.postId !== id);
+    saveState(); await syncToMongo();
+    logAction(`قام ${currentUser.username} بحذف منشور: ${post.title}`);
+    if(currentItem && currentItem.id === id) closeModal('itemModal');
+    renderAll();
+  });
+}
+function confirmDeleteMedia(type, id){
+  const item = findItem(type, id);
+  if(!item) return;
+  askConfirm(`هل أنت متأكد من حذف ${type === 'video' ? 'الفيديو' : 'البث'}؟`, item.title, async ()=>{
+    if(type === 'video') state.videos = state.videos.filter(x=>x.id !== id);
+    if(type === 'live') state.live = state.live.filter(x=>x.id !== id);
+    saveState(); await syncToMongo();
+    logAction(`قام ${currentUser.username} بحذف ${type === 'video' ? 'فيديو' : 'بث'}: ${item.title}`);
+    if(currentItem && currentItem.id === id) closeModal('itemModal');
+    renderAll();
+  });
+}
+function askConfirm(title, text, fn){
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmText').textContent = text;
+  confirmAction = fn;
+  document.getElementById('confirmYes').onclick = async ()=>{
+    closeModal('confirmModal');
+    const action = confirmAction; confirmAction = null;
+    if(action) await action();
+  };
+  openModal('confirmModal');
+}
+function toggleLike(id, type){
+  if(!currentUser) return alert('سجل دخولك أولًا');
+  const item = findItem(type, id);
+  if(!item) return;
+  item.likedBy = item.likedBy || [];
+  const i = item.likedBy.indexOf(currentUser.username);
+  if(i >= 0){ item.likedBy.splice(i,1); item.likes = Math.max(0, (item.likes||0)-1); }
+  else { item.likedBy.push(currentUser.username); item.likes = (item.likes||0)+1; }
+  saveState(); syncToMongo(); renderAll();
+  if(currentItem && currentItem.id === id) openItem(id, type);
+}
+function shareItem(type,id){
+  const url = `${location.origin}${location.pathname}#${type}=${id}`;
+  navigator.clipboard?.writeText(url).catch(()=>{});
+  const box = document.getElementById('itemShareBox');
+  if(currentItem && currentItem.id===id){
+    box.textContent = url;
+    box.classList.remove('hidden');
+  }
+  location.hash = `${type}=${id}`;
+}
+function toggleCommentsView(){ document.getElementById('commentSection').classList.toggle('hidden'); }
+function focusComment(){ document.getElementById('commentSection').classList.remove('hidden'); document.getElementById('commentInput').focus(); }
+function addComment(){
+  if(!currentUser) return alert('سجل دخولك أولًا');
+  if(!currentItem) return;
+  const item = findItem(currentItem.type, currentItem.id);
+  if(!item || currentItem.type !== 'post') return;
+  if(!canCommentPost(item)) return alert('التعليقات غير متاحة لهذا المنشور');
+  const text = document.getElementById('commentInput').value.trim();
+  if(!text) return;
+  const c = {
+    id: makeId('c'),
+    postId: item.id,
+    parentId: null,
+    author: currentUser.username,
+    text,
+    likes: 0,
+    likedBy: [],
+    createdAt: Date.now()
+  };
+  state.comments.unshift(c);
+  saveState(); syncToMongo();
+  document.getElementById('commentInput').value = '';
+  logAction(`قام ${currentUser.username} بالتعليق على منشور: ${item.title}`);
+  renderComments(item.id);
+  renderAll();
+}
+function renderComments(postId){
+  const list = state.comments.filter(c=>c.postId === postId).sort((a,b)=>a.createdAt-b.createdAt);
+  const root = document.getElementById('commentList');
+  if(!root) return;
+  if(!list.length){ root.innerHTML = '<div class="card">لا توجد تعليقات بعد.</div>'; return; }
+  const byParent = (parentId)=> list.filter(c=>c.parentId === parentId);
+  const renderOne = (c, depth=0)=> `
+    <div class="comment ${depth ? 'reply' : ''}">
+      <div class="top">
+        <div class="name">${escapeHtml(authorLabel(c.author))}</div>
+        <div class="time">${timeAgo(c.createdAt)}</div>
+      </div>
+      <div class="text">${escapeHtml(c.text)}</div>
+      <div class="sub">
+        <button class="iconbtn like ${(c.likedBy||[]).includes(currentUser?.username) ? 'on':''}" onclick="toggleCommentLike('${c.id}')">❤️ <span>${c.likes||0}</span></button>
+        <button class="iconbtn" onclick="openReply('${c.id}')">↩ رد</button>
+        ${currentUserCanDeleteComment(c) ? `<button class="iconbtn" onclick="deleteComment('${c.id}')">🗑 حذف</button>` : ''}
+      </div>
+      <div class="comment-list">${byParent(c.id).map(r=>renderOne(r, depth+1)).join('')}</div>
+    </div>
+  `;
+  root.innerHTML = byParent(null).map(c=>renderOne(c)).join('');
+  document.getElementById('itemCommentCount').textContent = list.length;
+}
+function openReply(commentId){
+  const c = state.comments.find(x=>x.id===commentId);
+  if(!c) return;
+  currentCommentReplyTo = commentId;
+  document.getElementById('replyTargetPreview').innerHTML = `<strong>${escapeHtml(authorLabel(c.author))}</strong><div class="note">${escapeHtml(c.text)}</div>`;
+  document.getElementById('replyInput').value = '';
+  openModal('commentModal');
+}
+function saveReply(){
+  if(!currentUser) return alert('سجل دخولك أولًا');
+  if(!currentCommentReplyTo) return;
+  const parent = state.comments.find(c=>c.id===currentCommentReplyTo);
+  if(!parent) return;
+  const text = document.getElementById('replyInput').value.trim();
+  if(!text) return;
+  const reply = {
+    id: makeId('c'),
+    postId: parent.postId,
+    parentId: parent.id,
+    author: currentUser.username,
+    text,
+    likes: 0,
+    likedBy: [],
+    createdAt: Date.now()
+  };
+  state.comments.unshift(reply);
+  saveState(); syncToMongo();
+  logAction(`قام ${currentUser.username} بالرد على تعليق`);
+  closeModal('commentModal');
+  openItem(parent.postId,'post');
+}
+function toggleCommentLike(id){
+  const c = state.comments.find(x=>x.id===id);
+  if(!c || !currentUser) return;
+  c.likedBy = c.likedBy || [];
+  const i = c.likedBy.indexOf(currentUser.username);
+  if(i>=0){ c.likedBy.splice(i,1); c.likes = Math.max(0,(c.likes||0)-1); }
+  else { c.likedBy.push(currentUser.username); c.likes = (c.likes||0)+1; }
+  saveState(); syncToMongo();
+  if(currentItem) openItem(currentItem.id, currentItem.type);
+}
+function deleteComment(id){
+  const c = state.comments.find(x=>x.id===id);
+  if(!c) return;
+  askConfirm('هل أنت متأكد من حذف التعليق؟', c.text, async ()=>{
+    state.comments = state.comments.filter(x=>x.id !== id && x.parentId !== id);
+    saveState(); await syncToMongo();
+    logAction(`قام ${currentUser.username} بحذف تعليق`);
+    if(currentItem) openItem(currentItem.id, currentItem.type);
+  });
+}
+function nextRole(current, step){
+  const idx = roleIndex(current);
+  if(current === 'owner') return null;
+  if(step > 0){
+    const nxt = ROLE_ORDER[Math.max(0, Math.min(idx-1, ROLE_ORDER.indexOf('editor')))];
+    return nxt === 'owner' ? 'editor' : nxt;
+  }
+  const prev = ROLE_ORDER[Math.min(ROLE_ORDER.length-1, idx+1)];
+  return prev === 'user' ? 'user' : prev;
+}
+function confirmRoleChange(userId, newRole, direction){
+  const u = state.users.find(x=>x.id===userId);
+  if(!u) return;
+  if(isOwner(u.username)) return;
+  if(newRole === 'owner') return;
+  askConfirm(
+    direction === 'down' ? `هل أنت متأكد من إزالة/خفض الصلاحية؟` : `هل أنت متأكد من رفع الصلاحية؟`,
+    `${u.displayName || u.username} (${formatUsername(u.username)}) → ${ROLE_LABEL[newRole]}`,
+    async ()=>{
+      u.role = newRole;
+      saveState(); await syncToMongo();
+      logAction(`قام ${currentUser.username} بتغيير رتبة ${u.username} إلى ${newRole}`);
+      renderDashboard(); renderAll();
+    }
+  );
+}
+function openUserCard(userId){
+  const u = state.users.find(x=>x.id===userId);
+  if(!u) return;
+  alert(`${u.displayName || u.username}\n${formatUsername(u.username)}\n${ROLE_LABEL[u.role]}`);
+}
+function togglePhone(id){ document.getElementById('phone-' + id).classList.toggle('hidden'); }
+async function saveProfileImage(){
+  if(!currentUser) return;
+  const file = document.getElementById('profileImage').files[0];
+  if(!file) return;
+  currentUser.avatar = await fileToDataURL(file);
+  const idx = state.users.findIndex(u=>u.id===currentUser.id);
+  if(idx >= 0) state.users[idx] = currentUser;
+  saveState(); await syncToMongo();
+  logAction(`قام ${currentUser.username} بتحديث صورة حسابه`);
+  renderAll();
+  alert('تم حفظ صورة الحساب');
+}
+function saveSettings(){
+  state.settings.allowTelegramImport = document.getElementById('allowTelegramImport').checked;
+  state.settings.telegramApi = document.getElementById('telegramApi').value.trim();
+  saveState(); syncToMongo();
+  logAction(`قام ${currentUser.username} بحفظ الإعدادات`);
+  alert('تم الحفظ');
+}
+async function importEducationFromTelegram(){
+  if(!state.settings.allowTelegramImport || !state.settings.telegramApi){
+    alert('فعّل رابط الاستيراد من الإعدادات أولًا');
+    return;
+  }
+  try{
+    const res = await fetch(state.settings.telegramApi, {cache:'no-store'});
+    if(!res.ok) throw new Error('bad');
+    const data = await res.json();
+    const items = Array.isArray(data) ? data : Array.isArray(data.items) ? data.items : [];
+    let added = 0;
+    items.forEach(it=>{
+      if(!it || !it.title) return;
+      const exists = state.posts.some(p=>p.title === it.title && p.section === 'education');
+      if(exists) return;
+      state.posts.unshift({
+        id: makeId('post'),
+        type:'post',
+        section:'education',
+        title: it.title,
+        summary: it.summary || it.title,
+        content: it.content || it.summary || it.title,
+        image: it.image || 'https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=1200&q=80',
+        author: OWNER_USERNAME,
+        authorRole:'owner',
+        allowComments:false,
+        likes:0,
+        likedBy:[],
+        createdAt: it.createdAt ? new Date(it.createdAt).getTime() : Date.now(),
+        updatedAt:null
+      });
+      added++;
+    });
+    if(added){
+      saveState(); await syncToMongo();
+      logAction(`تم استيراد ${added} منشور تعليمي من تيليجرام`);
+      renderAll();
+      alert('تم الاستيراد');
+    }else{
+      alert('لا توجد عناصر جديدة للاستيراد');
+    }
+  }catch(e){
+    alert('تعذر الاستيراد من تيليجرام. تحتاج API وسيط يدعم CORS.');
+  }
+}
+function purgeExpiredLive(){
+  const now = Date.now();
+  const before = state.live.length;
+  state.live = state.live.filter(x => !x.endAt || x.endAt > now);
+  if(state.live.length !== before){
+    saveState(); syncToMongo();
+    renderAll();
+  }
+}
+setInterval(purgeExpiredLive, AUTO_PURGE_MS);
+
+function toggleLikeCurrent(){ if(!currentItem) return; toggleLike(currentItem.id, currentItem.type); }
+function shareCurrent(){ if(!currentItem) return; shareItem(currentItem.type, currentItem.id); }
+function updateLoginUI(){
+  document.getElementById('loginBtn').classList.toggle('hidden', !!currentUser);
+  document.getElementById('profileBtn').classList.toggle('hidden', !currentUser);
+}
+function assignOwnerIfNeeded(){
+  if(!state.users.some(u=>normalizeUsername(u.username)===OWNER_USERNAME)){
+    const user = {id:makeId('user'), displayName:'المطور', email:'', username:OWNER_USERNAME, phone:'', passHash:simpleHash(OWNER_PASSWORD), role:'owner', avatar:''};
+    state.users.push(user);
+    saveState();
+  }else{
+    const owner = state.users.find(u=>normalizeUsername(u.username)===OWNER_USERNAME);
+    owner.role = 'owner';
+    if(!owner.passHash) owner.passHash = simpleHash(OWNER_PASSWORD);
+  }
+}
+function openSharedFromHash(){
+  const h = location.hash.replace(/^#/,'');
+  if(!h) return;
+  const m = h.match(/^(post|video|live)=([A-Za-z0-9_]+)/);
+  if(!m) return;
+  const [,type,id] = m;
+  const item = findItem(type, id);
+  if(item) openItem(id, type);
+}
+function bindEditableTexts(){
+  document.querySelectorAll('.editable').forEach(el=>{
+    el.addEventListener('dblclick', ()=>{
+      if(!currentUserCanEditSiteText()) return;
+      if(el.classList.contains('editing')) return;
+      el.classList.add('editing','edit-mode');
+      el.contentEditable = 'true';
+      el.focus();
+    });
+    el.addEventListener('blur', ()=>{
+      if(!el.classList.contains('editing')) return;
+      el.classList.remove('editing','edit-mode');
+      el.contentEditable = 'false';
+      const key = el.dataset.key;
+      setText(key, el.textContent.trim());
+      logAction(`قام المطور بتعديل النص: ${key}`);
+    });
+    el.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        el.blur();
+      }
+      if(e.key === 'Escape'){
+        el.textContent = state.texts[el.dataset.key] || DEFAULT_TEXTS[el.dataset.key] || '';
+        el.blur();
+      }
+    });
+  });
+}
+function closeAll(){
+  ['authModal','dashboardModal','postEditorModal','videoEditorModal','liveEditorModal','itemModal','commentModal','confirmModal'].forEach(closeModal);
+  closeUserMenu();
+}
+document.addEventListener('click', (e)=>{
+  if(!e.target.closest('#profileBtn') && !e.target.closest('#userMenu')) closeUserMenu();
 });
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeAll(); });
+window.addEventListener('hashchange', openSharedFromHash);
+
+window.addEventListener('DOMContentLoaded', async ()=>{
+  makeSampleData();
+  seedContent();
+  assignOwnerIfNeeded();
+  initOwnerPassword();
+  await hydrateFromBackend();
+  renderTexts();
+  updateHeaderLogo();
+  bindEditableTexts();
+  renderAll();
+  updateLoginUI();
+  bindItemButtons();
+  currentCaptcha = CAPTCHA[0];
+  newCaptcha();
+  document.getElementById('profileBtn').addEventListener('click', (e)=>{ e.stopPropagation(); openUserMenu(); });
+  document.getElementById('regPass').addEventListener('input', ()=>{
+    const p = document.getElementById('regPass').value;
+    const score = Math.min(100, (p.length>=8?30:0) + (/[A-Za-z\u0600-\u06FF]/.test(p)?35:0) + (/\d/.test(p)?35:0));
+    document.getElementById('pwMeter').style.width = score + '%';
+  });
+
+  const s = getSession();
+  if(s && s.username){
+    const u = state.users.find(x=>normalizeUsername(x.username)===normalizeUsername(s.username));
+    if(u) currentUser = u;
+  }
+
+  if(currentUser){
+    if(isOwner(currentUser.username)) currentUser.role = 'owner';
+    updateLoginUI();
+    renderUserMenu();
+  }
+  purgeExpiredLive();
+  openSharedFromHash();
+  document.getElementById('telegramApi').value = state.settings.telegramApi || '';
+  document.getElementById('allowTelegramImport').checked = !!state.settings.allowTelegramImport;
+});
+function showPage(id, btn){
+  currentPage = id;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  updateVisibleButtons();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('confirmYes').addEventListener('click', async ()=>{
+  closeModal('confirmModal');
+  const act = confirmAction;
+  confirmAction = null;
+  if(act) await act();
+});
+function currentPostCanComment(){ return currentItem && currentItem.type === 'post' && canCommentPost(findItem('post', currentItem.id)); }
+function updateVisibleButtons(){
+  document.getElementById('addHomeBtn').classList.toggle('hidden', !currentUser || !sectionCanCreateForCurrent('home'));
+  document.getElementById('addSportsBtn').classList.toggle('hidden', !currentUser || !sectionCanCreateForCurrent('sports'));
+  document.getElementById('addEconomyBtn').classList.toggle('hidden', !currentUser || !sectionCanCreateForCurrent('economy'));
+  document.getElementById('addEduBtn').classList.toggle('hidden', !currentUser || !sectionCanCreateForCurrent('education'));
+  document.getElementById('addVideoBtn').classList.toggle('hidden', !currentUser || !(currentUser.role === 'owner' || currentUser.role === 'editor' || currentUser.role === 'media'));
+  document.getElementById('addLiveBtn').classList.toggle('hidden', !currentUser || !(currentUser.role === 'owner' || currentUser.role === 'editor' || currentUser.role === 'media'));
+}
+function renderComments(postId){
+  const list = state.comments.filter(c=>c.postId === postId).sort((a,b)=>a.createdAt-b.createdAt);
+  const root = document.getElementById('commentList');
+  if(!root) return;
+  if(!list.length){ root.innerHTML = '<div class="card">لا توجد تعليقات بعد.</div>'; return; }
+  const byParent = (parentId)=> list.filter(c=>c.parentId === parentId);
+  const renderOne = (c, depth=0)=> `
+    <div class="comment ${depth ? 'reply' : ''}">
+      <div class="top">
+        <div class="name">${escapeHtml(authorLabel(c.author))}</div>
+        <div class="time">${timeAgo(c.createdAt)}</div>
+      </div>
+      <div class="text">${escapeHtml(c.text)}</div>
+      <div class="sub">
+        <button class="iconbtn like ${(c.likedBy||[]).includes(currentUser?.username) ? 'on':''}" onclick="toggleCommentLike('${c.id}')">❤️ <span>${c.likes||0}</span></button>
+        <button class="iconbtn" onclick="openReply('${c.id}')">↩ رد</button>
+        ${currentUserCanDeleteComment(c) ? `<button class="iconbtn" onclick="deleteComment('${c.id}')">🗑 حذف</button>` : ''}
+      </div>
+      <div class="comment-list">${byParent(c.id).map(r=>renderOne(r, depth+1)).join('')}</div>
+    </div>
+  `;
+  root.innerHTML = byParent(null).map(c=>renderOne(c)).join('');
+  document.getElementById('itemCommentCount').textContent = list.length;
+}
+function currentUserCanDeleteComment(c){ if(!currentUser) return false; if(canModerateComments()) return true; return c.author === currentUser.username; }
 </script>
 </body>
 </html>
