@@ -76,12 +76,14 @@ button{cursor:pointer}
 .contact-chip a{color:#fff;text-decoration:none;font-weight:800}
 .main{flex:1;min-width:0}
 .page{display:none}.page.active{display:block}
-.hero{position:relative;border-radius:28px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(135deg,rgba(2,6,23,.92),rgba(15,23,42,.78)),url('https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1600&q=80') center/cover;min-height:320px;display:grid;grid-template-columns:1fr;align-items:center;gap:20px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.22)}
+.hero{position:relative;border-radius:28px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(135deg,rgba(2,6,23,.92),rgba(15,23,42,.78)),url('https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1600&q=80') center/cover;min-height:320px;display:grid;grid-template-columns:1.25fr .75fr;align-items:center;gap:20px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.22)}
 .hero-copy h2{font-size:clamp(2rem,4vw,3.4rem);line-height:1.1;margin:10px 0 12px;font-weight:900}
 .hero-copy p{color:#e2e8f0;max-width:60ch;font-size:1.05rem}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
 .hero-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:14px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#00111a;text-decoration:none;font-weight:900;border:none;cursor:pointer}
 .hero-btn.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.16)}
+.hero-visual{display:flex;align-items:center;justify-content:center}
+.hero-visual img{width:min(100%,280px);height:auto;object-fit:contain;filter:drop-shadow(0 22px 30px rgba(0,0,0,.35))}
 .section-title{margin:24px 4px 14px;font-size:1.5rem;font-weight:900}
 .section-subtitle{color:var(--muted);margin:0 4px 18px}
 .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -103,6 +105,27 @@ button{cursor:pointer}
 .submit{border:none;cursor:pointer;border-radius:14px;padding:12px 16px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#00111a;font-weight:900}
 .submit.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.16)}
 .note{color:var(--muted);font-size:.95rem}
+.form-error{color:#f87171;font-size:.9rem;min-height:1.2em;margin-top:6px;line-height:1.45}
+.captcha-box{margin-top:12px;padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.captcha-box .badge{margin-bottom:8px}
+.captcha-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.captcha-refresh{border:none;border-radius:12px;padding:12px 14px;background:rgba(56,189,248,.14);color:#fff;font-weight:900;white-space:nowrap}
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.video-card{background:linear-gradient(180deg,rgba(30,41,59,.96),rgba(17,24,39,.96));border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);transition:.25s ease;cursor:pointer}
+.video-card:hover{transform:translateY(-6px);border-color:rgba(56,189,248,.28)}
+.video-thumb{width:100%;height:180px;position:relative;background:linear-gradient(135deg,rgba(2,6,23,.9),rgba(30,41,59,.9));display:flex;align-items:center;justify-content:center;overflow:hidden}
+.video-thumb img{width:100%;height:100%;object-fit:cover}
+.video-fallback{display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:2.2rem;font-weight:900;color:#fff;background:linear-gradient(135deg,rgba(56,189,248,.22),rgba(14,165,233,.10))}
+.video-meta{padding:16px}
+.video-meta h3{font-size:1.12rem;margin-bottom:8px}
+.video-meta p{color:var(--muted);font-size:.95rem}
+.video-source{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(56,189,248,.14);border:1px solid rgba(56,189,248,.2);color:#fff;font-size:.82rem;font-weight:800;margin-bottom:10px}
+.video-watch{margin-top:12px;border:none;cursor:pointer;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#00111a;padding:10px 14px;border-radius:12px;font-weight:900;width:100%}
+.video-player-wrap{display:grid;gap:12px}
+.video-modal-player{width:100%;aspect-ratio:16/9;border:none;border-radius:16px;background:#000}
+.video-open-link{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.06);color:#fff;text-decoration:none;font-weight:800}
+.video-empty{padding:18px;border-radius:16px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.12);color:var(--muted)}
+.video-source-fields{display:grid;gap:12px}
 .footer{width:min(1400px,calc(100% - 24px));margin:20px auto 30px;text-align:center;color:var(--muted);padding:18px;border-top:1px solid var(--line)}
 .modal{position:fixed;inset:0;background:rgba(2,6,23,.84);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px;z-index:3000}
 .modal.active{display:flex}
@@ -154,7 +177,6 @@ button{cursor:pointer}
 .editor-banner{margin:14px 0 0;padding:12px 14px;border-radius:14px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.22);color:#fff;font-weight:800}
 .empty-state{padding:18px;border-radius:16px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.12);color:var(--muted)}
 .helper{font-size:.9rem;color:var(--muted);margin-top:-6px;padding-inline:2px}
-.form-error{color:var(--danger);font-size:.88rem;min-height:1.2em;margin-top:6px;line-height:1.5}
 @media (max-width:1100px){.layout{flex-direction:column}.sidebar{width:100%;position:relative;top:auto}}
 @media (max-width:900px){.auth-grid,.contact-box,.dashboard-grid,.form-grid,.user-row{grid-template-columns:1fr}.auth-side{border-inline-start:none;border-top:1px solid var(--line)}.topbar{flex-direction:column;align-items:flex-start}.hero{grid-template-columns:1fr}.news-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:620px){.news-grid{grid-template-columns:1fr}.hero{padding:20px;min-height:auto}.brand-logo{width:58px;height:58px}.brand-text h1{font-size:1.35rem}.profile-menu{width:calc(100% - 24px);left:12px;top:112px}}
@@ -185,6 +207,7 @@ button{cursor:pointer}
     <button class="nav-link active" onclick="showPage('home', this)">الرئيسية</button>
     <button class="nav-link" onclick="showPage('sports', this)">رياضة</button>
     <button class="nav-link" onclick="showPage('economy', this)">اقتصاد</button>
+    <button class="nav-link" onclick="showPage('videos', this)">فيديوهات</button>
     <button class="nav-link" onclick="showPage('contact', this)">تواصل معنا</button>
   </div>
 </header>
@@ -221,6 +244,7 @@ button{cursor:pointer}
         <a onclick="showPage('home')">الرئيسية</a>
         <a onclick="showPage('sports')">رياضة</a>
         <a onclick="showPage('economy')">اقتصاد</a>
+        <a onclick="showPage('videos')">فيديوهات</a>
         <a onclick="showPage('contact')">تواصل معنا</a>
       </div>
     </div>
@@ -251,6 +275,7 @@ button{cursor:pointer}
             <button class="hero-btn secondary" onclick="showPage('sports')">شاهد قسم الرياضة</button>
           </div>
         </div>
+        <div class="hero-visual"><img id="heroLogo" alt="شعار صحيفة اليوم"></div>
       </div>
 
       <div class="section-head">
@@ -283,6 +308,18 @@ button{cursor:pointer}
         <button id="addEconomyBtn" class="mini-action hidden" onclick="openEditor('create','economy')">+ إضافة بانل</button>
       </div>
       <div id="economyGrid" class="news-grid"></div>
+    </section>
+
+
+    <section id="videos" class="page">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">🎬 قسم الفيديوهات</h2>
+          <p class="section-subtitle">فيديوهات مضافة من المطور أو الإعلاميين، من رابط أو من رفع ملف مباشر.</p>
+        </div>
+        <button id="addVideosBtn" class="mini-action hidden" onclick="openVideoEditor('create')">+ إضافة فيديو</button>
+      </div>
+      <div id="videosGrid" class="video-grid"></div>
     </section>
 
     <section id="contact" class="page">
@@ -355,7 +392,6 @@ button{cursor:pointer}
             <input id="loginUser" class="input" type="text" placeholder="اسم المستخدم @username" autocomplete="username">
             <input id="loginPass" class="input" type="password" placeholder="كلمة المرور" autocomplete="current-password">
           </div>
-          <div class="form-error" id="loginError"></div>
           <button class="submit" style="margin-top:12px;width:100%" onclick="login()">دخول</button>
           <button class="submit secondary" style="margin-top:10px;width:100%" onclick="closeAuth()">إلغاء</button>
         </div>
@@ -391,16 +427,23 @@ button{cursor:pointer}
           </div>
           <input id="regPass2" class="input" type="password" placeholder="تأكيد كلمة المرور" autocomplete="new-password" style="margin-top:12px;">
           <div class="form-error" id="regPass2Error"></div>
+          <div class="captcha-box">
+            <span class="badge">اختبار بشري</span>
+            <p id="captchaPrompt" style="margin-bottom:10px;color:#fff;font-weight:800;"></p>
+            <div class="captcha-row">
+              <input id="captchaAnswer" class="input" type="text" placeholder="اكتب الإجابة">
+              <button type="button" class="captcha-refresh" onclick="generateCaptcha()">تبديل التحدي</button>
+            </div>
+            <div class="form-error" id="captchaError"></div>
+          </div>
           <button class="submit" style="margin-top:12px;width:100%" onclick="register()">إنشاء الحساب</button>
           <button class="submit secondary" style="margin-top:10px;width:100%" onclick="closeAuth()">إلغاء</button>
         </div>
       </div>
       <div class="auth-side">
-        <span class="badge">نظام حسابات محلي</span>
-        <h2 style="margin:12px 0 10px;">تسجيل دخول + صلاحيات + حفظ دائم</h2>
-        <p class="note">هذا النظام يعمل داخل ملف HTML واحد ويخزن البيانات في المتصفح حتى لا تضيع التعديلات عند إعادة فتح الصفحة.</p>
-        <div class="editor-banner">اسم مستخدم المطور مضبوط على <strong>sahm</strong>. عند تسجيله سيأخذ صلاحية المطور تلقائيًا.</div>
-        <div class="editor-banner" style="background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.22);margin-top:10px;">المحررون يقدرون فقط على إنشاء البانلات وتعديلها، أما إدارة المستخدمين فتبقى للمطور فقط.</div>
+        <span class="badge">مرحبًا</span>
+        <h2 style="margin:12px 0 10px;">سجّل دخولك أو أنشئ حسابًا</h2>
+        <p class="note">بعد تسجيل الدخول ستظهر الصلاحيات المناسبة لحسابك.</p>
       </div>
     </div>
   </div>
@@ -418,6 +461,7 @@ button{cursor:pointer}
       </div>
       <div class="dashboard-tabs">
         <button class="dashboard-tab active" id="dashTabPanels" onclick="switchDashboardTab('panels')">البانلات</button>
+        <button class="dashboard-tab hidden" id="dashTabVideos" onclick="switchDashboardTab('videos')">الفيديوهات</button>
         <button class="dashboard-tab hidden" id="dashTabUsers" onclick="switchDashboardTab('users')">المستخدمون</button>
         <button class="dashboard-tab" id="dashTabAccount" onclick="switchDashboardTab('account')">الحساب</button>
       </div>
@@ -440,6 +484,17 @@ button{cursor:pointer}
             </div>
           </div>
         </div>
+      </div>
+
+      <div id="dashVideos" class="hidden">
+        <div class="section-head" style="margin:0 0 12px;">
+          <h3>إدارة الفيديوهات</h3>
+          <button class="mini-action" onclick="openVideoEditor('create')">+ فيديو جديد</button>
+        </div>
+        <div class="form-grid one" style="margin-bottom:12px;">
+          <input id="videoSearch" class="input" type="text" placeholder="ابحث بعنوان الفيديو..." oninput="renderDashboard()">
+        </div>
+        <div class="panel-list" id="manageVideosList"></div>
       </div>
 
       <div id="dashUsers" class="hidden">
@@ -514,6 +569,58 @@ button{cursor:pointer}
   </div>
 </div>
 
+
+<div class="modal" id="videoModal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-body">
+      <div class="section-head" style="margin:0 0 14px;">
+        <div>
+          <h2 id="videoTitle"></h2>
+          <p class="note" id="videoDescription"></p>
+        </div>
+        <button class="modal-close" onclick="closeVideo()">إغلاق</button>
+      </div>
+      <div id="videoPlayerWrap" class="video-player-wrap"></div>
+      <div class="modal-actions">
+        <a id="videoExternalLink" class="video-open-link hidden" target="_blank" rel="noopener">فتح الرابط الأصلي</a>
+        <button class="modal-close" onclick="closeVideo()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="videoEditorModal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-body">
+      <div class="section-head" style="margin:0 0 14px;">
+        <div>
+          <h2 id="videoEditorTitle">إضافة فيديو</h2>
+          <p class="note">يمكنك إضافة رابط يوتيوب أو رفع ملف فيديو من جهازك ثم حفظه.</p>
+        </div>
+        <button class="modal-close" onclick="closeVideoEditor()">إغلاق</button>
+      </div>
+      <div class="video-source-fields">
+        <input id="videoTitleInput" class="input" type="text" placeholder="عنوان الفيديو">
+        <textarea id="videoDescriptionInput" class="textarea" placeholder="وصف الفيديو"></textarea>
+        <select id="videoSourceType" class="select" onchange="toggleVideoSourceFields()">
+          <option value="link">رابط (يوتيوب أو رابط مباشر)</option>
+          <option value="file">رفع من الجهاز</option>
+        </select>
+        <div id="videoUrlWrap">
+          <input id="videoSourceUrl" class="input" type="url" placeholder="رابط الفيديو أو يوتيوب">
+        </div>
+        <div id="videoFileWrap" class="hidden">
+          <input id="videoFileInput" class="input" type="file" accept="video/*">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="submit" onclick="saveVideoEditor()">حفظ</button>
+        <button class="submit secondary" onclick="closeVideoEditor()">إلغاء</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal" id="passwordModal" role="dialog" aria-modal="true">
   <div class="modal-box">
     <div class="modal-body">
@@ -540,14 +647,7 @@ button{cursor:pointer}
 <script>
 const STORAGE_KEY = 'syf_news_site_state_v1';
 const SESSION_KEY = 'syf_news_site_session_v1';
-const OWNER_USERNAME = 'sahm';
-
-const MONGO_PLACEHOLDER = {
-  apiBaseUrl: '',
-  dbName: '',
-  mongoUri: '',
-  note: 'ضع القيم هنا للربط مع باك-إند لاحقًا، ولا تضع MongoDB URI الحقيقي داخل ملف HTML العام.'
-};
+const OWNER_USERNAME = ''; // ضع هنا اسم المستخدم الخاص بالمطور بعد إنشاء الحساب
 
 const INFO_CONTENT = {
   about: {
@@ -589,12 +689,15 @@ const seedArticles = [
 let state = loadState();
 let currentUser = null;
 let currentNewsId = null;
+let currentVideoId = null;
 let dashboardTab = 'panels';
 let dashboardMode = 'editor';
 let authMode = 'login';
 let editorMode = 'create';
 let editorArticleId = null;
-let editorDefaultSection = 'home';
+let videoEditorMode = 'create';
+let videoEditorId = null;
+let captchaChallenge = null;
 
 function loadState(){
   try{
@@ -603,15 +706,17 @@ function loadState(){
       const parsed = JSON.parse(raw);
       return {
         users: Array.isArray(parsed.users) ? parsed.users : [],
-        articles: Array.isArray(parsed.articles) ? parsed.articles : []
+        articles: Array.isArray(parsed.articles) ? parsed.articles : [],
+        videos: Array.isArray(parsed.videos) ? parsed.videos : []
       };
     }
   }catch(e){}
-  return { users: [], articles: [] };
+  return { users: [], articles: [], videos: [] };
 }
 function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 function seedIfNeeded(){
   if(!state.articles.length) state.articles = seedArticles.slice();
+  if(!Array.isArray(state.videos)) state.videos = [];
   if(!state.users.length) state.users = [];
   saveState();
 }
@@ -630,18 +735,32 @@ function showToast(text='تم الحفظ'){
   clearTimeout(showToast._t);
   showToast._t = setTimeout(()=>toast.classList.remove('show'), 2200);
 }
-function setActiveNav(clickedButton){ document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active')); if(clickedButton) clickedButton.classList.add('active'); }
-function showPage(id, clickedButton){ document.querySelectorAll('.page').forEach(page => page.classList.remove('active')); const target = document.getElementById(id); if(target) target.classList.add('active'); if(clickedButton) setActiveNav(clickedButton); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function setActiveNav(clickedButton){
+  document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+  if(clickedButton) clickedButton.classList.add('active');
+}
+function showPage(id, clickedButton){
+  document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+  const target = document.getElementById(id);
+  if(target) target.classList.add('active');
+  if(clickedButton) setActiveNav(clickedButton);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 function roleLabel(role){ if(role === 'owner') return 'مطور الموقع'; if(role === 'editor') return 'محرر'; return 'مستخدم'; }
 function canEdit(){ return currentUser && (currentUser.role === 'owner' || currentUser.role === 'editor'); }
 function canManageUsers(){ return currentUser && currentUser.role === 'owner'; }
 function articleById(id){ return state.articles.find(a => a.id === id); }
+function videoById(id){ return state.videos.find(v => v.id === id); }
 function articlesFor(section){ return state.articles.filter(a => a.section === section); }
-function sectionLabel(section){ if(section === 'home') return 'الرئيسية'; if(section === 'sports') return 'رياضة'; if(section === 'economy') return 'اقتصاد'; return section; }
+function sectionLabel(section){
+  if(section === 'home') return 'الرئيسية';
+  if(section === 'sports') return 'رياضة';
+  if(section === 'economy') return 'اقتصاد';
+  return section;
+}
 function getAvatarData(name){
   const initial = (name || '@').replace(/^@/, '').trim().charAt(0).toUpperCase() || 'U';
-  const svg = `
-  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>
     <rect width='120' height='120' rx='60' fill='#f8fafc'/>
     <circle cx='60' cy='46' r='22' fill='#cbd5e1'/>
     <path d='M24 104c4-24 20-36 36-36s32 12 36 36' fill='#cbd5e1'/>
@@ -658,17 +777,17 @@ function updateAuthUI(){
   const profileMenuRole = document.getElementById('profileMenuRole');
   const quickName = document.getElementById('userQuickName');
   const sideAccountText = document.getElementById('sideAccountText');
-  const addBtns = ['addHomeBtn','addSportsBtn','addEconomyBtn'];
-  const profileOwnerPanelBtn = document.getElementById('profileOwnerPanelBtn');
-  const profileEditorPanelBtn = document.getElementById('profileEditorPanelBtn');
+  const addBtns = ['addHomeBtn','addSportsBtn','addEconomyBtn','addVideosBtn'];
   const dashTabUsers = document.getElementById('dashTabUsers');
+  const dashTabVideos = document.getElementById('dashTabVideos');
 
   const logged = !!currentUser;
   loginBtn.classList.toggle('hidden', logged);
   profileBtn.classList.toggle('hidden', !logged);
 
-  addBtns.forEach(id => document.getElementById(id).classList.toggle('hidden', !canEdit()));
-  dashTabUsers.classList.toggle('hidden', !canManageUsers());
+  addBtns.forEach(id => { const el = document.getElementById(id); if(el) el.classList.toggle('hidden', !canEdit()); });
+  if(dashTabUsers) dashTabUsers.classList.toggle('hidden', !canManageUsers());
+  if(dashTabVideos) dashTabVideos.classList.toggle('hidden', !canEdit());
 
   if(logged){
     const avatar = getAvatarData(currentUser.displayName || currentUser.username);
@@ -681,9 +800,6 @@ function updateAuthUI(){
   }else{
     sideAccountText.textContent = 'غير مسجل دخول حاليًا. يمكنك إنشاء حساب أو تسجيل الدخول لفتح الصلاحيات.';
   }
-
-  profileOwnerPanelBtn.classList.toggle('hidden', !(currentUser && currentUser.role === 'owner'));
-  profileEditorPanelBtn.classList.toggle('hidden', !(currentUser && (currentUser.role === 'owner' || currentUser.role === 'editor')));
 }
 function ensureCurrentUserFromSession(){
   const session = getSession();
@@ -696,10 +812,10 @@ function ensureCurrentUserFromSession(){
   }
 }
 function renderArticles(){
-  const sections = ['home','sports','economy'];
-  sections.forEach(sec => {
+  ['home','sports','economy'].forEach(sec => {
     const grid = document.getElementById(sec + 'Grid');
     const list = articlesFor(sec);
+    if(!grid) return;
     if(!list.length){
       grid.innerHTML = '<div class="empty-state">لا توجد بانلات في هذا القسم بعد.</div>';
       return;
@@ -717,8 +833,45 @@ function renderArticles(){
     `).join('');
   });
 }
+function youtubeId(url){
+  if(!url) return '';
+  const m = String(url).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{6,})/i);
+  return m ? m[1] : '';
+}
+function videoThumb(video){
+  const id = youtubeId(video.sourceUrl || '');
+  if(id) return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+  return 'https://images.unsplash.com/photo-1516321310764-8d5f6a2b6f8d?auto=format&fit=crop&w=1200&q=80';
+}
+function videoTypeLabel(video){
+  if(video.sourceType === 'file') return 'ملف من الجهاز';
+  if(youtubeId(video.sourceUrl || '')) return 'يوتيوب';
+  return 'رابط مباشر';
+}
+function renderVideos(){
+  const grid = document.getElementById('videosGrid');
+  if(!grid) return;
+  if(!state.videos.length){
+    grid.innerHTML = '<div class="video-empty">لا توجد فيديوهات حاليًا. أضف أول فيديو من لوحة التحكم.</div>';
+    return;
+  }
+  grid.innerHTML = state.videos.map(video => `
+    <article class="video-card" onclick="openVideo('${video.id}')">
+      <div class="video-thumb">
+        ${video.sourceType === 'file' && !video.thumb ? `<div class="video-fallback">▶</div>` : `<img src="${escapeText(video.thumb || videoThumb(video))}" alt="${escapeText(video.title)}">`}
+      </div>
+      <div class="video-meta">
+        <span class="video-source">${videoTypeLabel(video)}</span>
+        <h3>${escapeText(video.title)}</h3>
+        <p>${escapeText(video.description)}</p>
+        <button class="video-watch" type="button">شاهد الفيديو</button>
+      </div>
+    </article>
+  `).join('');
+}
 function renderDashboard(){
   const manageList = document.getElementById('manageArticlesList');
+  const manageVideosList = document.getElementById('manageVideosList');
   const usersList = document.getElementById('usersList');
   const accountDisplay = document.getElementById('accountDisplay');
   const accountUser = document.getElementById('accountUser');
@@ -726,7 +879,8 @@ function renderDashboard(){
   const accountRole = document.getElementById('accountRole');
   const dashboardTitle = document.getElementById('dashboardTitle');
   const dashboardNote = document.getElementById('dashboardNote');
-  const query = (document.getElementById('panelSearch')?.value || '').trim().toLowerCase();
+  const articleQuery = (document.getElementById('panelSearch')?.value || '').trim().toLowerCase();
+  const videoQuery = (document.getElementById('videoSearch')?.value || '').trim().toLowerCase();
 
   if(currentUser){
     accountDisplay.textContent = currentUser.displayName || '-';
@@ -735,34 +889,61 @@ function renderDashboard(){
     accountRole.textContent = roleLabel(currentUser.role);
   }
 
-  if(dashboardMode === 'owner'){
-    dashboardTitle.textContent = 'لوحة التحكم';
-    dashboardNote.textContent = 'إدارة البانلات والمستخدمين والصلاحيات للمطور فقط.';
-  }else{
-    dashboardTitle.textContent = 'لوحة الإعلاميين';
-    dashboardNote.textContent = 'إدارة البانلات للمحررين والإعلاميين المعينين.';
+  const titleMap = {
+    panels: 'لوحة التحكم',
+    videos: 'لوحة الفيديوهات',
+    users: 'لوحة المستخدمين',
+    account: 'الحساب'
+  };
+  dashboardTitle.textContent = titleMap[dashboardTab] || 'لوحة التحكم';
+  dashboardNote.textContent =
+    dashboardTab === 'panels' ? 'إدارة البانلات والمحتوى النصي والصور.' :
+    dashboardTab === 'videos' ? 'إدارة الفيديوهات وإضافة الروابط أو الملفات.' :
+    dashboardTab === 'users' ? 'إدارة المستخدمين والصلاحيات للمطور فقط.' :
+    'معلومات الحساب وتغيير كلمة المرور.';
+
+  const visibleArticles = articleQuery
+    ? state.articles.filter(article => article.title.toLowerCase().includes(articleQuery))
+    : state.articles;
+  const visibleVideos = videoQuery
+    ? state.videos.filter(v => v.title.toLowerCase().includes(videoQuery))
+    : state.videos;
+
+  if(manageList){
+    manageList.innerHTML = visibleArticles.length ? visibleArticles.map(article => `
+      <div class="panel-row">
+        <img src="${escapeText(article.image)}" alt="${escapeText(article.title)}">
+        <div>
+          <h4>${escapeText(article.title)}</h4>
+          <p>${escapeText(article.summary)}</p>
+          <p style="margin-top:6px;color:#fff;font-size:.82rem;">القسم: ${sectionLabel(article.section)}</p>
+        </div>
+        <div class="row-actions">
+          <button class="small-btn edit" onclick="openEditor('edit','${article.section}','${article.id}')">تعديل</button>
+          <button class="small-btn del" onclick="deleteArticle('${article.id}')">حذف</button>
+        </div>
+      </div>
+    `).join('') : '<div class="empty-state">لا توجد نتائج مطابقة للبحث.</div>';
   }
 
-  const visibleArticles = query
-    ? state.articles.filter(article => article.title.toLowerCase().includes(query))
-    : state.articles;
-
-  manageList.innerHTML = visibleArticles.length ? visibleArticles.map(article => `
-    <div class="panel-row">
-      <img src="${escapeText(article.image)}" alt="${escapeText(article.title)}">
-      <div>
-        <h4>${escapeText(article.title)}</h4>
-        <p>${escapeText(article.summary)}</p>
-        <p style="margin-top:6px;color:#fff;font-size:.82rem;">القسم: ${sectionLabel(article.section)}</p>
+  if(manageVideosList){
+    manageVideosList.innerHTML = visibleVideos.length ? visibleVideos.map(video => `
+      <div class="panel-row">
+        <img src="${escapeText(video.thumb || videoThumb(video))}" alt="${escapeText(video.title)}">
+        <div>
+          <h4>${escapeText(video.title)}</h4>
+          <p>${escapeText(video.description)}</p>
+          <p style="margin-top:6px;color:#fff;font-size:.82rem;">${escapeText(videoTypeLabel(video))}</p>
+        </div>
+        <div class="row-actions">
+          <button class="small-btn edit" onclick="openVideoEditor('edit','${video.id}')">تعديل</button>
+          <button class="small-btn del" onclick="deleteVideo('${video.id}')">حذف</button>
+        </div>
       </div>
-      <div class="row-actions">
-        <button class="small-btn edit" onclick="openEditor('edit','${article.section}','${article.id}')">تعديل</button>
-        <button class="small-btn del" onclick="deleteArticle('${article.id}')">حذف</button>
-      </div>
-    </div>
-  `).join('') : '<div class="empty-state">لا توجد نتائج مطابقة للبحث.</div>';
+    `).join('') : '<div class="video-empty">لا توجد نتائج مطابقة للبحث أو لا توجد فيديوهات بعد.</div>';
+  }
 
-  if(canManageUsers()){
+  if(canManageUsers() && usersList){
     usersList.innerHTML = state.users.map(u => `
       <div class="user-row">
         <div class="uinfo">
@@ -772,7 +953,7 @@ function renderDashboard(){
         <div>${roleLabel(u.role)}</div>
         <select class="role" onchange="changeUserRole('${u.username}', this.value)">
           <option value="user" ${u.role==='user'?'selected':''}>مستخدم</option>
-          <option value="editor" ${u.role==='editor'?'selected':''}>إعلامي</option>
+          <option value="editor" ${u.role==='editor'?'selected':''}>محرر</option>
           <option value="owner" ${u.role==='owner'?'selected':''}>مطور</option>
         </select>
         <button class="small-btn ok" onclick="saveUserRoles()">حفظ</button>
@@ -780,7 +961,12 @@ function renderDashboard(){
     `).join('') || '<div class="empty-state">لا يوجد مستخدمون بعد.</div>';
   }
 }
-function renderAll(){ renderArticles(); updateAuthUI(); renderDashboard(); }
+function renderAll(){
+  renderArticles();
+  renderVideos();
+  updateAuthUI();
+  renderDashboard();
+}
 function openNews(id){
   const article = articleById(id);
   if(!article) return;
@@ -793,9 +979,110 @@ function openNews(id){
   document.getElementById('newsModal').classList.add('active');
 }
 function closeNews(){ document.getElementById('newsModal').classList.remove('active'); }
-function editCurrentArticle(){ if(!currentNewsId) return; const article = articleById(currentNewsId); if(!article) return; openEditor('edit', article.section, article.id); }
-function openInfo(type){ const item = INFO_CONTENT[type]; if(!item) return; document.getElementById('infoTitle').textContent = item.title; document.getElementById('infoText').textContent = item.text; document.getElementById('infoImg').src = item.img; document.getElementById('infoModal').classList.add('active'); }
+function editCurrentArticle(){
+  if(!currentNewsId) return;
+  const article = articleById(currentNewsId);
+  if(!article) return;
+  openEditor('edit', article.section, article.id);
+}
+function openVideo(id){
+  const video = videoById(id);
+  if(!video) return;
+  currentVideoId = id;
+  const title = document.getElementById('videoTitle');
+  const desc = document.getElementById('videoDescription');
+  const wrap = document.getElementById('videoPlayerWrap');
+  const ext = document.getElementById('videoExternalLink');
+  title.textContent = video.title;
+  desc.textContent = video.description;
+  wrap.innerHTML = '';
+  ext.classList.add('hidden');
+  ext.removeAttribute('href');
+
+  if(video.sourceType === 'file'){
+    wrap.innerHTML = `<video class="video-modal-player" controls autoplay src="${video.sourceData}"></video>`;
+  }else{
+    const yt = youtubeId(video.sourceUrl || '');
+    if(yt){
+      wrap.innerHTML = `<iframe class="video-modal-player" src="https://www.youtube.com/embed/${yt}" title="${escapeText(video.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      ext.href = video.sourceUrl;
+      ext.textContent = 'فتح الفيديو في يوتيوب';
+      ext.classList.remove('hidden');
+    }else{
+      wrap.innerHTML = `<video class="video-modal-player" controls autoplay src="${video.sourceUrl}"></video>`;
+      if(video.sourceUrl){
+        ext.href = video.sourceUrl;
+        ext.textContent = 'فتح الرابط الأصلي';
+        ext.classList.remove('hidden');
+      }
+    }
+  }
+  document.getElementById('videoModal').classList.add('active');
+}
+function closeVideo(){ document.getElementById('videoModal').classList.remove('active'); }
+
+function openInfo(type){
+  const item = INFO_CONTENT[type];
+  if(!item) return;
+  document.getElementById('infoTitle').textContent = item.title;
+  document.getElementById('infoText').textContent = item.text;
+  document.getElementById('infoImg').src = item.img;
+  document.getElementById('infoModal').classList.add('active');
+}
 function closeInfo(){ document.getElementById('infoModal').classList.remove('active'); }
+
+function clearAuthErrors(){
+  ['regDisplayError','regEmailError','regUserError','regPassError','regPass2Error','captchaError','loginError'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = '';
+  });
+}
+function setError(id, msg){
+  const el = document.getElementById(id);
+  if(el) el.textContent = msg || '';
+}
+function validateEmail(email){ return typeof email === 'string' && email.includes('@') && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+function validateUsername(username){ return /^[A-Za-z0-9_]{3,}$/.test(normalizeUsername(username)); }
+function validatePassword(pass){ return typeof pass === 'string' && pass.length >= 8 && /[A-Za-z]/.test(pass) && /\d/.test(pass) && !/^[A-Za-z]+$/.test(pass) && !/^\d+$/.test(pass); }
+function validateDisplayName(name){ return String(name || '').trim().length >= 2; }
+function generateCaptcha(){
+  clearAuthErrors();
+  const types = ['math','reverse','sequence','letters'];
+  const pick = types[Math.floor(Math.random() * types.length)];
+  let q = '', a = '';
+  if(pick === 'math'){
+    const x = 2 + Math.floor(Math.random()*8);
+    const y = 1 + Math.floor(Math.random()*8);
+    const add = Math.random() > 0.5;
+    q = add ? `كم يساوي ${x} + ${y} ؟` : `كم يساوي ${Math.max(x,y)} - ${Math.min(x,y)} ؟`;
+    a = add ? String(x + y) : String(Math.max(x,y) - Math.min(x,y));
+  }else if(pick === 'reverse'){
+    const word = ['news','media','login','panel'][Math.floor(Math.random()*4)];
+    q = `اكتب الكلمة بالعكس: ${word}`;
+    a = word.split('').reverse().join('');
+  }else if(pick === 'sequence'){
+    const start = 2 + Math.floor(Math.random()*5);
+    q = `أكمل التسلسل: ${start} ، ${start+2} ، ${start+4} ، ؟`;
+    a = String(start + 6);
+  }else{
+    const word = ['صحيفة','فيديو','أخبار','موقع'][Math.floor(Math.random()*4)];
+    q = `كم عدد حروف كلمة "${word}"؟`;
+    a = String(word.length);
+  }
+  captchaChallenge = { question: q, answer: a.toLowerCase() };
+  document.getElementById('captchaPrompt').textContent = captchaChallenge.question;
+  document.getElementById('captchaAnswer').value = '';
+  document.getElementById('captchaError').textContent = '';
+}
+function checkCaptcha(){
+  const ans = String(document.getElementById('captchaAnswer').value || '').trim().toLowerCase();
+  if(!captchaChallenge || !ans || ans !== captchaChallenge.answer){
+    setError('captchaError', 'التحقق غير صحيح، جرّب التحدي مرة أخرى.');
+    return false;
+  }
+  return true;
+}
+
 function openAuth(mode){
   authMode = mode === 'register' ? 'register' : 'login';
   document.getElementById('authModal').classList.add('active');
@@ -803,60 +1090,68 @@ function openAuth(mode){
   document.getElementById('registerFormWrap').classList.toggle('hidden', authMode !== 'register');
   document.getElementById('loginTab').classList.toggle('active', authMode === 'login');
   document.getElementById('registerTab').classList.toggle('active', authMode === 'register');
+  if(authMode === 'register') generateCaptcha();
 }
 function closeAuth(){ document.getElementById('authModal').classList.remove('active'); }
-function openDashboard(mode){
+
+function openDashboard(){
   if(!currentUser) return;
-  if(mode === 'owner' && currentUser.role !== 'owner') return;
-  if(mode === 'editor' && !(currentUser.role === 'owner' || currentUser.role === 'editor')) return;
-  dashboardMode = mode === 'owner' ? 'owner' : 'editor';
+  dashboardMode = currentUser.role === 'owner' ? 'owner' : 'editor';
   document.getElementById('dashboardModal').classList.add('active');
-  document.getElementById('dashTabUsers').classList.toggle('hidden', !canManageUsers());
-  switchDashboardTab(canManageUsers() ? 'users' : 'panels');
+  if(canManageUsers()) switchDashboardTab('users');
+  else if(canEdit()) switchDashboardTab('videos');
+  else switchDashboardTab('account');
   renderDashboard();
 }
 function closeDashboard(){ document.getElementById('dashboardModal').classList.remove('active'); }
 function switchDashboardTab(tab){
   dashboardTab = tab;
   document.getElementById('dashTabPanels').classList.toggle('active', tab === 'panels');
+  document.getElementById('dashTabVideos').classList.toggle('active', tab === 'videos');
   document.getElementById('dashTabUsers').classList.toggle('active', tab === 'users');
   document.getElementById('dashTabAccount').classList.toggle('active', tab === 'account');
   document.getElementById('dashPanels').classList.toggle('hidden', tab !== 'panels');
+  document.getElementById('dashVideos').classList.toggle('hidden', tab !== 'videos');
   document.getElementById('dashUsers').classList.toggle('hidden', tab !== 'users');
   document.getElementById('dashAccount').classList.toggle('hidden', tab !== 'account');
+  renderDashboard();
 }
+
 function openChangePassword(){ document.getElementById('passwordModal').classList.add('active'); }
 function closePasswordModal(){ document.getElementById('passwordModal').classList.remove('active'); }
-function logout(){ currentUser = null; clearSession(); closeProfileMenu(); updateAuthUI(); renderAll(); showToast('تم تسجيل الخروج'); }
+function logout(){
+  currentUser = null;
+  clearSession();
+  closeProfileMenu();
+  updateAuthUI();
+  renderAll();
+  showToast('تم تسجيل الخروج');
+}
 function toggleProfileMenu(){ document.getElementById('profileMenu').classList.toggle('active'); }
 function closeProfileMenu(){ document.getElementById('profileMenu').classList.remove('active'); }
-function validateEmail(email){ return typeof email === 'string' && email.includes('@') && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
-function validateUsername(username){ return /^[A-Za-z0-9_]{3,}$/.test(normalizeUsername(username)); }
-function validatePassword(pass){ return typeof pass === 'string' && pass.length >= 8 && /[A-Za-z]/.test(pass) && /\d/.test(pass); }
-async function hashPassword(password){ const data = new TextEncoder().encode(password); const hash = await crypto.subtle.digest('SHA-256', data); return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join(''); }
-function clearRegErrors(){
-  ['regDisplayError','regEmailError','regUserError','regPassError','regPass2Error','loginError'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.textContent = '';
-  });
+
+async function hashPassword(password){
+  const data = new TextEncoder().encode(password);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
-function setRegError(id, msg){ const el = document.getElementById(id); if(el) el.textContent = msg || ''; }
 async function register(){
-  clearRegErrors();
+  clearAuthErrors();
   const displayName = document.getElementById('regDisplay').value.trim();
   const email = document.getElementById('regEmail').value.trim().toLowerCase();
   const username = normalizeUsername(document.getElementById('regUser').value);
   const password = document.getElementById('regPass').value;
   const password2 = document.getElementById('regPass2').value;
-  let ok = true;
 
-  if(displayName.length < 2){ setRegError('regDisplayError', 'اكتب الاسم الظاهر'); ok = false; }
-  if(!validateEmail(email)){ setRegError('regEmailError', 'البريد الإلكتروني يجب أن يحتوي على @'); ok = false; }
-  if(!validateUsername(username)){ setRegError('regUserError', 'اسم المستخدم يجب أن لا يقل عن 3 حروف'); ok = false; }
-  if(!validatePassword(password)){ setRegError('regPassError', 'يجب أن تكون كلمة المرور 8 أحرف على الأقل وتحتوي حروفًا وأرقامًا'); ok = false; }
-  if(password !== password2){ setRegError('regPass2Error', 'كلمتا المرور غير متطابقتين'); ok = false; }
-  if(state.users.some(u => normalizeUsername(u.username) === username)){ setRegError('regUserError', 'هذا الاسم مستخدم من قبل'); ok = false; }
-  if(state.users.some(u => (u.email || '').toLowerCase() === email)){ setRegError('regEmailError', 'هذا البريد مستخدم من قبل'); ok = false; }
+  let ok = true;
+  if(!validateDisplayName(displayName)){ setError('regDisplayError','اكتب الاسم الظاهر'); ok = false; }
+  if(!validateEmail(email)){ setError('regEmailError','البريد الإلكتروني يجب أن يحتوي على @'); ok = false; }
+  if(!validateUsername(username)){ setError('regUserError','اسم المستخدم يجب أن لا يقل عن 3 حروف'); ok = false; }
+  if(!validatePassword(password)){ setError('regPassError','يجب أن تكون كلمة المرور 8 أحرف على الأقل وتحتوي حروفًا وأرقامًا'); ok = false; }
+  if(password !== password2){ setError('regPass2Error','كلمتا المرور غير متطابقتين'); ok = false; }
+  if(state.users.some(u => normalizeUsername(u.username) === username)){ setError('regUserError','هذا الاسم مستخدم من قبل'); ok = false; }
+  if(state.users.some(u => (u.email || '').toLowerCase() === email)){ setError('regEmailError','هذا البريد مستخدم من قبل'); ok = false; }
+  if(!checkCaptcha()) ok = false;
   if(!ok) return;
 
   const passHash = await hashPassword(password);
@@ -877,14 +1172,13 @@ async function register(){
   showToast('تم إنشاء الحساب');
 }
 async function login(){
-  const loginError = document.getElementById('loginError');
-  if(loginError) loginError.textContent = '';
+  clearAuthErrors();
   const username = normalizeUsername(document.getElementById('loginUser').value);
   const password = document.getElementById('loginPass').value;
   const user = state.users.find(u => normalizeUsername(u.username) === username);
-  if(!user){ if(loginError) loginError.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة'; return; }
+  if(!user){ setError('loginError','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
   const passHash = await hashPassword(password);
-  if(passHash !== user.passHash){ if(loginError) loginError.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة'; return; }
+  if(passHash !== user.passHash){ setError('loginError','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
   if(isOwnerUsername(user.username) && user.role !== 'owner') user.role = 'owner';
   currentUser = user;
   saveSession(user);
@@ -894,6 +1188,7 @@ async function login(){
   renderAll();
   showToast('تم تسجيل الدخول');
 }
+
 async function changePassword(){
   if(!currentUser) return;
   const oldPass = document.getElementById('oldPass').value;
@@ -916,23 +1211,15 @@ function changeUserRole(username, role){
   if(!canManageUsers()) return;
   const user = state.users.find(u => normalizeUsername(u.username) === normalizeUsername(username));
   if(!user) return;
-  if(isOwnerUsername(user.username)){
-    user.role = 'owner';
-    showToast('المطور لا يمكن تغيير صلاحياته');
-  }else{
-    user.role = role;
-    showToast('تم تحديث الصلاحية');
-  }
+  user.role = role;
+  if(isOwnerUsername(user.username)) user.role = 'owner';
   saveState();
   renderDashboard();
   updateAuthUI();
 }
 function saveUserRoles(){
   if(!canManageUsers()) return;
-  state.users = state.users.map(u => {
-    if(isOwnerUsername(u.username)) u.role = 'owner';
-    return u;
-  });
+  state.users = state.users.map(u => { if(isOwnerUsername(u.username)) u.role = 'owner'; return u; });
   saveState();
   renderDashboard();
   updateAuthUI();
@@ -953,6 +1240,7 @@ function assignEditorByUsername(){
   updateAuthUI();
   showToast('تم تعيينه كإعلامي');
 }
+
 function deleteArticle(id){
   if(!canEdit()) return;
   if(!confirm('هل تريد حذف هذا البانل؟')) return;
@@ -966,7 +1254,6 @@ function openEditor(mode, section='home', articleId=null){
   if(!canEdit()) return showToast('هذه الصلاحية للمحررين فقط');
   editorMode = mode;
   editorArticleId = articleId;
-  editorDefaultSection = section;
   document.getElementById('editorTitle').textContent = mode === 'edit' ? 'تعديل البانل' : 'إضافة بانل';
   const article = articleId ? articleById(articleId) : null;
   document.getElementById('panelTitle').value = article ? article.title : '';
@@ -978,7 +1265,14 @@ function openEditor(mode, section='home', articleId=null){
   document.getElementById('editorModal').classList.add('active');
 }
 function closeEditor(){ document.getElementById('editorModal').classList.remove('active'); }
-async function fileToDataURL(file){ return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = reject; reader.readAsDataURL(file); }); }
+async function fileToDataURL(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 async function saveEditor(){
   if(!canEdit()) return;
   const title = document.getElementById('panelTitle').value.trim();
@@ -1007,7 +1301,89 @@ async function saveEditor(){
   renderAll();
   showToast('تم الحفظ');
 }
-function getPassStrength(password){ let score = 0; if(password.length >= 8) score += 35; if(/[A-Za-z]/.test(password)) score += 30; if(/\d/.test(password)) score += 30; if(/[^A-Za-z0-9]/.test(password)) score += 5; return Math.min(score, 100); }
+
+function toggleVideoSourceFields(){
+  const type = document.getElementById('videoSourceType').value;
+  document.getElementById('videoUrlWrap').classList.toggle('hidden', type === 'file');
+  document.getElementById('videoFileWrap').classList.toggle('hidden', type !== 'file');
+}
+function openVideoEditor(mode='create', id=null){
+  if(!canEdit()) return showToast('هذه الصلاحية للمحررين فقط');
+  videoEditorMode = mode;
+  videoEditorId = id;
+  document.getElementById('videoEditorTitle').textContent = mode === 'edit' ? 'تعديل الفيديو' : 'إضافة فيديو';
+  const video = id ? videoById(id) : null;
+  document.getElementById('videoTitleInput').value = video ? video.title : '';
+  document.getElementById('videoDescriptionInput').value = video ? video.description : '';
+  document.getElementById('videoSourceType').value = video ? video.sourceType : 'link';
+  document.getElementById('videoSourceUrl').value = video ? (video.sourceUrl || '') : '';
+  document.getElementById('videoFileInput').value = '';
+  toggleVideoSourceFields();
+  document.getElementById('videoEditorModal').classList.add('active');
+}
+function closeVideoEditor(){ document.getElementById('videoEditorModal').classList.remove('active'); }
+async function saveVideoEditor(){
+  if(!canEdit()) return;
+  const title = document.getElementById('videoTitleInput').value.trim();
+  const description = document.getElementById('videoDescriptionInput').value.trim();
+  const sourceType = document.getElementById('videoSourceType').value;
+  const sourceUrl = document.getElementById('videoSourceUrl').value.trim();
+  const file = document.getElementById('videoFileInput').files[0];
+
+  if(!title || !description) return showToast('أكمل عنوان الفيديو ووصفه');
+  let sourceData = '';
+  if(sourceType === 'file'){
+    const existing = videoEditorId ? videoById(videoEditorId) : null;
+    if(file){
+      sourceData = await fileToDataURL(file);
+    }else if(existing && existing.sourceData){
+      sourceData = existing.sourceData;
+    }else{
+      return showToast('ارفع ملف الفيديو من الجهاز');
+    }
+  }else{
+    if(!sourceUrl) return showToast('أضف رابط الفيديو');
+  }
+  const finalSourceType = sourceType === 'file' ? 'file' : 'link';
+  const payload = {
+    id: videoEditorId || makeId('vid'),
+    title,
+    description,
+    sourceType: finalSourceType,
+    sourceUrl: finalSourceType === 'file' ? '' : sourceUrl,
+    sourceData: finalSourceType === 'file' ? sourceData : '',
+    thumb: ''
+  };
+
+  if(videoEditorMode === 'edit' && videoEditorId){
+    const idx = state.videos.findIndex(v => v.id === videoEditorId);
+    if(idx >= 0) state.videos[idx] = { ...state.videos[idx], ...payload };
+  }else{
+    state.videos.unshift(payload);
+  }
+  saveState();
+  closeVideoEditor();
+  renderAll();
+  showToast('تم الحفظ');
+}
+function deleteVideo(id){
+  if(!canEdit()) return;
+  if(!confirm('هل تريد حذف هذا الفيديو؟')) return;
+  state.videos = state.videos.filter(v => v.id !== id);
+  saveState();
+  renderAll();
+  if(currentVideoId === id) closeVideo();
+  showToast('تم الحذف');
+}
+
+function getPassStrength(password){
+  let score = 0;
+  if(password.length >= 8) score += 35;
+  if(/[A-Za-z]/.test(password)) score += 30;
+  if(/\d/.test(password)) score += 30;
+  if(/[^A-Za-z0-9]/.test(password)) score += 5;
+  return Math.min(score, 100);
+}
 function updatePassMeter(){
   const pass = document.getElementById('regPass').value;
   const strength = getPassStrength(pass);
@@ -1018,13 +1394,19 @@ function updatePassMeter(){
   else if(strength >= 35) hint = 'كلمة المرور متوسطة';
   document.getElementById('passHint').textContent = hint + ' — يجب أن تحتوي على حروف وأرقام وأن لا تقل عن 8 أحرف.';
 }
+
 function closeAllByOutside(e){
-  const ids = ['newsModal','infoModal','authModal','dashboardModal','editorModal','passwordModal'];
+  const ids = ['newsModal','infoModal','authModal','dashboardModal','editorModal','videoModal','videoEditorModal','passwordModal'];
   ids.forEach(id => { if(e.target.id === id) document.getElementById(id).classList.remove('active'); });
   if(!e.target.closest('#profileBtn') && !e.target.closest('#profileMenu')) closeProfileMenu();
 }
 window.addEventListener('click', closeAllByOutside);
-document.addEventListener('keydown', (e) => { if(e.key === 'Escape'){ ['newsModal','infoModal','authModal','dashboardModal','editorModal','passwordModal'].forEach(id => document.getElementById(id).classList.remove('active')); closeProfileMenu(); } });
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape'){
+    ['newsModal','infoModal','authModal','dashboardModal','editorModal','videoModal','videoEditorModal','passwordModal'].forEach(id => document.getElementById(id).classList.remove('active'));
+    closeProfileMenu();
+  }
+});
 
 window.addEventListener('DOMContentLoaded', () => {
   seedIfNeeded();
@@ -1034,6 +1416,7 @@ window.addEventListener('DOMContentLoaded', () => {
     saveState();
   }
   document.getElementById('siteLogo').src = 'https://media.discordapp.net/attachments/1024807506515607565/1499090777886691440/1j3G6Qs5HP2BqcdauVpfx2aUeA6aLmYF2AAAAAAA.png?ex=69f38895&is=69f23715&hm=3acaeb23eb1e31e81e382ca220330e110c0b9cf6fe5a0de4125f14b3f67e672d&=&format=webp&quality=lossless';
+  document.getElementById('heroLogo').src = document.getElementById('siteLogo').src;
   updateAuthUI();
   renderAll();
   document.getElementById('profileBtn').addEventListener('click', (e) => { e.stopPropagation(); toggleProfileMenu(); });
