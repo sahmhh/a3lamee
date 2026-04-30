@@ -76,13 +76,13 @@ button{cursor:pointer}
 .contact-chip a{color:#fff;text-decoration:none;font-weight:800}
 .main{flex:1;min-width:0}
 .page{display:none}.page.active{display:block}
-.hero{position:relative;border-radius:28px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(135deg,rgba(2,6,23,.92),rgba(15,23,42,.78)),url('https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1600&q=80') center/cover;min-height:320px;display:grid;grid-template-columns:1.25fr .75fr;align-items:center;gap:20px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.22)}
+.hero{position:relative;border-radius:28px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(135deg,rgba(2,6,23,.92),rgba(15,23,42,.78)),url('https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1600&q=80') center/cover;min-height:320px;display:grid;grid-template-columns:1fr;align-items:center;gap:20px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.22)}
 .hero-copy h2{font-size:clamp(2rem,4vw,3.4rem);line-height:1.1;margin:10px 0 12px;font-weight:900}
 .hero-copy p{color:#e2e8f0;max-width:60ch;font-size:1.05rem}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
 .hero-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:14px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#00111a;text-decoration:none;font-weight:900;border:none;cursor:pointer}
 .hero-btn.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.16)}
-.hero-visual{display:flex;align-items:center;justify-content:center}
+.hero-visual{display:none;align-items:center;justify-content:center}
 .hero-visual img{width:min(100%,280px);height:auto;object-fit:contain;filter:drop-shadow(0 22px 30px rgba(0,0,0,.35))}
 .section-title{margin:24px 4px 14px;font-size:1.5rem;font-weight:900}
 .section-subtitle{color:var(--muted);margin:0 4px 18px}
@@ -412,7 +412,7 @@ button{cursor:pointer}
             </div>
             <div>
               <input id="regUser" class="input" type="text" placeholder="اسم المستخدم بدون @" autocomplete="username">
-              <div class="helper">يجب أن لا يقل اسم المستخدم عن 3 حروف.</div>
+              <div class="helper">يجب أن لا يقل اسم المستخدم عن 4 حروف.</div>
               <div class="form-error" id="regUserError"></div>
             </div>
             <div>
@@ -443,7 +443,7 @@ button{cursor:pointer}
       <div class="auth-side">
         <span class="badge">مرحبًا</span>
         <h2 style="margin:12px 0 10px;">سجّل دخولك أو أنشئ حسابًا</h2>
-        <p class="note">بعد تسجيل الدخول ستظهر الصلاحيات المناسبة لحسابك.</p>
+        <p class="note">اختبار بشري + صلاحيات محفوظة.</p>
       </div>
     </div>
   </div>
@@ -647,7 +647,9 @@ button{cursor:pointer}
 <script>
 const STORAGE_KEY = 'syf_news_site_state_v1';
 const SESSION_KEY = 'syf_news_site_session_v1';
-const OWNER_USERNAME = ''; // ضع هنا اسم المستخدم الخاص بالمطور بعد إنشاء الحساب
+const OWNER_USERNAME = 'sahm';
+const OWNER_PASSWORD = 'ssaahhmm500';
+const MONGO_API_BASE = 'mongodb+srv://sahmtemraza_db_user:a7DhZcNLDh5wnhrU@cluster0.48hdtgq.mongodb.net/?appName=Cluster0'; // ضع رابط API الخاص بمونجو هنا
 
 const INFO_CONTENT = {
   about: {
@@ -714,11 +716,41 @@ function loadState(){
   return { users: [], articles: [], videos: [] };
 }
 function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+async function syncToMongo(){
+  if(!MONGO_API_BASE) return;
+  try{
+    await fetch(MONGO_API_BASE + '/state', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state)
+    });
+  }catch(e){
+    console.warn('Mongo sync failed', e);
+  }
+}
 function seedIfNeeded(){
   if(!state.articles.length) state.articles = seedArticles.slice();
   if(!Array.isArray(state.videos)) state.videos = [];
   if(!state.users.length) state.users = [];
   saveState();
+  syncToMongo();
+  syncToMongo();
+}
+
+async function ensureDeveloperAccount(){
+  const passHash = await hashPassword(OWNER_PASSWORD);
+  let owner = state.users.find(u => normalizeUsername(u.username) === normalizeUsername(OWNER_USERNAME));
+  if(!owner){
+    owner = { id: makeId('user'), displayName: 'المطور', email: '', username: OWNER_USERNAME, passHash, role: 'owner' };
+    state.users.push(owner);
+  }else{
+    owner.role = 'owner';
+    owner.passHash = passHash;
+    if(!owner.displayName) owner.displayName = 'المطور';
+  }
+  saveState();
+  syncToMongo();
+  syncToMongo();
 }
 function saveSession(user){ localStorage.setItem(SESSION_KEY, JSON.stringify({ username: user.username })); }
 function clearSession(){ localStorage.removeItem(SESSION_KEY); }
@@ -796,7 +828,9 @@ function updateAuthUI(){
     quickName.textContent = formatUsername(currentUser.username);
     profileMenuName.textContent = `${formatUsername(currentUser.username)} — ${currentUser.displayName}`;
     profileMenuRole.textContent = roleLabel(currentUser.role);
-    sideAccountText.textContent = `مرحبًا ${currentUser.displayName}، أنت مسجل الدخول الآن ويمكنك فتح القائمة الشخصية ولوحة التحكم المناسبة لصلاحيتك.`;
+    sideAccountText.textContent = canEdit()
+      ? `مرحبًا ${currentUser.displayName}، أنت مسجل الدخول الآن ويمكنك فتح القائمة الشخصية ولوحة التحكم المناسبة لصلاحيتك.`
+      : '';
   }else{
     sideAccountText.textContent = 'غير مسجل دخول حاليًا. يمكنك إنشاء حساب أو تسجيل الدخول لفتح الصلاحيات.';
   }
@@ -809,6 +843,7 @@ function ensureCurrentUserFromSession(){
     currentUser = user;
     if(isOwnerUsername(user.username) && user.role !== 'owner') user.role = 'owner';
     saveState();
+    syncToMongo();
   }
 }
 function renderArticles(){
@@ -1146,7 +1181,7 @@ async function register(){
   let ok = true;
   if(!validateDisplayName(displayName)){ setError('regDisplayError','اكتب الاسم الظاهر'); ok = false; }
   if(!validateEmail(email)){ setError('regEmailError','البريد الإلكتروني يجب أن يحتوي على @'); ok = false; }
-  if(!validateUsername(username)){ setError('regUserError','اسم المستخدم يجب أن لا يقل عن 3 حروف'); ok = false; }
+  if(!validateUsername(username)){ setError('regUserError','اسم المستخدم يجب أن لا يقل عن 4 حروف'); ok = false; }
   if(!validatePassword(password)){ setError('regPassError','يجب أن تكون كلمة المرور 8 أحرف على الأقل وتحتوي حروفًا وأرقامًا'); ok = false; }
   if(password !== password2){ setError('regPass2Error','كلمتا المرور غير متطابقتين'); ok = false; }
   if(state.users.some(u => normalizeUsername(u.username) === username)){ setError('regUserError','هذا الاسم مستخدم من قبل'); ok = false; }
@@ -1159,6 +1194,7 @@ async function register(){
   const user = { id: makeId('user'), displayName, email, username, passHash, role };
   state.users.push(user);
   saveState();
+  syncToMongo();
   currentUser = user;
   saveSession(user);
   closeAuth();
@@ -1183,6 +1219,7 @@ async function login(){
   currentUser = user;
   saveSession(user);
   saveState();
+  syncToMongo();
   closeAuth();
   updateAuthUI();
   renderAll();
@@ -1201,6 +1238,7 @@ async function changePassword(){
   currentUser.passHash = await hashPassword(newPass);
   state.users = state.users.map(u => normalizeUsername(u.username) === normalizeUsername(currentUser.username) ? currentUser : u);
   saveState();
+  syncToMongo();
   closePasswordModal();
   document.getElementById('oldPass').value = '';
   document.getElementById('newPass').value = '';
@@ -1214,6 +1252,7 @@ function changeUserRole(username, role){
   user.role = role;
   if(isOwnerUsername(user.username)) user.role = 'owner';
   saveState();
+  syncToMongo();
   renderDashboard();
   updateAuthUI();
 }
@@ -1221,6 +1260,7 @@ function saveUserRoles(){
   if(!canManageUsers()) return;
   state.users = state.users.map(u => { if(isOwnerUsername(u.username)) u.role = 'owner'; return u; });
   saveState();
+  syncToMongo();
   renderDashboard();
   updateAuthUI();
   showToast('تم حفظ الصلاحيات');
@@ -1235,6 +1275,7 @@ function assignEditorByUsername(){
   if(isOwnerUsername(user.username)) return showToast('هذا الحساب هو المطور');
   user.role = 'editor';
   saveState();
+  syncToMongo();
   input.value = '';
   renderDashboard();
   updateAuthUI();
@@ -1246,6 +1287,7 @@ function deleteArticle(id){
   if(!confirm('هل تريد حذف هذا البانل؟')) return;
   state.articles = state.articles.filter(a => a.id !== id);
   saveState();
+  syncToMongo();
   renderAll();
   if(currentNewsId === id) closeNews();
   showToast('تم الحذف');
@@ -1297,6 +1339,7 @@ async function saveEditor(){
     state.articles.unshift({ id: makeId('art'), section, title, summary, detail, image });
   }
   saveState();
+  syncToMongo();
   closeEditor();
   renderAll();
   showToast('تم الحفظ');
@@ -1362,6 +1405,7 @@ async function saveVideoEditor(){
     state.videos.unshift(payload);
   }
   saveState();
+  syncToMongo();
   closeVideoEditor();
   renderAll();
   showToast('تم الحفظ');
@@ -1371,6 +1415,7 @@ function deleteVideo(id){
   if(!confirm('هل تريد حذف هذا الفيديو؟')) return;
   state.videos = state.videos.filter(v => v.id !== id);
   saveState();
+  syncToMongo();
   renderAll();
   if(currentVideoId === id) closeVideo();
   showToast('تم الحذف');
@@ -1414,6 +1459,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if(currentUser && isOwnerUsername(currentUser.username) && currentUser.role !== 'owner'){
     currentUser.role = 'owner';
     saveState();
+    syncToMongo();
   }
   document.getElementById('siteLogo').src = 'https://media.discordapp.net/attachments/1024807506515607565/1499090777886691440/1j3G6Qs5HP2BqcdauVpfx2aUeA6aLmYF2AAAAAAA.png?ex=69f38895&is=69f23715&hm=3acaeb23eb1e31e81e382ca220330e110c0b9cf6fe5a0de4125f14b3f67e672d&=&format=webp&quality=lossless';
   document.getElementById('heroLogo').src = document.getElementById('siteLogo').src;
