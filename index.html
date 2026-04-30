@@ -202,7 +202,7 @@ button{cursor:pointer}
       <a class="pill-btn" href="mailto:syf.a.et@hotmail.com">تواصل معنا</a>
     </div>
   </div>
-  <div class="ticker"><span> ✔ اخبار لحضة بلحضة .. مع موقع صحيفة اليوم ✔ </span></div>
+ <div class="ticker"><span> ✔ اخبار لحضة بلحضة .. مع موقع صحيفة اليوم ✔ </span></div>
   <div class="navbar">
     <button class="nav-link active" onclick="showPage('home', this)">الرئيسية</button>
     <button class="nav-link" onclick="showPage('sports', this)">رياضة</button>
@@ -317,9 +317,23 @@ button{cursor:pointer}
           <h2 class="section-title">🎬 قسم الفيديوهات</h2>
           <p class="section-subtitle">فيديوهات مضافة من المطور أو الإعلاميين، من رابط أو من رفع ملف مباشر.</p>
         </div>
-        <button id="addVideosBtn" class="mini-action hidden" onclick="openVideoEditor('create')">+ إضافة فيديو</button>
+        <div class="modal-actions" style="margin-top:0">
+          <button id="addVideosBtn" class="mini-action hidden" onclick="openVideoEditor('create')">+ إضافة فيديو</button>
+          <button id="addLiveBtn" class="mini-action hidden" onclick="openVideoEditor('create', null, 'live')">+ بث مباشر</button>
+        </div>
       </div>
       <div id="videosGrid" class="video-grid"></div>
+    </section>
+
+    <section id="live" class="page">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">📡 البث المباشر</h2>
+          <p class="section-subtitle">أضف بثًا مباشرًا من يوتيوب، وسيُزال تلقائيًا إذا انتهى أو لم يعد متاحًا.</p>
+        </div>
+        <button id="addLiveStreamBtn" class="mini-action hidden" onclick="openVideoEditor('create', null, 'live')">+ بث مباشر جديد</button>
+      </div>
+      <div id="liveGrid" class="video-grid"></div>
     </section>
 
     <section id="contact" class="page">
@@ -495,6 +509,15 @@ button{cursor:pointer}
           <input id="videoSearch" class="input" type="text" placeholder="ابحث بعنوان الفيديو..." oninput="renderDashboard()">
         </div>
         <div class="panel-list" id="manageVideosList"></div>
+
+        <div class="section-head" style="margin:18px 0 12px;">
+          <h3>البث المباشر</h3>
+          <button class="mini-action" onclick="openVideoEditor('create', null, 'live')">+ بث مباشر</button>
+        </div>
+        <div class="form-grid one" style="margin-bottom:12px;">
+          <input id="liveSearch" class="input" type="text" placeholder="ابحث بعنوان البث المباشر..." oninput="renderDashboard()">
+        </div>
+        <div class="panel-list" id="manageLiveList"></div>
       </div>
 
       <div id="dashUsers" class="hidden">
@@ -595,7 +618,7 @@ button{cursor:pointer}
       <div class="section-head" style="margin:0 0 14px;">
         <div>
           <h2 id="videoEditorTitle">إضافة فيديو</h2>
-          <p class="note">يمكنك إضافة رابط يوتيوب أو رفع ملف فيديو من جهازك ثم حفظه.</p>
+          <p class="note" id="videoEditorHelp">يمكنك إضافة رابط يوتيوب أو رفع ملف فيديو من جهازك ثم حفظه.</p>
         </div>
         <button class="modal-close" onclick="closeVideoEditor()">إغلاق</button>
       </div>
@@ -604,6 +627,7 @@ button{cursor:pointer}
         <textarea id="videoDescriptionInput" class="textarea" placeholder="وصف الفيديو"></textarea>
         <select id="videoSourceType" class="select" onchange="toggleVideoSourceFields()">
           <option value="link">رابط (يوتيوب أو رابط مباشر)</option>
+          <option value="live">بث مباشر يوتيوب</option>
           <option value="file">رفع من الجهاز</option>
         </select>
         <div id="videoUrlWrap">
@@ -650,7 +674,6 @@ const SESSION_KEY = 'syf_news_site_session_v1';
 const OWNER_USERNAME = 'sahm';
 const OWNER_PASSWORD = 'ssaahhmm500';
 const MONGO_API_BASE = 'mongodb+srv://sahmtemraza_db_user:a7DhZcNLDh5wnhrU@cluster0.48hdtgq.mongodb.net/?appName=Cluster0'; // ضع رابط API الخاص بمونجو هنا
-
 const INFO_CONTENT = {
   about: {
     title: 'عن الموقع',
@@ -699,6 +722,11 @@ let editorMode = 'create';
 let editorArticleId = null;
 let videoEditorMode = 'create';
 let videoEditorId = null;
+let videoEditorKind = 'video';
+let liveMonitorPlayers = new Map();
+let youtubeApiReady = false;
+let youtubeApiLoading = false;
+let liveMonitorTimer = null;
 let captchaChallenge = null;
 
 function loadState(){
@@ -709,11 +737,12 @@ function loadState(){
       return {
         users: Array.isArray(parsed.users) ? parsed.users : [],
         articles: Array.isArray(parsed.articles) ? parsed.articles : [],
-        videos: Array.isArray(parsed.videos) ? parsed.videos : []
+        videos: Array.isArray(parsed.videos) ? parsed.videos : [],
+        liveStreams: Array.isArray(parsed.liveStreams) ? parsed.liveStreams : []
       };
     }
   }catch(e){}
-  return { users: [], articles: [], videos: [] };
+  return { users: [], articles: [], videos: [], liveStreams: [] };
 }
 function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 async function syncToMongo(){
@@ -731,6 +760,7 @@ async function syncToMongo(){
 function seedIfNeeded(){
   if(!state.articles.length) state.articles = seedArticles.slice();
   if(!Array.isArray(state.videos)) state.videos = [];
+  if(!Array.isArray(state.liveStreams)) state.liveStreams = [];
   if(!state.users.length) state.users = [];
   saveState();
   syncToMongo();
@@ -809,7 +839,7 @@ function updateAuthUI(){
   const profileMenuRole = document.getElementById('profileMenuRole');
   const quickName = document.getElementById('userQuickName');
   const sideAccountText = document.getElementById('sideAccountText');
-  const addBtns = ['addHomeBtn','addSportsBtn','addEconomyBtn','addVideosBtn'];
+  const addBtns = ['addHomeBtn','addSportsBtn','addEconomyBtn','addVideosBtn','addLiveBtn','addLiveStreamBtn'];
   const dashTabUsers = document.getElementById('dashTabUsers');
   const dashTabVideos = document.getElementById('dashTabVideos');
 
@@ -904,9 +934,36 @@ function renderVideos(){
     </article>
   `).join('');
 }
+
+function renderLiveStreams(){
+  const grid = document.getElementById('liveGrid');
+  if(!grid) return;
+  if(!state.liveStreams.length){
+    grid.innerHTML = '<div class="video-empty">لا توجد بثوث مباشرة حاليًا. أضف أول بث من لوحة التحكم.</div>';
+    return;
+  }
+  grid.innerHTML = state.liveStreams.map(stream => {
+    const yt = youtubeId(stream.sourceUrl || '');
+    const thumb = stream.thumb || (yt ? `https://img.youtube.com/vi/${yt}/hqdefault.jpg` : videoThumb({ sourceUrl: stream.sourceUrl || '' }));
+    return `
+      <article class="video-card" onclick="openLive('${stream.id}')">
+        <div class="video-thumb">
+          ${stream.sourceType === 'file' && !stream.thumb ? `<div class="video-fallback">🔴</div>` : `<img src="${escapeText(thumb)}" alt="${escapeText(stream.title)}">`}
+        </div>
+        <div class="video-meta">
+          <span class="video-source" style="background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.28);">بث مباشر</span>
+          <h3>${escapeText(stream.title)}</h3>
+          <p>${escapeText(stream.description)}</p>
+          <button class="video-watch" type="button">شاهد البث</button>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
 function renderDashboard(){
   const manageList = document.getElementById('manageArticlesList');
   const manageVideosList = document.getElementById('manageVideosList');
+  const manageLiveList = document.getElementById('manageLiveList');
   const usersList = document.getElementById('usersList');
   const accountDisplay = document.getElementById('accountDisplay');
   const accountUser = document.getElementById('accountUser');
@@ -916,6 +973,7 @@ function renderDashboard(){
   const dashboardNote = document.getElementById('dashboardNote');
   const articleQuery = (document.getElementById('panelSearch')?.value || '').trim().toLowerCase();
   const videoQuery = (document.getElementById('videoSearch')?.value || '').trim().toLowerCase();
+  const liveQuery = (document.getElementById('liveSearch')?.value || '').trim().toLowerCase();
 
   if(currentUser){
     accountDisplay.textContent = currentUser.displayName || '-';
@@ -943,6 +1001,9 @@ function renderDashboard(){
   const visibleVideos = videoQuery
     ? state.videos.filter(v => v.title.toLowerCase().includes(videoQuery))
     : state.videos;
+  const visibleLives = liveQuery
+    ? state.liveStreams.filter(v => v.title.toLowerCase().includes(liveQuery))
+    : state.liveStreams;
 
   if(manageList){
     manageList.innerHTML = visibleArticles.length ? visibleArticles.map(article => `
@@ -978,6 +1039,23 @@ function renderDashboard(){
     `).join('') : '<div class="video-empty">لا توجد نتائج مطابقة للبحث أو لا توجد فيديوهات بعد.</div>';
   }
 
+  if(manageLiveList){
+    manageLiveList.innerHTML = visibleLives.length ? visibleLives.map(stream => `
+      <div class="panel-row">
+        <img src="${escapeText(stream.thumb || videoThumb({ sourceUrl: stream.sourceUrl || '' }))}" alt="${escapeText(stream.title)}">
+        <div>
+          <h4>${escapeText(stream.title)}</h4>
+          <p>${escapeText(stream.description)}</p>
+          <p style="margin-top:6px;color:#fff;font-size:.82rem;">بث مباشر</p>
+        </div>
+        <div class="row-actions">
+          <button class="small-btn edit" onclick="openVideoEditor('edit','${stream.id}','live')">تعديل</button>
+          <button class="small-btn del" onclick="deleteLiveStream('${stream.id}')">حذف</button>
+        </div>
+      </div>
+    `).join('') : '<div class="video-empty">لا توجد بثوث مباشرة مطابقة للبحث أو لا توجد بثوث بعد.</div>';
+  }
+
   if(canManageUsers() && usersList){
     usersList.innerHTML = state.users.map(u => `
       <div class="user-row">
@@ -999,8 +1077,10 @@ function renderDashboard(){
 function renderAll(){
   renderArticles();
   renderVideos();
+  renderLiveStreams();
   updateAuthUI();
   renderDashboard();
+  scheduleLiveMonitoring();
 }
 function openNews(id){
   const article = articleById(id);
@@ -1054,7 +1134,36 @@ function openVideo(id){
   }
   document.getElementById('videoModal').classList.add('active');
 }
+function openLive(id){
+  const live = liveById(id);
+  if(!live) return;
+  currentVideoId = id;
+  const title = document.getElementById('videoTitle');
+  const desc = document.getElementById('videoDescription');
+  const wrap = document.getElementById('videoPlayerWrap');
+  const ext = document.getElementById('videoExternalLink');
+  title.textContent = live.title;
+  desc.textContent = `${live.description} — بث مباشر`;
+  wrap.innerHTML = '';
+  ext.classList.add('hidden');
+  ext.removeAttribute('href');
+
+  const yt = youtubeId(live.sourceUrl || '');
+  if(yt){
+    wrap.innerHTML = `<iframe class="video-modal-player" src="https://www.youtube.com/embed/${yt}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1" title="${escapeText(live.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    ext.href = live.sourceUrl;
+    ext.textContent = 'فتح البث في يوتيوب';
+    ext.classList.remove('hidden');
+  }else{
+    wrap.innerHTML = `<div class="video-empty">هذا البث غير متاح الآن.</div>`;
+  }
+  document.getElementById('videoModal').classList.add('active');
+}
 function closeVideo(){ document.getElementById('videoModal').classList.remove('active'); }
+
+function liveById(id){
+  return state.liveStreams.find(item => item.id === id);
+}
 
 function openInfo(type){
   const item = INFO_CONTENT[type];
@@ -1349,22 +1458,50 @@ function toggleVideoSourceFields(){
   const type = document.getElementById('videoSourceType').value;
   document.getElementById('videoUrlWrap').classList.toggle('hidden', type === 'file');
   document.getElementById('videoFileWrap').classList.toggle('hidden', type !== 'file');
+  const help = document.getElementById('videoEditorHelp');
+  const urlInput = document.getElementById('videoSourceUrl');
+  if(urlInput){
+    urlInput.placeholder = type === 'live' ? 'رابط البث المباشر من يوتيوب' : 'رابط الفيديو أو يوتيوب';
+  }
+  if(help){
+    help.textContent = type === 'live'
+      ? 'يمكنك إضافة رابط بث مباشر من يوتيوب فقط. إذا انتهى البث سيتم حذفه تلقائيًا.'
+      : 'يمكنك إضافة رابط يوتيوب أو رفع ملف فيديو من جهازك ثم حفظه.';
+  }
 }
-function openVideoEditor(mode='create', id=null){
+function openVideoEditor(mode='create', id=null, kind='video'){
   if(!canEdit()) return showToast('هذه الصلاحية للمحررين فقط');
   videoEditorMode = mode;
   videoEditorId = id;
-  document.getElementById('videoEditorTitle').textContent = mode === 'edit' ? 'تعديل الفيديو' : 'إضافة فيديو';
-  const video = id ? videoById(id) : null;
+  videoEditorKind = kind === 'live' ? 'live' : 'video';
+  const collection = videoEditorKind === 'live' ? state.liveStreams : state.videos;
+  const video = id ? collection.find(item => item.id === id) : null;
+  document.getElementById('videoEditorTitle').textContent =
+    videoEditorKind === 'live'
+      ? (mode === 'edit' ? 'تعديل البث المباشر' : 'إضافة بث مباشر')
+      : (mode === 'edit' ? 'تعديل الفيديو' : 'إضافة فيديو');
+  const help = document.getElementById('videoEditorHelp');
+  if(help){
+    help.textContent = videoEditorKind === 'live'
+      ? 'يمكنك إضافة رابط بث مباشر من يوتيوب فقط. إذا انتهى البث سيتم حذفه تلقائيًا.'
+      : 'يمكنك إضافة رابط يوتيوب أو رفع ملف فيديو من جهازك ثم حفظه.';
+  }
   document.getElementById('videoTitleInput').value = video ? video.title : '';
   document.getElementById('videoDescriptionInput').value = video ? video.description : '';
-  document.getElementById('videoSourceType').value = video ? video.sourceType : 'link';
+  const typeSelect = document.getElementById('videoSourceType');
+  typeSelect.disabled = videoEditorKind === 'live';
+  if(videoEditorKind === 'live'){
+    typeSelect.value = 'live';
+  }else{
+    typeSelect.value = video ? (video.sourceType || 'link') : 'link';
+  }
   document.getElementById('videoSourceUrl').value = video ? (video.sourceUrl || '') : '';
   document.getElementById('videoFileInput').value = '';
   toggleVideoSourceFields();
   document.getElementById('videoEditorModal').classList.add('active');
 }
 function closeVideoEditor(){ document.getElementById('videoEditorModal').classList.remove('active'); }
+
 async function saveVideoEditor(){
   if(!canEdit()) return;
   const title = document.getElementById('videoTitleInput').value.trim();
@@ -1374,6 +1511,35 @@ async function saveVideoEditor(){
   const file = document.getElementById('videoFileInput').files[0];
 
   if(!title || !description) return showToast('أكمل عنوان الفيديو ووصفه');
+
+  if(videoEditorKind === 'live' || sourceType === 'live'){
+    if(!sourceUrl) return showToast('أضف رابط البث المباشر');
+    if(!youtubeId(sourceUrl)) return showToast('البث المباشر يجب أن يكون رابط يوتيوب');
+    const payload = {
+      id: videoEditorId || makeId('live'),
+      title,
+      description,
+      sourceType: 'live',
+      sourceUrl,
+      sourceData: '',
+      thumb: ''
+    };
+    if(videoEditorMode === 'edit' && videoEditorId){
+      const idx = state.liveStreams.findIndex(item => item.id === videoEditorId);
+      if(idx >= 0) state.liveStreams[idx] = { ...state.liveStreams[idx], ...payload };
+      else state.liveStreams.unshift(payload);
+    }else{
+      state.liveStreams.unshift(payload);
+    }
+    saveState();
+    syncToMongo();
+    closeVideoEditor();
+    renderAll();
+    scheduleLiveMonitoring();
+    showToast('تم حفظ البث المباشر');
+    return;
+  }
+
   let sourceData = '';
   if(sourceType === 'file'){
     const existing = videoEditorId ? videoById(videoEditorId) : null;
@@ -1420,6 +1586,105 @@ function deleteVideo(id){
   if(currentVideoId === id) closeVideo();
   showToast('تم الحذف');
 }
+function deleteLiveStream(id, silent=false){
+  if(!silent && !canEdit()) return;
+  if(!silent && !confirm('هل تريد حذف هذا البث المباشر؟')) return;
+  state.liveStreams = state.liveStreams.filter(item => item.id !== id);
+  saveState();
+  syncToMongo();
+  destroyLiveMonitor(id);
+  renderAll();
+  if(currentVideoId === id) closeVideo();
+  showToast('تم الحذف');
+}
+
+function ensureLiveMonitorHost(){
+  let host = document.getElementById('liveMonitorHost');
+  if(!host){
+    host = document.createElement('div');
+    host.id = 'liveMonitorHost';
+    host.style.cssText = 'position:fixed;left:-99999px;top:-99999px;width:1px;height:1px;overflow:hidden;';
+    document.body.appendChild(host);
+  }
+  return host;
+}
+function destroyLiveMonitor(id){
+  const player = liveMonitorPlayers.get(id);
+  if(player){
+    try{ player.destroy(); }catch(e){}
+    liveMonitorPlayers.delete(id);
+  }
+  const node = document.getElementById(`live-monitor-${id}`);
+  if(node) node.remove();
+}
+function rebuildLiveMonitors(){
+  if(!youtubeApiReady || !Array.isArray(state.liveStreams)) return;
+  const host = ensureLiveMonitorHost();
+
+  liveMonitorPlayers.forEach((player, id) => {
+    if(!state.liveStreams.some(item => item.id === id)){
+      destroyLiveMonitor(id);
+    }
+  });
+
+  state.liveStreams.forEach(item => {
+    if(liveMonitorPlayers.has(item.id)) return;
+    const yt = youtubeId(item.sourceUrl || '');
+    if(!yt) return;
+    const mount = document.createElement('div');
+    mount.id = `live-monitor-${item.id}`;
+    mount.style.cssText = 'width:1px;height:1px;';
+    host.appendChild(mount);
+    try{
+      const player = new YT.Player(mount.id, {
+        videoId: yt,
+        playerVars: {
+          autoplay: 0,
+          controls: 0,
+          mute: 1,
+          playsinline: 1,
+          rel: 0,
+          modestbranding: 1,
+          enablejsapi: 1
+        },
+        events: {
+          onStateChange: (event) => {
+            if(event.data === YT.PlayerState.ENDED){
+              deleteLiveStream(item.id, true);
+            }
+          },
+          onError: () => deleteLiveStream(item.id)
+        }
+      });
+      liveMonitorPlayers.set(item.id, player);
+    }catch(err){
+      destroyLiveMonitor(item.id);
+    }
+  });
+}
+function scheduleLiveMonitoring(){
+  if(!youtubeApiLoading){
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    tag.async = true;
+    document.head.appendChild(tag);
+    youtubeApiLoading = true;
+  }
+  if(!liveMonitorTimer){
+    liveMonitorTimer = setInterval(() => {
+      if(document.visibilityState === 'visible'){
+        rebuildLiveMonitors();
+      }
+    }, 60000);
+  }
+  rebuildLiveMonitors();
+}
+
+window.onYouTubeIframeAPIReady = function(){
+  youtubeApiReady = true;
+  rebuildLiveMonitors();
+};
+
 
 function getPassStrength(password){
   let score = 0;
@@ -1465,6 +1730,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('heroLogo').src = document.getElementById('siteLogo').src;
   updateAuthUI();
   renderAll();
+  scheduleLiveMonitoring();
   document.getElementById('profileBtn').addEventListener('click', (e) => { e.stopPropagation(); toggleProfileMenu(); });
   document.getElementById('regPass').addEventListener('input', updatePassMeter);
   document.getElementById('loginUser').addEventListener('keydown', (e)=>{ if(e.key==='Enter') login(); });
