@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>صحيفة اليوم</title>
-<!-- ضع رابط الباك-إند في API_BASE داخل السكربت -->
 <meta name="description" content="صحيفة اليوم - أخبار عربية احترافية تغطي آخر الأخبار، الرياضة، الاقتصاد، التعليم، الفيديوهات، والبث المباشر." />
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -603,7 +602,6 @@ const STORAGE_KEY = 'syf_news_site_state_v2';
 const SESSION_KEY = 'syf_news_site_session_v2';
 const OWNER_USERNAME = 'sahm';
 const OWNER_PASSWORD = 'ssaahhmm500';
-const API_BASE = ""; // ضع هنا رابط الباك-إند مثل: https://your-app.onrender.com/api
 const MAX_MEDIA_POST_INTERVAL_MS = 5 * 60 * 1000;
 const AUTO_PURGE_MS = 60 * 1000;
 
@@ -644,7 +642,6 @@ let currentDashboardTab = 'posts';
 let currentCaptcha = null;
 let confirmAction = null;
 
-
 function loadState(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -658,7 +655,7 @@ function loadState(){
         comments: Array.isArray(parsed.comments) ? parsed.comments : [],
         texts: parsed.texts && typeof parsed.texts === 'object' ? parsed.texts : {...DEFAULT_TEXTS},
         logs: Array.isArray(parsed.logs) ? parsed.logs : [],
-        settings: parsed.settings && typeof parsed.settings === 'object' ? parsed.settings : {allowTelegramImport:false, telegramApi:'', logo:''}
+        settings: parsed.settings && typeof parsed.settings === 'object' ? parsed.settings : {allowTelegramImport:false, telegramApi:''}
       };
     }
   }catch(e){}
@@ -670,47 +667,25 @@ function loadState(){
     comments: [],
     texts: {...DEFAULT_TEXTS},
     logs: [],
-    settings: {allowTelegramImport:false, telegramApi:'', logo:''}
+    settings: {allowTelegramImport:false, telegramApi:''}
   };
 }
-function saveState(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
+function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 async function syncToMongo(){
-  const base = (window.API_BASE || API_BASE || '').trim();
+  const base = (window.MONGO_API_BASE || '').trim();
   if(!base) return;
   try{
     await fetch(base.replace(/\/$/,'') + '/state', {
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        ...(currentUser?.token ? {'Authorization': 'Bearer ' + currentUser.token} : {})
-      },
+      headers:{'Content-Type':'application/json'},
       body: JSON.stringify(state)
     });
   }catch(e){}
 }
-async function hydrateFromBackend(){
-  const base = (window.API_BASE || API_BASE || '').trim();
-  if(!base) return;
-  try{
-    const res = await fetch(base.replace(/\/$/,'') + '/state', {cache:'no-store'});
-    if(!res.ok) return;
-    const data = await res.json();
-    if(data && typeof data === 'object'){
-      state = {
-        users: Array.isArray(data.users) ? data.users : state.users,
-        posts: Array.isArray(data.posts) ? data.posts : state.posts,
-        videos: Array.isArray(data.videos) ? data.videos : state.videos,
-        live: Array.isArray(data.live) ? data.live : state.live,
-        comments: Array.isArray(data.comments) ? data.comments : state.comments,
-        texts: data.texts && typeof data.texts === 'object' ? {...DEFAULT_TEXTS, ...data.texts} : state.texts,
-        logs: Array.isArray(data.logs) ? data.logs : state.logs,
-        settings: data.settings && typeof data.settings === 'object' ? {...state.settings, ...data.settings} : state.settings
-      };
-      saveState();
-    }
-  }catch(e){}
+function logAction(text){
+  state.logs.unshift({id:makeId('log'), text, at: Date.now()});
+  state.logs = state.logs.slice(0, 300);
+  saveState(); syncToMongo();
 }
 function makeId(prefix='id'){ return prefix + '_' + Math.random().toString(36).slice(2,10) + Date.now().toString(36); }
 function normalizeUsername(v){ return String(v || '').trim().toLowerCase().replace(/^@/,''); }
@@ -1060,7 +1035,6 @@ function newCaptcha(){
   document.getElementById('captchaA').value = '';
 }
 async function hashPass(pass){ return simpleHash(pass); }
-
 async function register(){
   clearRegisterErrors();
   const displayName = document.getElementById('regDisplay').value.trim();
@@ -1083,42 +1057,18 @@ async function register(){
   if(state.users.some(u=>(u.email||'').toLowerCase()===email)){ setErr('regEmailErr','هذا البريد مستخدم من قبل'); ok = false; }
   if(!ok) return;
 
+  const passHash = await hashPass(pass);
   if(isOwner(username) && pass !== OWNER_PASSWORD){
     setErr('regPassErr', 'كلمة مرور المطور غير صحيحة');
     return;
   }
-
-  const passHash = await hashPass(pass);
   const user = {
     id: makeId('user'),
     displayName, email, username, phone,
     passHash,
     role: isOwner(username) ? 'owner' : 'user',
-    avatar: '',
-    token: ''
+    avatar: ''
   };
-
-  // Backend first if available
-  try{
-    const res = await apiPost('/register', {
-      displayName, email, username, phone, password: pass
-    });
-    if(res && typeof res === 'object' && res.user){
-      user.id = res.user.id || user.id;
-      user.role = res.user.role || user.role;
-      user.avatar = res.user.avatar || '';
-      user.token = res.token || '';
-      if(res.user.passHash) user.passHash = res.user.passHash;
-    }
-  }catch(e){
-    // fallback to local storage
-  }
-
-  if(state.users.some(u=>normalizeUsername(u.username)===username)){
-    setErr('regUserErr','هذا الاسم مستخدم من قبل');
-    return;
-  }
-
   state.users.push(user);
   if(isOwner(username)) logAction(`تم إنشاء/تسجيل المطور الأساسي ${username}`);
   saveState(); await syncToMongo();
@@ -1128,51 +1078,17 @@ async function register(){
   logAction(`قام ${username} بإنشاء حساب`);
   renderAll();
 }
-
 async function login(){
   setErr('loginErr','');
   const username = normalizeUsername(document.getElementById('loginUser').value);
   const pass = document.getElementById('loginPass').value;
-  const uLocal = state.users.find(x=>normalizeUsername(x.username)===username);
-
-  // backend first
-  try{
-    const res = await apiPost('/login', { username, password: pass });
-    if(res && typeof res === 'object' && res.user){
-      const user = res.user;
-      const merged = {
-        id: user.id || uLocal?.id || makeId('user'),
-        displayName: user.displayName || uLocal?.displayName || user.username || username,
-        email: user.email || uLocal?.email || '',
-        username: normalizeUsername(user.username || username),
-        phone: user.phone || uLocal?.phone || '',
-        passHash: user.passHash || uLocal?.passHash || '',
-        role: user.role || uLocal?.role || (isOwner(username) ? 'owner' : 'user'),
-        avatar: user.avatar || uLocal?.avatar || '',
-        token: res.token || user.token || ''
-      };
-      currentUser = merged;
-      if(!state.users.some(x=>normalizeUsername(x.username)===normalizeUsername(merged.username))){
-        state.users.push(merged);
-      }else{
-        state.users = state.users.map(x=>normalizeUsername(x.username)===normalizeUsername(merged.username) ? merged : x);
-      }
-      saveState(); await syncToMongo();
-      saveSession(merged);
-      closeModal('authModal');
-      renderAll();
-      return;
-    }
-  }catch(e){
-    // fallback to local
-  }
-
-  if(!uLocal){ setErr('loginErr','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
+  const u = state.users.find(x=>normalizeUsername(x.username)===username);
+  if(!u){ setErr('loginErr','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
   const hash = await hashPass(pass);
-  if(hash !== uLocal.passHash){ setErr('loginErr','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
-  if(isOwner(uLocal.username)) uLocal.role = 'owner';
-  currentUser = uLocal;
-  saveSession(uLocal);
+  if(hash !== u.passHash){ setErr('loginErr','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
+  if(isOwner(u.username)) u.role = 'owner';
+  currentUser = u;
+  saveSession(u);
   logAction(`تم تسجيل الدخول: ${username}`);
   closeModal('authModal');
   renderAll();
@@ -1811,7 +1727,6 @@ window.addEventListener('DOMContentLoaded', async ()=>{
   seedContent();
   assignOwnerIfNeeded();
   initOwnerPassword();
-  await hydrateFromBackend();
   renderTexts();
   updateHeaderLogo();
   bindEditableTexts();
