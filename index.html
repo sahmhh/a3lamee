@@ -149,7 +149,7 @@ button{cursor:pointer}
         <button id="profileBtn" class="pill user-chip hidden" type="button">
           <img id="userAvatar" alt="حسابي"><span id="userQuickName">@user</span>
         </button>
-        <a id="loginBtn" class="pill" href="#" onclick="openAuth('login');return false;">تسجيل الدخول</a>
+        <button id="loginBtn" class="pill" type="button">تسجيل الدخول</button>
         <a class="pill" href="mailto:syf.a.et@hotmail.com">تواصل معنا</a>
       </div>
     </div>
@@ -311,7 +311,7 @@ button{cursor:pointer}
           <div class="small">كلمة المرور</div>
           <input id="loginPass" class="input" type="password" placeholder="كلمة المرور">
           <div class="err" id="loginErr"></div>
-          <button class="btn" onclick="login()">دخول</button>
+          <button class="btn" type="button" onclick="login()">دخول</button>
           <button class="btn secondary" onclick="closeModal('authModal')">إلغاء</button>
         </div>
       </div>
@@ -1192,7 +1192,7 @@ function renderUserMenu(){
   if(!currentUser){
     if(authCard) authCard.classList.remove('hidden');
     const sideText = document.getElementById('sideAccountText');
-    if(sideText) sideText.innerHTML = 'يرجى منك إنشاء حساب أو تسجيل الدخول للمتابعة داخل الموقع.';
+    if(sideText) sideText.innerHTML = 'يرجى منك <a href="#" onclick="openAuth(\'register\');return false;">إنشاء حساب</a> أو <a href="#" onclick="openAuth(\'login\');return false;">تسجيل الدخول</a> للمتابعة داخل الموقع.';
     return;
   }
   if(authCard) authCard.classList.add('hidden');
@@ -1203,12 +1203,17 @@ function renderUserMenu(){
   document.getElementById('sideAccountText').textContent = text;
 }
 function openAuth(mode){
+  closeUserMenu();
   document.getElementById('loginBox').classList.toggle('hidden', mode !== 'login');
   document.getElementById('registerBox').classList.toggle('hidden', mode !== 'register');
   document.getElementById('loginTab').classList.toggle('active', mode === 'login');
   document.getElementById('registerTab').classList.toggle('active', mode === 'register');
   openModal('authModal');
   if(mode === 'register') newCaptcha();
+  setTimeout(()=>{
+    if(mode === 'login') document.getElementById('loginUser')?.focus();
+    if(mode === 'register') document.getElementById('regDisplay')?.focus();
+  }, 50);
 }
 function closeModalAndReset(id){ closeModal(id); }
 function setErr(id,msg){ document.getElementById(id).textContent = msg || ''; }
@@ -1221,6 +1226,32 @@ function newCaptcha(){
   document.getElementById('captchaA').value = '';
 }
 async function hashPass(pass){ return simpleHash(pass); }
+
+function apiEnabled(){ return typeof API_BASE === 'string' && API_BASE.trim().length > 0; }
+async function apiPost(path, payload){
+  if(!apiEnabled()) throw new Error('API_BASE not configured');
+  const url = API_BASE.replace(/\/$/, '') + (path.startsWith('/') ? path : '/' + path);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 12000);
+  try{
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+    const text = await res.text();
+    let data = null;
+    try{ data = text ? JSON.parse(text) : null; }catch(e){ data = null; }
+    if(!res.ok){
+      const msg = data?.error || data?.message || `HTTP ${res.status}`;
+      throw new Error(msg);
+    }
+    return data;
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 async function register(){
   clearRegisterErrors();
@@ -1293,70 +1324,90 @@ async function register(){
   renderAll();
 }
 
+
 async function login(){
   setErr('loginErr','');
   const username = normalizeUsername(document.getElementById('loginUser').value);
-  const pass = document.getElementById('loginPass').value;
-  const uLocal = state.users.find(x=>normalizeUsername(x.username)===username);
+  const pass = document.getElementById('loginPass').value.trim();
+  if(!username || !pass){
+    setErr('loginErr','أدخل اسم المستخدم وكلمة المرور');
+    return;
+  }
 
+  const local = state.users.find(x => normalizeUsername(x.username) === username);
+  const hash = await hashPass(pass);
+
+  const finalizeLocal = async (userObj) => {
+    const merged = {
+      ...userObj,
+      username: normalizeUsername(userObj.username || username),
+      displayName: userObj.displayName || userObj.username || username,
+      email: userObj.email || '',
+      phone: userObj.phone || '',
+      avatar: userObj.avatar || '',
+      role: userObj.role || (isOwner(userObj.username || username) ? 'owner' : 'user'),
+      token: userObj.token || ''
+    };
+    if(isOwner(merged.username)){
+      beginOwnerChallenge(merged);
+      return true;
+    }
+    currentUser = merged;
+    if(!state.users.some(x => normalizeUsername(x.username) === normalizeUsername(merged.username))){
+      state.users.push(merged);
+    }else{
+      state.users = state.users.map(x => normalizeUsername(x.username) === normalizeUsername(merged.username) ? merged : x);
+    }
+    saveSession(merged);
+    saveState();
+    await syncToMongo();
+    closeModal('authModal');
+    closeUserMenu();
+    updateLoginUI();
+    updateAuthPrompt();
+    showPage('home');
+    showToast(`تم تسجيل الدخول باسم ${merged.displayName || merged.username}`);
+    renderAll();
+    return true;
+  };
+
+  // محاولة محلية أولًا حتى لا يعتمد الدخول على الـ API إذا كان غير متاح
+  if(local){
+    const localValid = (local.passHash && local.passHash === hash) || (local.password && local.password === pass) || (isOwner(local.username) && pass === OWNER_PASSWORD);
+    if(localValid){
+      await finalizeLocal(local);
+      return;
+    }
+  }
+
+  // ثم نحاول السيرفر إن كان مفعّلًا
   try{
     const res = await apiPost('/login', { username, password: pass });
     if(res && typeof res === 'object' && res.user){
       const user = res.user;
       const merged = {
-        id: user.id || uLocal?.id || makeId('user'),
-        displayName: user.displayName || uLocal?.displayName || user.username || username,
-        email: user.email || uLocal?.email || '',
+        id: user.id || local?.id || makeId('user'),
+        displayName: user.displayName || local?.displayName || user.username || username,
+        email: user.email || local?.email || '',
         username: normalizeUsername(user.username || username),
-        phone: user.phone || uLocal?.phone || '',
-        passHash: user.passHash || uLocal?.passHash || '',
-        role: user.role || uLocal?.role || (isOwner(username) ? 'owner' : 'user'),
-        avatar: user.avatar || uLocal?.avatar || '',
+        phone: user.phone || local?.phone || '',
+        passHash: user.passHash || local?.passHash || hash,
+        role: user.role || local?.role || (isOwner(username) ? 'owner' : 'user'),
+        avatar: user.avatar || local?.avatar || '',
         token: res.token || user.token || ''
       };
-      if(isOwner(merged.username)){
-        beginOwnerChallenge(merged);
-        return;
-      }
-      currentUser = merged;
-      if(!state.users.some(x=>normalizeUsername(x.username)===normalizeUsername(merged.username))){
-        state.users.push(merged);
-      }else{
-        state.users = state.users.map(x=>normalizeUsername(x.username)===normalizeUsername(merged.username) ? merged : x);
-      }
-      saveState(); await syncToMongo();
-      saveSession(merged);
-      closeModal('authModal');
-      closeUserMenu();
-      updateLoginUI();
-      updateAuthPrompt();
-      showPage('home');
-      showToast(`تم تسجيل الدخول باسم ${merged.displayName || merged.username}`);
-      renderAll();
+      await finalizeLocal(merged);
       return;
     }
-  }catch(e){}
-
-  if(!uLocal){ setErr('loginErr','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
-  const hash = await hashPass(pass);
-  if(hash !== uLocal.passHash){ setErr('loginErr','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
-  if(isOwner(uLocal.username)) uLocal.role = 'owner';
-  if(isOwner(uLocal.username)){
-    beginOwnerChallenge(uLocal);
-    return;
+  }catch(e){
+    console.warn('login API failed, falling back to local login', e);
   }
-  currentUser = uLocal;
-  saveSession(uLocal);
-  logAction(`تم تسجيل الدخول: ${username}`);
-  closeModal('authModal');
-  closeUserMenu();
-  updateLoginUI();
-  updateAuthPrompt();
-  showPage('home');
-  showToast(`تم تسجيل الدخول باسم ${uLocal.displayName || uLocal.username}`);
-  renderAll();
+
+  setErr('loginErr','اسم المستخدم أو كلمة المرور غير صحيحة');
 }
+
 function logout(){
+
   currentUser = null;
   clearSession();
   closeUserMenu();
@@ -1373,6 +1424,7 @@ function openUserMenu(){
 function closeUserMenu(){ document.getElementById('userMenu').classList.remove('active'); }
 function bindItemButtons(){
   document.getElementById('profileBtn').addEventListener('click', (e)=>{ e.stopPropagation(); openUserMenu(); });
+  document.getElementById('loginBtn').addEventListener('click', (e)=>{ e.preventDefault(); openAuth('login'); });
   document.getElementById('menuDashboard').onclick = ()=>{ closeUserMenu(); openDashboard(); };
   document.getElementById('menuOwner').onclick = ()=>{ closeUserMenu(); openDashboard(); switchDash('log'); };
   document.getElementById('menuLogout').onclick = ()=>{ closeUserMenu(); logout(); };
