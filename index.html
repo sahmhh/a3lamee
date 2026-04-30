@@ -33,7 +33,7 @@ button{cursor:pointer}
 .user-chip img{width:30px;height:30px;border-radius:50%;background:#fff;object-fit:cover}
 .user-chip span{white-space:nowrap}
 .ticker{background:linear-gradient(90deg,var(--accent),#7dd3fc,var(--accent2));color:#00111a;font-weight:900;overflow:hidden;white-space:nowrap;border-top:1px solid rgba(255,255,255,.08)}
-.ticker span{display:inline-block;padding:12px 0;padding-left:100%;animation:scroll 22s linear infinite}
+.ticker span{display:inline-block;padding:12px 0;padding-left:100%;animation:scroll 4.3s linear 1 forwards}
 @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-100%)}}
 .nav{display:flex;gap:8px;padding:0 16px 14px;overflow:auto}
 .nav button{border:none;background:transparent;color:var(--muted);padding:10px 15px;border-radius:12px;font-weight:800;white-space:nowrap}
@@ -179,6 +179,7 @@ button{cursor:pointer}
     <div class="card" id="authCard">
       <h3>👤 الحساب</h3>
       <p id="sideAccountText" style="cursor:pointer" onclick="openAuth('register')">يرجى منك إنشاء حساب أو تسجيل الدخول للمتابعة داخل الموقع.</p>
+      <div class="note" style="margin-top:8px">بعد تسجيل الدخول تختفي أزرار الدخول ويظهر حسابك بدلها.</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
         <button class="btn" style="padding:10px 14px" onclick="openAuth('register')">إنشاء حساب</button>
         <button class="btn secondary" style="padding:10px 14px" onclick="openAuth('login')">تسجيل الدخول</button>
@@ -303,8 +304,11 @@ button{cursor:pointer}
 
       <div id="loginBox">
         <h2>تسجيل الدخول</h2>
+        <div class="note" style="margin-bottom:10px">أدخل اسم المستخدم وكلمة المرور ثم اضغط دخول ليتم توجيهك تلقائيًا إلى الصفحة الرئيسية.</div>
         <div class="form">
+          <div class="small">اسم المستخدم</div>
           <input id="loginUser" class="input" type="text" placeholder="اسم المستخدم">
+          <div class="small">كلمة المرور</div>
           <input id="loginPass" class="input" type="password" placeholder="كلمة المرور">
           <div class="err" id="loginErr"></div>
           <button class="btn" onclick="login()">دخول</button>
@@ -314,20 +318,27 @@ button{cursor:pointer}
 
       <div id="registerBox" class="hidden">
         <h2>إنشاء حساب</h2>
+        <div class="note" style="margin-bottom:10px">أكمل الحقول التالية، وستظهر لك الرسائل الحمراء مباشرة تحت الحقل غير الصحيح.</div>
         <div class="cols">
           <div class="form">
+            <div class="small">الاسم الظاهر</div>
             <input id="regDisplay" class="input" type="text" placeholder="الاسم الظاهر">
             <div class="err" id="regDisplayErr"></div>
+            <div class="small">البريد الإلكتروني</div>
             <input id="regEmail" class="input" type="email" placeholder="البريد الإلكتروني">
             <div class="err" id="regEmailErr"></div>
+            <div class="small">اسم المستخدم</div>
             <input id="regUser" class="input" type="text" placeholder="اسم المستخدم">
             <div class="err" id="regUserErr"></div>
+            <div class="small">رقم الجوال (اختياري)</div>
             <input id="regPhone" class="input" type="text" placeholder="رقم الجوال (اختياري)">
             <div class="err" id="regPhoneErr"></div>
           </div>
           <div class="form">
+            <div class="small">كلمة المرور</div>
             <input id="regPass" class="input" type="password" placeholder="كلمة المرور">
             <div class="err" id="regPassErr"></div>
+            <div class="small">تأكيد كلمة المرور</div>
             <input id="regPass2" class="input" type="password" placeholder="تأكيد كلمة المرور">
             <div class="err" id="regPass2Err"></div>
             <div class="panel">
@@ -389,9 +400,10 @@ button{cursor:pointer}
           <div class="form-grid">
             <input id="assignUserName" class="input" type="text" placeholder="اسم المستخدم">
             <select id="assignUserRole" class="select">
+              <option value="owner">مطور</option>
+              <option value="editor">محرر</option>
               <option value="media">إعلامي</option>
               <option value="edu_manager">قسم التعليم</option>
-              <option value="editor">محرر</option>
               <option value="user">إزالة الصلاحيات</option>
             </select>
           </div>
@@ -586,6 +598,22 @@ button{cursor:pointer}
   </div>
 </div>
 
+
+<div class="modal" id="ownerCodeModal">
+  <div class="modal-box">
+    <div class="modal-body">
+      <h2>التحقق من المطور</h2>
+      <p class="note">للدخول إلى حساب المطور الأساسي يجب إدخال الرمز السري المكوّن من 6 رموز.</p>
+      <div class="form">
+        <input id="ownerCodeInput" class="input" type="password" placeholder="الرمز السري">
+        <div class="err" id="ownerCodeErr"></div>
+        <button class="btn" onclick="verifyOwnerCode()">دخول</button>
+        <button class="btn secondary" onclick="closeModal('ownerCodeModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal" id="confirmModal">
   <div class="modal-box">
     <div class="modal-body">
@@ -608,7 +636,7 @@ button{cursor:pointer}
     </div>
   </div>
   <button class="item" id="menuDashboard"><span>لوحة التحكم</span><span>›</span></button>
-  <button class="item hidden" id="menuOwner"><span>السجل الفعلي</span><span>›</span></button>
+  <button class="item hidden" id="menuOwner"><span>لوحة التحكم</span><span>›</span></button>
   <button class="item" id="menuLogout"><span>تسجيل الخروج</span><span>›</span></button>
 </div>
 
@@ -639,7 +667,7 @@ const CAPTCHA = [
   {q:'كم حاصل 10 - 4 ؟', a:'6'}
 ];
 
-const ROLE_ORDER = ['owner','editor','edu_manager','media','user'];
+const ROLE_ORDER = ['owner','editor','media','edu_manager','user'];
 const ROLE_LABEL = {owner:'مطور', editor:'محرر', edu_manager:'قسم التعليم', media:'إعلامي', user:'مستخدم'};
 const ROLE_ICON = {owner:'👑', editor:'🛠️', edu_manager:'🎓', media:'📰', user:'👤'};
 
@@ -660,10 +688,11 @@ let confirmAction = null;
 let pendingOwnerLoginUser = null;
 const TICKER_STEPS = [
   '⚽ بطولة كبرى الليلة',
-  '⚽ بطولة كبرى الليلة | 💰 حركة قوية في الأسواق',
+  '💰 حركة قوية في الأسواق',
   '📱 إطلاق تقني جديد',
   '✔ أخبار لحظة بلحظة .. مع موقع صحيفة اليوم ✔'
 ];
+const TICKER_INTERVAL_MS = 4300;
 let tickerIndex = 0;
 
 
@@ -779,14 +808,18 @@ function setTickerStep(step){
   const idx = ((step % TICKER_STEPS.length) + TICKER_STEPS.length) % TICKER_STEPS.length;
   tickerIndex = idx;
   const el = document.getElementById('tickerText');
-  if(el) el.textContent = TICKER_STEPS[idx];
+  if(!el) return;
+  el.textContent = TICKER_STEPS[idx];
+  el.style.animation = 'none';
+  void el.offsetWidth;
+  el.style.animation = 'scroll 4.3s linear 1 forwards';
 }
 function startTickerCycle(){
-  setTickerStep(0);
   clearInterval(window.__tickerTimer);
+  setTickerStep(0);
   window.__tickerTimer = setInterval(() => {
     setTickerStep((tickerIndex + 1) % TICKER_STEPS.length);
-  }, 2800);
+  }, TICKER_INTERVAL_MS);
 }
 function updateAuthPrompt(){
   const card = document.getElementById('authCard');
@@ -804,15 +837,20 @@ async function finalizeSuccessfulLogin(user){
   saveState();
   await syncToMongo();
   logAction(`تم تسجيل الدخول: ${user.username}`);
+  closeModal('ownerCodeModal');
   closeModal('authModal');
+  closeUserMenu();
   updateLoginUI();
   updateAuthPrompt();
+  showPage('home');
+  showToast(`تم تسجيل الدخول باسم ${currentUser.displayName || currentUser.username}`);
   renderAll();
 }
 function beginOwnerChallenge(user){
   pendingOwnerLoginUser = user;
   document.getElementById('ownerCodeErr').textContent = '';
   document.getElementById('ownerCodeInput').value = '';
+  closeModal('authModal');
   openModal('ownerCodeModal');
   setTimeout(()=>document.getElementById('ownerCodeInput')?.focus(), 50);
 }
@@ -825,7 +863,6 @@ async function verifyOwnerCode(){
   }
   const user = pendingOwnerLoginUser;
   pendingOwnerLoginUser = null;
-  closeModal('ownerCodeModal');
   await finalizeSuccessfulLogin(user);
 }
 function roleIndex(role){ return ROLE_ORDER.indexOf(role); }
@@ -1222,7 +1259,6 @@ async function register(){
     token: ''
   };
 
-  // Backend first if available
   try{
     const res = await apiPost('/register', {
       displayName, email, username, phone, password: pass
@@ -1235,7 +1271,6 @@ async function register(){
       if(res.user.passHash) user.passHash = res.user.passHash;
     }
   }catch(e){
-    // fallback to local storage
   }
 
   if(state.users.some(u=>normalizeUsername(u.username)===username)){
@@ -1249,6 +1284,11 @@ async function register(){
   currentUser = user;
   saveSession(user);
   closeModal('authModal');
+  closeUserMenu();
+  updateLoginUI();
+  updateAuthPrompt();
+  showPage('home');
+  showToast(`تم إنشاء الحساب باسم ${user.displayName || user.username}`);
   logAction(`قام ${username} بإنشاء حساب`);
   renderAll();
 }
@@ -1259,7 +1299,6 @@ async function login(){
   const pass = document.getElementById('loginPass').value;
   const uLocal = state.users.find(x=>normalizeUsername(x.username)===username);
 
-  // backend first
   try{
     const res = await apiPost('/login', { username, password: pass });
     if(res && typeof res === 'object' && res.user){
@@ -1288,12 +1327,15 @@ async function login(){
       saveState(); await syncToMongo();
       saveSession(merged);
       closeModal('authModal');
+      closeUserMenu();
+      updateLoginUI();
+      updateAuthPrompt();
+      showPage('home');
+      showToast(`تم تسجيل الدخول باسم ${merged.displayName || merged.username}`);
       renderAll();
       return;
     }
-  }catch(e){
-    // fallback to local
-  }
+  }catch(e){}
 
   if(!uLocal){ setErr('loginErr','اسم المستخدم أو كلمة المرور غير صحيحة'); return; }
   const hash = await hashPass(pass);
@@ -1307,6 +1349,11 @@ async function login(){
   saveSession(uLocal);
   logAction(`تم تسجيل الدخول: ${username}`);
   closeModal('authModal');
+  closeUserMenu();
+  updateLoginUI();
+  updateAuthPrompt();
+  showPage('home');
+  showToast(`تم تسجيل الدخول باسم ${uLocal.displayName || uLocal.username}`);
   renderAll();
 }
 function logout(){
@@ -1780,7 +1827,7 @@ function confirmRoleChange(userId, newRole, direction){
   const u = state.users.find(x=>x.id===userId);
   if(!u) return;
   if(isOwner(u.username)) return;
-  if(newRole === 'owner') return;
+  if(newRole === 'owner' && !isOwner(currentUser.username)) return;
   askConfirm(
     direction === 'down' ? `هل أنت متأكد من إزالة/خفض الصلاحية؟` : `هل أنت متأكد من رفع الصلاحية؟`,
     `${u.displayName || u.username} (${formatUsername(u.username)}) → ${ROLE_LABEL[newRole]}`,
@@ -1799,7 +1846,8 @@ function assignRoleByUsername(){
   const u = state.users.find(x => normalizeUsername(x.username) === username);
   if(!u) return alert('المستخدم غير موجود');
   if(isOwner(u.username)) return alert('لا يمكن تعديل رتبة المطور الأساسي');
-  if(!['media','edu_manager','editor','user'].includes(role)) return alert('رتبة غير صحيحة');
+  if(role === 'owner' && !isOwner(currentUser.username)) return alert('فقط المطور الأساسي يستطيع تعيين مطورين');
+  if(!['media','edu_manager','editor','user','owner'].includes(role)) return alert('رتبة غير صحيحة');
   u.role = role;
   saveState(); syncToMongo();
   logAction(`قام ${currentUser.username} بتعيين رتبة ${ROLE_LABEL[role]} إلى ${u.username}`);
